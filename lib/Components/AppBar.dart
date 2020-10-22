@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 Widget myAppbar({title}) {
   return AppBar(
+    backgroundColor: Colors.grey[800],
     title: Text(title),
     actions: [
       InkWell(
@@ -12,17 +13,22 @@ Widget myAppbar({title}) {
           height: 25,
           width: 25,
           margin: EdgeInsets.only(top: 15, bottom: 15),
-          //padding: EdgeInsets.all(15),
-          //margin: EdgeInsets.all(10),
           decoration: BoxDecoration(
-              //borderRadius: BorderRadius.circular(15),
               shape: BoxShape.circle,
               image: DecorationImage(
                   image: AssetImage('assets/images/avaImage.jpg'),
                   fit: BoxFit.cover)),
         ),
       ),
-      IconButton(icon: Icon(Icons.more_vert), onPressed: null),
+      PopupMenuButton(
+        color: Colors.grey[800],
+        itemBuilder: (BuildContext context) {
+        return <PopupMenuEntry<FlatButton>>[
+          PopupMenuItem(child: FlatButton(onPressed: (){}, child: Text('Setting',style: TextStyle(color: Colors.white),))),
+          PopupMenuItem(child: FlatButton(onPressed: (){}, child: Text('Send feedBack',style: TextStyle(color: Colors.white),))),
+          PopupMenuItem(child: FlatButton(onPressed: (){}, child: Text('Contact support',style: TextStyle(color: Colors.white),))),
+        ];
+      })
     ],
   );
 }
