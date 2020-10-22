@@ -1,3 +1,4 @@
+import 'package:Pluralsight/Page/HomePage.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -21,11 +22,18 @@ class _HomeState extends State<Home> {
     });
   }
 
+  List<Widget> OptionSlected = [
+    HomePage(title: 'Home',),
+    HomePage(title: 'Downloads',),
+    HomePage(title: 'Brose',),
+    HomePage(title: 'Search',),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black87,
-      body: Center(),
+      body: OptionSlected[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.grey[800],
         type: BottomNavigationBarType.fixed,
@@ -37,7 +45,6 @@ class _HomeState extends State<Home> {
             title: Text('Home'),
           ),
           BottomNavigationBarItem(
-            
             icon: Icon(
               Icons.file_download,
             ),
@@ -45,7 +52,7 @@ class _HomeState extends State<Home> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.school,
+              Icons.view_module,
             ),
             title: Text('Browse'),
           ),
