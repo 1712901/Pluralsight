@@ -1,3 +1,4 @@
+import 'package:Pluralsight/Page/BrowsePage.dart';
 import 'package:Pluralsight/Page/DowloadPage.dart';
 import 'package:Pluralsight/Page/HomePage.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
 
   void onItemTapped(int index) {
     setState(() {
@@ -26,7 +27,7 @@ class _HomeState extends State<Home> {
   List<Widget> optionSlected = [
     HomePage(title: 'Home',),
     DownLoadsPage(),
-    HomePage(title: 'Browse',),
+    BrowsePase(),
     HomePage(title: 'Search',),
   ];
 

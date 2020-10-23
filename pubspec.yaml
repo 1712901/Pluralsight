@@ -49,6 +49,12 @@ flutter:
   assets:
     - assets/images/avaImage.jpg
     - assets/images/background.jpg
+    - assets/images/DownloadPage/new-releases.jpg
+    - assets/images/DownloadPage/recommended.jpg
+    - assets/images/DownloadPage/category1.jpg
+    - assets/images/DownloadPage/category2.jpg
+    - assets/images/DownloadPage/category3.jpg
+    - assets/images/DownloadPage/category4.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
