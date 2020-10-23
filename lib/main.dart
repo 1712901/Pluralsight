@@ -1,3 +1,4 @@
+import 'package:Pluralsight/Page/DowloadPage.dart';
 import 'package:Pluralsight/Page/HomePage.dart';
 import 'package:flutter/material.dart';
 
@@ -15,16 +16,16 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
 
-  void OnItemTapped(int index) {
+  void onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
       print(index);
     });
   }
 
-  List<Widget> OptionSlected = [
+  List<Widget> optionSlected = [
     HomePage(title: 'Home',),
-    HomePage(title: 'Downloads',),
+    DownLoadsPage(),
     HomePage(title: 'Browse',),
     HomePage(title: 'Search',),
   ];
@@ -33,7 +34,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black87,
-      body: OptionSlected[_selectedIndex],
+      body: optionSlected[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.grey[800],
         type: BottomNavigationBarType.fixed,
@@ -66,7 +67,7 @@ class _HomeState extends State<Home> {
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.blue[300],
         unselectedItemColor: Colors.white,
-        onTap: OnItemTapped,
+        onTap: onItemTapped,
       ),
     );
   }
