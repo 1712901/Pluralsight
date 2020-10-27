@@ -1,6 +1,7 @@
 import 'package:Pluralsight/Page/BrowsePage.dart';
 import 'package:Pluralsight/Page/DowloadPage.dart';
 import 'package:Pluralsight/Page/HomePage.dart';
+import 'package:Pluralsight/Page/SearchPage.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,7 +16,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _selectedIndex = 2;
+  int _selectedIndex = 3;
 
   void onItemTapped(int index) {
     setState(() {
@@ -28,7 +29,7 @@ class _HomeState extends State<Home> {
     HomePage(title: 'Home',),
     DownLoadsPage(),
     BrowsePase(),
-    HomePage(title: 'Search',),
+    SearchPage(),
   ];
 
   @override

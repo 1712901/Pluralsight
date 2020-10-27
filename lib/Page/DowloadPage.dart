@@ -13,34 +13,37 @@ class _DownLoadsPageState extends State<DownLoadsPage> {
     return Scaffold(
       backgroundColor: Colors.black87,
       appBar: myAppbar(title: "Downloads"),
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 5.0, right: 5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '7 courses (300 MB)',
-                  style: TextStyle(color: Colors.white),
-                ),
-                FlatButton(
-                    onPressed: () {},
-                    child: Text(
-                      'REMOVE ALL',
-                      style: TextStyle(color: Colors.blue),
-                    ))
-              ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 5.0, right: 5.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '7 courses (300 MB)',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  FlatButton(
+                      onPressed: () {},
+                      child: Text(
+                        'REMOVE ALL',
+                        style: TextStyle(color: Colors.blue),
+                      ))
+                ],
+              ),
             ),
-          ),
-          Flexible(
-              child: ListView.builder(
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return courseListTile();
-                  })),
-        ],
+            Flexible(
+                child: ListView.builder(
+                    itemCount: 10,
+                    itemBuilder: (context, index) {
+                      return courseListTile();
+                    })),
+          ],
+        ),
       ),
     );
   }
