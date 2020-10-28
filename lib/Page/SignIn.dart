@@ -1,3 +1,4 @@
+import 'package:Pluralsight/Page/SignUp.dart';
 import 'package:flutter/material.dart';
 
 class SignIn extends StatefulWidget {
@@ -12,33 +13,36 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black87,
+      backgroundColor: Colors.grey[800],
       appBar: AppBar(
-        backgroundColor: Colors.grey[800],
-        leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () {}),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading:
+            IconButton(icon: Icon(Icons.keyboard_backspace), onPressed: () {}),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(30.0),
+        padding: const EdgeInsets.only(left: 30.0, right: 30.0),
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(
+                'Sign In',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 20,
+              ),
               TextField(
                 controller: userNameController,
-                cursorColor: Theme.of(context).cursorColor,
-                style: TextStyle(
-                  color: Colors.grey[100],
-                ),
+                style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                  fillColor: Colors.grey,
-                  filled: true,
-                  labelText: 'Username(or Email)',
-                  labelStyle: TextStyle(
-                    color: Colors.blue[800],
-                  ),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.blue[800]),
-                  ),
-                ),
+                    isDense: true,
+                    labelText: 'Username (or Email)',
+                    labelStyle: TextStyle(color: Colors.grey[600])),
               ),
               SizedBox(
                 height: 10,
@@ -48,17 +52,12 @@ class _SignInState extends State<SignIn> {
                 cursorColor: Theme.of(context).cursorColor,
                 obscureText: !showPassword,
                 style: TextStyle(
-                  color: Colors.grey[100],
+                  color: Colors.white,
                 ),
                 decoration: InputDecoration(
-                    fillColor: Colors.grey,
-                    filled: true,
                     labelText: 'Password',
                     labelStyle: TextStyle(
-                      color: Colors.blue[800],
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue[800]),
+                      color: Colors.grey[600],
                     ),
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -73,14 +72,14 @@ class _SignInState extends State<SignIn> {
                     )),
               ),
               SizedBox(
-                height: 20,
+                height: 30,
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: SizedBox(
                     width: double.infinity,
                     child: RaisedButton(
-                      color: Colors.grey[800],
+                      color: Colors.blue[400],
                       onPressed: () {
                         checkUser(
                             password: passwordController.text,
@@ -88,32 +87,32 @@ class _SignInState extends State<SignIn> {
                       },
                       child: Text(
                         'SIGN IN',
-                        style: TextStyle(color: Colors.grey[500]),
+                        style: TextStyle(color: Colors.white),
                       ),
                     )),
               ),
-              FlatButton(
-                  onPressed: () {},
-                  child: Text(
-                    'FORGOT PASSWORD ?',
-                    style: TextStyle(color: Colors.blue),
-                  )),
               SizedBox(
                 width: double.infinity,
-                child: OutlineButton(
-                    borderSide: BorderSide(color: Colors.blue),
+                child: FlatButton(
                     onPressed: () {},
                     child: Text(
-                      'USE SINGLE SIGN-ON (SSO)',
+                      'FORGOT PASSWORD ?',
                       style: TextStyle(color: Colors.blue),
                     )),
               ),
-              FlatButton(
-                  onPressed: () {},
-                  child: Text(
-                    'SIGN UP FREE',
-                    style: TextStyle(color: Colors.blue),
-                  )),
+              SizedBox(
+                width: double.infinity,
+                child: OutlineButton(
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => SignUp()));
+                    },
+                    borderSide: BorderSide(color: Colors.blue),
+                    child: Text(
+                      'SIGN UP FREE',
+                      style: TextStyle(color: Colors.blue),
+                    )),
+              ),
             ],
           ),
         ),
