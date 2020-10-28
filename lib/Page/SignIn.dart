@@ -7,7 +7,7 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  bool showPassword = true;
+  bool showPassword = false;
   TextEditingController userNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   @override
