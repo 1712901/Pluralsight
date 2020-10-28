@@ -31,7 +31,7 @@ class CoursesPage extends StatelessWidget {
                 DropdownButtonHideUnderline(
                   child: DropdownButton(
                       isDense: true,
-                      dropdownColor: Colors.black,
+                      dropdownColor: Colors.grey[800],
                       value: 1,
                       items: [
                         DropdownMenuItem<int>(

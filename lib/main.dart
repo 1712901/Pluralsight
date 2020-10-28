@@ -45,25 +45,25 @@ class _HomeState extends State<Home> {
             icon: Icon(
               Icons.home,
             ),
-            title: Text('Home'),
+            label: 'Home'
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.file_download,
             ),
-            title: Text('Downloads'),
+            label: 'Downloads'
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.view_module,
             ),
-            title: Text('Browse'),
+            label: "Browse",
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.search,
             ),
-            title: Text('Search'),
+            label: 'Search'
           ),
         ],
         currentIndex: _selectedIndex,
