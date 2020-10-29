@@ -1,3 +1,4 @@
+import 'package:Pluralsight/Page/ForgotPassword.dart';
 import 'package:Pluralsight/Page/SignUp.dart';
 import 'package:flutter/material.dart';
 
@@ -17,8 +18,11 @@ class _SignInState extends State<SignIn> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading:
-            IconButton(icon: Icon(Icons.keyboard_backspace), onPressed: () {}),
+        leading: IconButton(
+            icon: Icon(Icons.keyboard_backspace),
+            onPressed: () {
+              //Navigator.pop(context);
+            }),
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 30.0, right: 30.0),
@@ -94,7 +98,12 @@ class _SignInState extends State<SignIn> {
               SizedBox(
                 width: double.infinity,
                 child: FlatButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ForgotPassword()));
+                    },
                     child: Text(
                       'FORGOT PASSWORD ?',
                       style: TextStyle(color: Colors.blue),
