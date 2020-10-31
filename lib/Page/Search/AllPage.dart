@@ -1,11 +1,12 @@
 import 'package:Pluralsight/Components/AuthorListTitle.dart';
 import 'package:Pluralsight/Components/CourseListTile.dart';
 import 'package:Pluralsight/Components/PathListTitle.dart';
+import 'package:Pluralsight/Page/CourseDetail.dart';
 import 'package:flutter/material.dart';
 
 class AllPage extends StatelessWidget {
   List<String> list = ['1', '2', '3', '4'];
-  final int numItems=4;
+  final int numItems = 4;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,8 +38,9 @@ class AllPage extends StatelessWidget {
               ),
               Column(
                 children: list
-                    .sublist(0, list.length <= numItems ? list.length : numItems)
-                    .map((item) => courseListTile())
+                    .sublist(
+                        0, list.length <= numItems ? list.length : numItems)
+                    .map((item) => CourseListTitle())
                     .toList(),
               ),
               Padding(
@@ -63,7 +65,8 @@ class AllPage extends StatelessWidget {
               ),
               Column(
                 children: list
-                    .sublist(0, list.length <= numItems ? list.length : numItems)
+                    .sublist(
+                        0, list.length <= numItems ? list.length : numItems)
                     .map((item) => pathListTile())
                     .toList(),
               ),
@@ -89,7 +92,8 @@ class AllPage extends StatelessWidget {
               ),
               Column(
                 children: list
-                    .sublist(0, list.length <= numItems ? list.length : numItems)
+                    .sublist(
+                        0, list.length <= numItems ? list.length : numItems)
                     .map((item) => authorListTitle())
                     .toList(),
               ),

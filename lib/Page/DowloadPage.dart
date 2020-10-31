@@ -40,7 +40,7 @@ class _DownLoadsPageState extends State<DownLoadsPage> {
                 child: ListView.builder(
                     itemCount: 10,
                     itemBuilder: (context, index) {
-                      return courseListTile();
+                      return CourseListTitle();
                     })),
           ],
         ),
