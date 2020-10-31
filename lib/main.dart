@@ -1,13 +1,15 @@
+
+import 'package:Pluralsight/Page/CourseDetail.dart';
 import 'package:Pluralsight/Page/BrowsePage.dart';
 import 'package:Pluralsight/Page/DowloadPage.dart';
 import 'package:Pluralsight/Page/HomePage.dart';
 import 'package:Pluralsight/Page/SearchPage.dart';
-import 'package:Pluralsight/Page/SignIn.dart';
 import 'package:flutter/material.dart';
+
 
 void main() {
   runApp(MaterialApp(
-    home: SignIn(),
+    home: Home(),
   ));
 }
 
