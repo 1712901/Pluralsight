@@ -1,7 +1,6 @@
 import 'package:Pluralsight/Components/AuthorListTitle.dart';
 import 'package:Pluralsight/Components/CourseListTile.dart';
 import 'package:Pluralsight/Components/PathListTitle.dart';
-import 'package:Pluralsight/Page/CourseDetail.dart';
 import 'package:flutter/material.dart';
 
 class AllPage extends StatelessWidget {

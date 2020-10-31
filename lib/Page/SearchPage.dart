@@ -69,29 +69,4 @@ class _SearchPageState extends State<SearchPage> {
       ),
     );
   }
-
-  Widget titlePage({title, index}) {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          initPage = index;
-          _controller.jumpToPage(index);
-        });
-      },
-      child: Container(
-        child: Text(
-          title,
-          style: TextStyle(
-              color: index == initPage ? Colors.blue : Colors.grey,
-              fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
-  }
-
-  void onChange(int index) {
-    setState(() {
-      initPage = index;
-    });
-  }
 }
