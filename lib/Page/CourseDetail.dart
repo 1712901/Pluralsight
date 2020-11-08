@@ -1,7 +1,12 @@
+import 'package:android_intent/android_intent.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
     as extend;
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'dart:io' show Platform;
+import 'package:intent/intent.dart' as android_intent;
+import 'package:intent/action.dart' as android_action;
+import 'package:intent/extra.dart' as android_extra;
 
 class CourseDetail extends StatefulWidget {
   @override
@@ -46,16 +51,46 @@ class _CourseDetailState extends State<CourseDetail>
           child: Column(
             children: [
               Container(
-                height: 200,
+                height: 220,
                 width: double.infinity,
                 color: Colors.orange,
-                child: IconButton(
-                    icon: Icon(Icons.arrow_back),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    alignment: Alignment.topLeft,
-                    padding: EdgeInsets.only(top: 25, left: 10)),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          icon: Icon(
+                            Icons.arrow_back,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          //alignment: Alignment.topLeft,
+                          //padding: EdgeInsets.only(top: 25, left: 10)
+                        ),
+                        IconButton(
+                            icon: Icon(
+                              Icons.share,
+                              color: Colors.white,
+                            ),
+                            onPressed: () async {
+                              if (Platform.isAndroid) {
+                                final AndroidIntent intent = AndroidIntent(
+                                    action: 'action_send',
+                                    //data: Uri.encodeFull('https://flutter.io'),
+                                    //package: 'com.android.chrome'
+                                    );
+                                intent.launch();
+                              }
+                            })
+                      ],
+                    ),
+                  ),
+                ),
               ),
               Flexible(
                 child: extend.NestedScrollView(
