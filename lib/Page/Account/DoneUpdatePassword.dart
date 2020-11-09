@@ -1,4 +1,4 @@
-import 'package:Pluralsight/Page/SignIn.dart';
+import 'package:Pluralsight/Page/Account/SignIn.dart';
 import 'package:flutter/material.dart';
 
 class Done extends StatelessWidget {

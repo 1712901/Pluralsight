@@ -1,5 +1,5 @@
-import 'package:Pluralsight/Page/ForgotPassword.dart';
-import 'package:Pluralsight/Page/SignUp.dart';
+import 'package:Pluralsight/Page/Account/ForgotPassword.dart';
+import 'package:Pluralsight/Page/Account/SignUp.dart';
 import 'package:flutter/material.dart';
 
 class SignIn extends StatefulWidget {

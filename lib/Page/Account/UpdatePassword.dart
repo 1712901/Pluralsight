@@ -1,4 +1,4 @@
-import 'package:Pluralsight/Page/DoneUpdatePassword.dart';
+import 'package:Pluralsight/Page/Account/DoneUpdatePassword.dart';
 import 'package:flutter/material.dart';
 
 class UpdatePassword extends StatefulWidget {

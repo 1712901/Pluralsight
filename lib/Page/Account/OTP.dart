@@ -1,4 +1,4 @@
-import 'package:Pluralsight/Page/UpdatePassword.dart';
+import 'package:Pluralsight/Page/Account/UpdatePassword.dart';
 import 'package:flutter/material.dart';
 
 class OTP extends StatelessWidget {

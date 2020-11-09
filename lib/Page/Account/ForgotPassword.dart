@@ -1,4 +1,4 @@
-import 'package:Pluralsight/Page/OTP.dart';
+import 'package:Pluralsight/Page/Account/OTP.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPassword extends StatelessWidget {
