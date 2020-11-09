@@ -1,4 +1,5 @@
 import 'package:Pluralsight/Components/AppBar.dart';
+import 'package:Pluralsight/Page/Browse/BrMoreCourse.dart';
 import 'package:flutter/material.dart';
 
 class BrowsePase extends StatelessWidget {
@@ -46,58 +47,70 @@ class BrowsePase extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                margin: EdgeInsets.only(bottom: 8.0),
-                height: 100,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    //color: Colors.orange,
-                    borderRadius: BorderRadius.circular(5),
-                    image: DecorationImage(
-                        image: AssetImage(
-                            "assets/images/DownloadPage/new-releases.jpg"),
-                        fit: BoxFit.cover)),
+              InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => BrMoreCourse(title:'NEW RELEASES')));
+                },
                 child: Container(
-                  alignment: Alignment.center,
+                  margin: EdgeInsets.only(bottom: 8.0),
+                  height: 100,
+                  width: double.infinity,
                   decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [
-                    Colors.black.withOpacity(0.4),
-                    Colors.black.withOpacity(0.4)
-                  ])),
-                  child: Text(
-                    'NEW \nRELEASES',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
+                      //color: Colors.orange,
+                      borderRadius: BorderRadius.circular(5),
+                      image: DecorationImage(
+                          image: AssetImage(
+                              "assets/images/DownloadPage/new-releases.jpg"),
+                          fit: BoxFit.cover)),
+                  child: Container(
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(colors: [
+                      Colors.black.withOpacity(0.4),
+                      Colors.black.withOpacity(0.4)
+                    ])),
+                    child: Text(
+                      'NEW \nRELEASES',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(bottom: 8.0),
-                height: 100,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    image: DecorationImage(
-                        image: AssetImage(
-                            "assets/images/DownloadPage/recommended.jpg"),
-                        fit: BoxFit.cover)),
-                child: Container(
-                  alignment: Alignment.center,
+              InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => BrMoreCourse(title:'RECOMMENDED FOR YOU')));
+                },
+                              child: Container(
+                  margin: EdgeInsets.only(bottom: 8.0),
+                  height: 100,
+                  width: double.infinity,
                   decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [
-                    Colors.black.withOpacity(0.4),
-                    Colors.black.withOpacity(0.4)
-                  ])),
-                  child: Text(
-                    'RECOMMENDED \nFOR YOU',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
+                      borderRadius: BorderRadius.circular(5),
+                      image: DecorationImage(
+                          image: AssetImage(
+                              "assets/images/DownloadPage/recommended.jpg"),
+                          fit: BoxFit.cover)),
+                  child: Container(
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(colors: [
+                      Colors.black.withOpacity(0.4),
+                      Colors.black.withOpacity(0.4)
+                    ])),
+                    child: Text(
+                      'RECOMMENDED \nFOR YOU',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
               ),
@@ -259,24 +272,31 @@ class BrowsePase extends StatelessWidget {
                               height: 75,
                               child: ClipOval(
                                 child: AspectRatio(
-                                  aspectRatio: 1/1,
+                                  aspectRatio: 1 / 1,
                                   child: Container(
                                     decoration: BoxDecoration(
-                                    color: Colors.orange,
+                                      color: Colors.orange,
                                     ),
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        gradient: LinearGradient(colors: [Colors.black.withOpacity(0.3),Colors.black.withOpacity(0.3),])
-                                      ),
+                                          gradient: LinearGradient(colors: [
+                                        Colors.black.withOpacity(0.3),
+                                        Colors.black.withOpacity(0.3),
+                                      ])),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
                             Container(
-                              width: 75,
-                              child: Text('Ross Bagurdes',style: TextStyle(color: Colors.white),overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.center,)
-                            )
+                                width: 75,
+                                child: Text(
+                                  'Ross Bagurdes',
+                                  style: TextStyle(color: Colors.white),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  textAlign: TextAlign.center,
+                                ))
                           ],
                         ),
                       );
