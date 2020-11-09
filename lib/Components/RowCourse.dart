@@ -18,7 +18,7 @@ class RowCourse extends StatelessWidget {
               title,
               style: TextStyle(
                   color: Colors.white,
-                  fontSize: 20,
+                  //fontSize: 20,
                   fontWeight: FontWeight.w400),
             ),
             FlatButton.icon(

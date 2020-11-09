@@ -2,6 +2,7 @@ import 'package:Pluralsight/Components/AppBar.dart';
 import 'package:Pluralsight/Components/RowPathView.dart';
 import 'package:Pluralsight/Page/Browse/BrMoreCourse.dart';
 import 'package:Pluralsight/Page/Browse/RowAuthorsView.dart';
+import 'package:Pluralsight/Page/Browse/SkillDetail.dart';
 import 'package:flutter/material.dart';
 
 class BrowsePase extends StatelessWidget {
@@ -51,8 +52,11 @@ class BrowsePase extends StatelessWidget {
             children: [
               InkWell(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => BrMoreCourse(title:'NEW RELEASES')));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              BrMoreCourse(title: 'NEW RELEASES')));
                 },
                 child: Container(
                   margin: EdgeInsets.only(bottom: 8.0),
@@ -85,10 +89,13 @@ class BrowsePase extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => BrMoreCourse(title:'RECOMMENDED FOR YOU')));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              BrMoreCourse(title: 'RECOMMENDED FOR YOU')));
                 },
-                              child: Container(
+                child: Container(
                   margin: EdgeInsets.only(bottom: 8.0),
                   height: 100,
                   width: double.infinity,
@@ -171,6 +178,12 @@ class BrowsePase extends StatelessWidget {
                         child: GestureDetector(
                           onTap: () {
                             print(skills[index].toString());
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SkillDetail(
+                                          title: skills[index].toString(),
+                                        )));
                           },
                           child: Chip(
                               backgroundColor: Colors.grey[800],
@@ -182,12 +195,11 @@ class BrowsePase extends StatelessWidget {
                       );
                     }),
               ),
-              RowPathView(),
+              RowPathView(title: 'Paths',),
               SizedBox(
                 height: 15,
               ),
-              RowAuthorsView(),
-              
+              RowAuthorsView(title: 'Top auhors',),
             ],
           ),
         ),

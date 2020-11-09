@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 class RowPathView extends StatelessWidget {
+  final String title;
+
+  const RowPathView({Key key, this.title}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -9,7 +12,7 @@ class RowPathView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Path',
+              title,
               style: TextStyle(color: Colors.white),
             ),
             FlatButton.icon(

@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 
 class RowAuthorsView extends StatelessWidget {
+  final String title;
+
+  const RowAuthorsView({Key key, this.title}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Top authors',
+          title,
           style: TextStyle(color: Colors.white),
         ),
         Container(
