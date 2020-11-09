@@ -1,3 +1,4 @@
+import 'package:Pluralsight/Page/Browse/MorePath.dart';
 import 'package:flutter/material.dart';
 
 class RowPathView extends StatelessWidget {
@@ -16,7 +17,10 @@ class RowPathView extends StatelessWidget {
               style: TextStyle(color: Colors.white),
             ),
             FlatButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MorePath(title: 'Paths',)));
+              },
               icon: Text(
                 'See all',
               ),
