@@ -1,3 +1,5 @@
+import 'package:Pluralsight/Page/AuthorDetail.dart';
+import 'package:Pluralsight/Page/Search/AuthourPage.dart';
 import 'package:flutter/material.dart';
 
 class RowAuthorsView extends StatelessWidget {
@@ -19,40 +21,45 @@ class RowAuthorsView extends StatelessWidget {
               itemCount: 10,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 75,
-                        child: ClipOval(
-                          child: AspectRatio(
-                            aspectRatio: 1 / 1,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.orange,
-                              ),
+                return InkWell(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>AuthorDetail()));
+                  },
+                                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 75,
+                          child: ClipOval(
+                            child: AspectRatio(
+                              aspectRatio: 1 / 1,
                               child: Container(
                                 decoration: BoxDecoration(
-                                    gradient: LinearGradient(colors: [
-                                  Colors.black.withOpacity(0.3),
-                                  Colors.black.withOpacity(0.3),
-                                ])),
+                                  color: Colors.orange,
+                                ),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(colors: [
+                                    Colors.black.withOpacity(0.3),
+                                    Colors.black.withOpacity(0.3),
+                                  ])),
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      Container(
-                          width: 75,
-                          child: Text(
-                            'Ross Bagurdes',
-                            style: TextStyle(color: Colors.white),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                            textAlign: TextAlign.center,
-                          ))
-                    ],
+                        Container(
+                            width: 75,
+                            child: Text(
+                              'Ross Bagurdes',
+                              style: TextStyle(color: Colors.white),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              textAlign: TextAlign.center,
+                            ))
+                      ],
+                    ),
                   ),
                 );
               }),
