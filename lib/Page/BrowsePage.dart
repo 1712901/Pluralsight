@@ -1,6 +1,7 @@
 import 'package:Pluralsight/Components/AppBar.dart';
 import 'package:Pluralsight/Components/RowPathView.dart';
 import 'package:Pluralsight/Page/Browse/BrMoreCourse.dart';
+import 'package:Pluralsight/Page/Browse/MorePath.dart';
 import 'package:Pluralsight/Page/Browse/PathsPage.dart';
 import 'package:Pluralsight/Page/Browse/RowAuthorsView.dart';
 import 'package:Pluralsight/Page/Browse/SkillDetail.dart';
@@ -206,7 +207,7 @@ class BrowsePase extends StatelessWidget {
             FlatButton.icon(
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => PathsPage()));
+                    MaterialPageRoute(builder: (context) => MorePath(title: 'Path',)));
               },
               icon: Text(
                 'See all',
