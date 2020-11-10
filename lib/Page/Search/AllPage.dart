@@ -83,7 +83,7 @@ class _AllPageState extends State<AllPage> {
                 children: list
                     .sublist(
                         0, list.length <= numItems ? list.length : numItems)
-                    .map((item) => pathListTile())
+                    .map((item) => PathListTile())
                     .toList(),
               ),
               Padding(

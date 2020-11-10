@@ -5,6 +5,7 @@ import 'package:Pluralsight/Page/Browse/MorePath.dart';
 import 'package:Pluralsight/Page/Browse/PathsPage.dart';
 import 'package:Pluralsight/Page/Browse/RowAuthorsView.dart';
 import 'package:Pluralsight/Page/Browse/SkillDetail.dart';
+import 'package:Pluralsight/Page/PathDetail.dart';
 import 'package:flutter/material.dart';
 
 class BrowsePase extends StatelessWidget {
@@ -207,7 +208,7 @@ class BrowsePase extends StatelessWidget {
             FlatButton.icon(
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MorePath(title: 'Path',)));
+                    MaterialPageRoute(builder: (context) => PathsPage()));
               },
               icon: Text(
                 'See all',
@@ -223,48 +224,58 @@ class BrowsePase extends StatelessWidget {
               itemCount: 10,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: AspectRatio(
-                    aspectRatio: 2 / 1.5,
-                    child: Container(
-                      color: Colors.grey[800],
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.orange,
-                              ),
+                return InkWell(
+                  onTap: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PathDetail(
+                                  title: 'Name',
+                                )));
+                  },
+                                  child: Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: AspectRatio(
+                      aspectRatio: 2 / 1.5,
+                      child: Container(
+                        color: Colors.grey[800],
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              flex: 1,
                               child: Container(
                                 decoration: BoxDecoration(
-                                  gradient: LinearGradient(colors: [
-                                    Colors.black.withOpacity(0.3),
-                                    Colors.black.withOpacity(0.3),
-                                  ]),
+                                  color: Colors.orange,
+                                ),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(colors: [
+                                      Colors.black.withOpacity(0.3),
+                                      Colors.black.withOpacity(0.3),
+                                    ]),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: ListTile(
-                              title: Text(
-                                'Pluralsight live 2020',
-                                style: TextStyle(color: Colors.white),
-                                textAlign: TextAlign.start,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
+                            Expanded(
+                              flex: 1,
+                              child: ListTile(
+                                title: Text(
+                                  'Pluralsight live 2020',
+                                  style: TextStyle(color: Colors.white),
+                                  textAlign: TextAlign.start,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                subtitle: Text(
+                                  '95 courses',
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ),
-                              subtitle: Text(
-                                '95 courses',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          )
-                        ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),

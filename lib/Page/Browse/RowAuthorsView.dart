@@ -22,10 +22,13 @@ class RowAuthorsView extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 return InkWell(
-                  onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>AuthorDetail()));
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AuthorDetail()));
                   },
-                                  child: Padding(
+                  child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
