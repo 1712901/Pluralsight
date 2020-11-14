@@ -1,6 +1,7 @@
 import 'package:Pluralsight/Components/AppBar.dart';
 import 'package:Pluralsight/Components/RowPathView.dart';
 import 'package:Pluralsight/Page/Browse/BrMoreCourse.dart';
+import 'package:Pluralsight/Page/Browse/CategoryPage.dart';
 import 'package:Pluralsight/Page/Browse/MorePath.dart';
 import 'package:Pluralsight/Page/Browse/PathsPage.dart';
 import 'package:Pluralsight/Page/Browse/RowAuthorsView.dart';
@@ -9,22 +10,22 @@ import 'package:Pluralsight/Page/PathDetail.dart';
 import 'package:flutter/material.dart';
 
 class BrowsePase extends StatelessWidget {
-  final List<Catelogy> category = [
-    Catelogy(
-        image: "assets/images/DownloadPage/category1.jpg", name: "CONFERENCES"),
-    Catelogy(image: "assets/images/DownloadPage/category3.jpg", name: "IO OPS"),
-    Catelogy(
+  final List<Category> category = [
+    Category(
+        image: "assets/images/DownloadPage/category1.jpg", title: "CONFERENCES",name: "Conferences"),
+    Category(image: "assets/images/DownloadPage/category3.jpg", title: "IT OPS",name: "IT Ops"),
+    Category(
         image: "assets/images/DownloadPage/category2.jpg",
-        name: "CERTIFICATIONS"),
-    Catelogy(
+        title: "CERTIFICATIONS",name: "Certifications"),
+    Category(
         image: "assets/images/DownloadPage/category4.jpg",
-        name: "DATA\nPROFESSIONAL"),
-    Catelogy(
+        title: "DATA\nPROFESSIONAL",name: "Data Professional"),
+    Category(
         image: "assets/images/DownloadPage/category4.jpg",
-        name: "CREATIVE\nPROFESSIONAL"),
-    Catelogy(
+        title: "CREATIVE\nPROFESSIONAL",name: "Creative Professsional"),
+    Category(
         image: "assets/images/DownloadPage/category1.jpg",
-        name: "DESIGN\nPATTERNS"),
+        title: "DESIGN\nPATTERNS",name: "Design Patterns"),
   ];
   final List<String> skills = [
     'C++',
@@ -137,25 +138,35 @@ class BrowsePase extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: GridTile(
                         //color: Colors.white,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage('${item.image}'),
-                                  fit: BoxFit.cover)),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CategoryPage(
+                                          category: item,
+                                        )));
+                          },
                           child: Container(
                             decoration: BoxDecoration(
-                                gradient: LinearGradient(colors: [
-                              Colors.black.withOpacity(0.5),
-                              Colors.black.withOpacity(0.5)
-                            ])),
-                            child: Align(
-                                child: Text(
-                              '${item.name}',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center,
-                            )),
+                                image: DecorationImage(
+                                    image: AssetImage('${item.image}'),
+                                    fit: BoxFit.cover)),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(colors: [
+                                Colors.black.withOpacity(0.5),
+                                Colors.black.withOpacity(0.5)
+                              ])),
+                              child: Align(
+                                  child: Text(
+                                '${item.title}',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                                textAlign: TextAlign.center,
+                              )),
+                            ),
                           ),
                         ),
                       ),
@@ -199,93 +210,95 @@ class BrowsePase extends StatelessWidget {
                     }),
               ),
               Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Path',
-              style: TextStyle(color: Colors.white),
-            ),
-            FlatButton.icon(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => PathsPage()));
-              },
-              icon: Text(
-                'See all',
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Path',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  FlatButton.icon(
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => PathsPage()));
+                    },
+                    icon: Text(
+                      'See all',
+                    ),
+                    label: Icon(Icons.navigate_next),
+                    textColor: Colors.grey,
+                  )
+                ],
               ),
-              label: Icon(Icons.navigate_next),
-              textColor: Colors.grey,
-            )
-          ],
-        ),
-        Container(
-          height: 150,
-          child: ListView.builder(
-              itemCount: 10,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: (){
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PathDetail(
-                                  title: 'Name',
-                                )));
-                  },
-                                  child: Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: AspectRatio(
-                      aspectRatio: 2 / 1.5,
-                      child: Container(
-                        color: Colors.grey[800],
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.orange,
-                                ),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(colors: [
-                                      Colors.black.withOpacity(0.3),
-                                      Colors.black.withOpacity(0.3),
-                                    ]),
+              Container(
+                height: 150,
+                child: ListView.builder(
+                    itemCount: 10,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PathDetail(
+                                        title: 'Name',
+                                      )));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: AspectRatio(
+                            aspectRatio: 2 / 1.5,
+                            child: Container(
+                              color: Colors.grey[800],
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.orange,
+                                      ),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(colors: [
+                                            Colors.black.withOpacity(0.3),
+                                            Colors.black.withOpacity(0.3),
+                                          ]),
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: ListTile(
+                                      title: Text(
+                                        'Pluralsight live 2020',
+                                        style: TextStyle(color: Colors.white),
+                                        textAlign: TextAlign.start,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      subtitle: Text(
+                                        '95 courses',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
-                            Expanded(
-                              flex: 1,
-                              child: ListTile(
-                                title: Text(
-                                  'Pluralsight live 2020',
-                                  style: TextStyle(color: Colors.white),
-                                  textAlign: TextAlign.start,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                subtitle: Text(
-                                  '95 courses',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            )
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
-                );
-              }),
-        ),
+                      );
+                    }),
+              ),
               SizedBox(
                 height: 15,
               ),
-              RowAuthorsView(title: 'Top auhors',),
+              RowAuthorsView(
+                title: 'Top auhors',
+              ),
             ],
           ),
         ),
@@ -294,8 +307,9 @@ class BrowsePase extends StatelessWidget {
   }
 }
 
-class Catelogy {
+class Category {
   String name;
   String image;
-  Catelogy({this.name, this.image});
+  String title;
+  Category({this.name, this.image, this.title});
 }
