@@ -30,8 +30,10 @@ class _CoursesState extends State<Courses> {
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => CourseDetail()));
+            // Navigator.push(context,
+            //     MaterialPageRoute(builder: (context) => CourseDetail()));
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => CourseDetail()));
           },
           child: Container(
             child: Column(
