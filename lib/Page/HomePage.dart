@@ -1,5 +1,7 @@
 import 'package:Pluralsight/Components/AppBar.dart';
 import 'package:Pluralsight/Components/Courses.dart';
+import 'package:Pluralsight/Components/RowCourse.dart';
+import 'package:Pluralsight/Page/MoreCourse.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -48,43 +50,14 @@ class HomePage extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              ListCourse(title: 'Software Development'),
-              ListCourse(title: 'IT Operations'),
-              ListCourse(title: 'Data Professional'),
-              ListCourse(title: 'Security Professional'),
+              RowCourse(title: 'Software Development'),
+              RowCourse(title: 'IT Operations'),
+              RowCourse(title: 'Data Professional'),
+              RowCourse(title: 'Security Professional'),
             ],
           ),
         ),
       ),
     );
-  }
-
-  Widget ListCourse({title}) {
-    return Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        title,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w400),
-                      ),
-                      FlatButton.icon(
-                        onPressed: () {},
-                        icon: Text('see all'),
-                        label: Icon(
-                          Icons.navigate_next,
-                          color: Colors.grey,
-                        ),
-                        textColor: Colors.grey,
-                      )
-                    ],
-                  ),
-                  Courses(),
-                ],
-              );
   }
 }

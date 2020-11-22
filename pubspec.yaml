@@ -22,6 +22,10 @@ environment:
 
 dependencies:
   flutter_rating_bar: ^3.0.1+1
+  extended_nested_scroll_view: ^1.0.1
+  android_intent: ^0.3.7+7
+  intent: ^1.4.0
+  custom_navigator: ^0.3.0
   flutter:
     sdk: flutter
 
@@ -49,6 +53,12 @@ flutter:
   assets:
     - assets/images/avaImage.jpg
     - assets/images/background.jpg
+    - assets/images/DownloadPage/new-releases.jpg
+    - assets/images/DownloadPage/recommended.jpg
+    - assets/images/DownloadPage/category1.jpg
+    - assets/images/DownloadPage/category2.jpg
+    - assets/images/DownloadPage/category3.jpg
+    - assets/images/DownloadPage/category4.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
