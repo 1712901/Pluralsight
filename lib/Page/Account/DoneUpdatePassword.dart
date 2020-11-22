@@ -42,15 +42,9 @@ class Done extends StatelessWidget {
             ),
             RaisedButton(
               onPressed: () {
-                 Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (BuildContext context) => SignIn()),
-                 (Route<dynamic> route) => false
-                );
-                // Navigator.push(
-                //               context,
-                //               MaterialPageRoute(
-                //                   builder: (context) => SignIn()));
+                Navigator.of(context).popUntil((route) {
+                  return route.settings.name == "SignIn";
+                });
               },
               child: Text('LOGIN'),
               color: Colors.blue[400],

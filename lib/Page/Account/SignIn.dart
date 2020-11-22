@@ -1,5 +1,7 @@
 import 'package:Pluralsight/Page/Account/ForgotPassword.dart';
 import 'package:Pluralsight/Page/Account/SignUp.dart';
+import 'package:Pluralsight/main.dart';
+import 'package:Pluralsight/models/User.dart';
 import 'package:flutter/material.dart';
 
 class SignIn extends StatefulWidget {
@@ -21,7 +23,7 @@ class _SignInState extends State<SignIn> {
         leading: IconButton(
             icon: Icon(Icons.keyboard_backspace),
             onPressed: () {
-              //Navigator.pop(context);
+              Navigator.pop(context);
             }),
       ),
       body: Padding(
@@ -85,9 +87,8 @@ class _SignInState extends State<SignIn> {
                     child: RaisedButton(
                       color: Colors.blue[400],
                       onPressed: () {
-                        checkUser(
-                            password: passwordController.text,
-                            username: userNameController.text);
+                         Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => Home()));
                       },
                       child: Text(
                         'SIGN IN',

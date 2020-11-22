@@ -80,10 +80,10 @@ class _CourseDetailState extends State<CourseDetail>
                             onPressed: () async {
                               if (Platform.isAndroid) {
                                 final AndroidIntent intent = AndroidIntent(
-                                    action: 'action_send',
-                                    //data: Uri.encodeFull('https://flutter.io'),
-                                    //package: 'com.android.chrome'
-                                    );
+                                  action: 'action_send',
+                                  //data: Uri.encodeFull('https://flutter.io'),
+                                  //package: 'com.android.chrome'
+                                );
                                 intent.launch();
                               }
                             })
@@ -92,21 +92,13 @@ class _CourseDetailState extends State<CourseDetail>
                   ),
                 ),
               ),
-              Flexible(
+              Expanded(
                 child: extend.NestedScrollView(
                     headerSliverBuilder: (c, f) {
-                      return <Widget>[
-                        SliverAppBar(
-                            backgroundColor: Colors.grey[800],
-                            floating: true,
-                            toolbarHeight: 0,
-                            expandedHeight: 280,
-                            flexibleSpace: FlexibleSpaceBar(
-                                background: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: SingleChildScrollView(
-                                  child: headerSilverAppBar(maxline: maxLine)),
-                            ))),
+                      return [
+                        SliverToBoxAdapter(
+                          child: headerSilverAppBar(maxline: maxLine),
+                        )
                       ];
                     },
                     body: Column(
@@ -176,6 +168,11 @@ class _CourseDetailState extends State<CourseDetail>
         ),
       ),
     );
+  }
+
+  List<Widget> header() {
+    List<Widget> list = [headerSilverAppBar(maxline: true)];
+    return list;
   }
 
   Widget headerSilverAppBar({bool maxline}) {

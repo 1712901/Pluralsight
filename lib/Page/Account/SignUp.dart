@@ -107,7 +107,9 @@ class _SignUpState extends State<SignUp> {
                 width: double.infinity,
                 child: OutlineButton(
                     borderSide: BorderSide(color: Colors.blue),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                     child: Text(
                       'Already have account? Login',
                       style: TextStyle(color: Colors.blue),
@@ -122,6 +124,7 @@ class _SignUpState extends State<SignUp> {
 
   void registerAccount(
       {String name, String email, String password, String conf}) {
-    print('Name: ${name}\nEmail: ${email}\nPassword: ${password}\nConf: ${conf}');
+    print(
+        'Name: ${name}\nEmail: ${email}\nPassword: ${password}\nConf: ${conf}');
   }
 }
