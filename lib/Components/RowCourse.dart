@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 
 class RowCourse extends StatelessWidget {
   final String title;
+  final int type;
 
-  const RowCourse({Key key, this.title}) : super(key: key);
+  const RowCourse({Key key, this.title,this.type}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +40,7 @@ class RowCourse extends StatelessWidget {
             )
           ],
         ),
-        Courses(),
+        Courses(type: this.type,),
       ],
     );
   }

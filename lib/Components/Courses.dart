@@ -1,27 +1,42 @@
 import 'package:Pluralsight/Page/CourseDetail.dart';
+import 'package:Pluralsight/models/Course.dart';
+import 'package:Pluralsight/models/CourseList.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:provider/provider.dart';
 
 class Courses extends StatefulWidget {
+  final int type;
+
+  const Courses({Key key, this.type}) : super(key: key);
   @override
-  _CoursesState createState() => _CoursesState();
+  _CoursesState createState() => _CoursesState(type: type);
 }
 
 class _CoursesState extends State<Courses> {
+  List<Course> _list;
+  CourseList courseList;
+  final int type;
+
+  _CoursesState({this.type});
   @override
   Widget build(BuildContext context) {
+    courseList = Provider.of<CourseList>(context,listen: false);
+    _list = courseList.couserList
+        .where((element) => element.category == type)
+        .toList();
     return Container(
       height: 200,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: 4,
+          itemCount: _list.length,
           itemBuilder: (context, index) {
-            return courseCard(index: index);
+            return courseCard(course: _list[index]);
           }),
     );
   }
 
-  Widget courseCard({index}) {
+  Widget courseCard({Course course}) {
     return Container(
       margin: EdgeInsets.only(right: 5),
       width: 220,
@@ -30,8 +45,6 @@ class _CoursesState extends State<Courses> {
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
-            // Navigator.push(context,
-            //     MaterialPageRoute(builder: (context) => CourseDetail()));
             Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) => CourseDetail()));
           },
@@ -59,51 +72,65 @@ class _CoursesState extends State<Courses> {
                       children: [
                         PopupMenuButton(
                             offset: Offset(0, 35),
+                            onSelected: (index) {
+                              switch (index) {
+                                case 0:
+                                  courseList.setBookmark(
+                                      course.ID, !course.bookmark);
+                                  break;
+                                default:
+                              }
+                            },
                             icon: Icon(
                               Icons.more_vert,
                               color: Colors.white,
                             ),
                             color: Colors.grey[800],
                             itemBuilder: (BuildContext context) {
-                              return <PopupMenuEntry<FlatButton>>[
+                              return <PopupMenuEntry<int>>[
                                 PopupMenuItem(
-                                    child: FlatButton(
-                                        onPressed: () {},
-                                        child: Text(
-                                          'Bookmark',
-                                          style: TextStyle(color: Colors.white),
-                                        ))),
+                                    value: 0,
+                                    child: Text(
+                                      'Bookmark',
+                                      style: TextStyle(color: Colors.white),
+                                    )),
                                 PopupMenuItem(
-                                    child: FlatButton(
-                                        onPressed: () {},
-                                        child: Text(
-                                          'Add to channel',
-                                          style: TextStyle(color: Colors.white),
-                                        ))),
+                                    value: 1,
+                                    child: Text(
+                                      'Add to channel',
+                                      style: TextStyle(color: Colors.white),
+                                    )),
                                 PopupMenuItem(
-                                    child: FlatButton(
-                                        onPressed: () {},
-                                        child: Text(
-                                          'Download',
-                                          style: TextStyle(color: Colors.white),
-                                        ))),
+                                    value: 2,
+                                    child: Text(
+                                      'Download',
+                                      style: TextStyle(color: Colors.white),
+                                    )),
                                 PopupMenuItem(
-                                    child: FlatButton(
-                                        onPressed: () {},
-                                        child: Text(
-                                          'Share',
-                                          textAlign: TextAlign.left,
-                                          style: TextStyle(color: Colors.white),
-                                        ))),
+                                    value: 3,
+                                    child: Text(
+                                      'Share',
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(color: Colors.white),
+                                    )),
                               ];
                             }),
-                        IconButton(
-                            alignment: Alignment.bottomRight,
-                            icon: Icon(
-                              Icons.bookmark,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {}),
+                        Consumer<CourseList>(
+                          builder: (context, provider, _) {
+                            return IconButton(
+                                alignment: Alignment.bottomRight,
+                                icon: Icon(
+                                  course.bookmark
+                                      ? Icons.bookmark
+                                      : Icons.bookmark_border,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  courseList.setBookmark(
+                                      course.ID, !course.bookmark);
+                                });
+                          },
+                        )
                       ],
                     ),
                   ),
@@ -111,20 +138,20 @@ class _CoursesState extends State<Courses> {
                 SizedBox(
                   height: 5,
                 ),
-                Container(
-                  //width: double.infinity,
+                Flexible(
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.only(top:5.0,left: 5.0,right: 5.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Angular Fundamentals',
+                          course.name,
                           style: TextStyle(
                               color: Colors.white, fontWeight: FontWeight.bold),
                         ),
+                        SizedBox(height: 5,),
                         Text(
-                          'Joe Eames',
+                          course.author,
                           style: TextStyle(
                             color: Colors.grey,
                           ),
@@ -141,7 +168,7 @@ class _CoursesState extends State<Courses> {
                         Row(
                           children: [
                             RatingBarIndicator(
-                              rating: 3.45,
+                              rating: course.rating,
                               itemBuilder: (context, index) => Icon(
                                 Icons.star,
                                 //size: 15,
@@ -152,7 +179,7 @@ class _CoursesState extends State<Courses> {
                               direction: Axis.horizontal,
                             ),
                             Text(
-                              '(555)',
+                              '(${course.numberComment})',
                               style: TextStyle(color: Colors.grey),
                             )
                           ],

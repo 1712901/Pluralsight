@@ -44,96 +44,95 @@ class _CourseDetailState extends State<CourseDetail>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.black87,
-        body: DefaultTabController(
-          length: 2,
-          child: Column(
-            children: [
-              Container(
-                height: 220,
-                width: double.infinity,
-                color: Colors.orange,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          icon: Icon(
-                            Icons.arrow_back,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          //alignment: Alignment.topLeft,
-                          //padding: EdgeInsets.only(top: 25, left: 10)
-                        ),
-                        IconButton(
+    return SafeArea(
+          child: Scaffold(
+          backgroundColor: Colors.black87,
+          body: DefaultTabController(
+            length: 2,
+            child: Column(
+              children: [
+                Container(
+                  height: 220,
+                  width: double.infinity,
+                  color: Colors.orange,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 0),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
                             icon: Icon(
-                              Icons.share,
+                              Icons.arrow_back,
                               color: Colors.white,
                             ),
-                            onPressed: () async {
-                              if (Platform.isAndroid) {
-                                final AndroidIntent intent = AndroidIntent(
-                                  action: 'action_send',
-                                  //data: Uri.encodeFull('https://flutter.io'),
-                                  //package: 'com.android.chrome'
-                                );
-                                intent.launch();
-                              }
-                            })
-                      ],
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            //alignment: Alignment.topLeft,
+                            //padding: EdgeInsets.only(top: 25, left: 10)
+                          ),
+                          IconButton(
+                              icon: Icon(
+                                Icons.share,
+                                color: Colors.white,
+                              ),
+                              onPressed: () async {
+                                if (Platform.isAndroid) {
+                                  final AndroidIntent intent = AndroidIntent(
+                                    action: 'action_send',
+                                    //data: Uri.encodeFull('https://flutter.io'),
+                                    //package: 'com.android.chrome'
+                                  );
+                                  intent.launch();
+                                }
+                              })
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: extend.NestedScrollView(
-                    headerSliverBuilder: (c, f) {
-                      return [
-                        SliverToBoxAdapter(
-                          child: headerSilverAppBar(maxline: maxLine),
-                        )
-                      ];
-                    },
-                    body: Column(
-                      children: <Widget>[
-                        Material(
-                          color: Colors.grey[800],
-                          child: TabBar(
-                            controller: primaryTC,
-                            labelColor: Colors.blue,
-                            unselectedLabelColor: Colors.white,
-                            tabs: [
-                              Tab(text: "CONTENTS"),
-                              Tab(text: "TRANSCRIPT"),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: TabBarView(
-                            controller: primaryTC,
-                            children: <Widget>[
-                              SingleChildScrollView(
-                                child: Column(
-                                  children: makeListContent(),
+                Expanded(
+                  child: extend.NestedScrollView(
+                        headerSliverBuilder: (c, f) {
+                          return [
+                            SliverToBoxAdapter(
+                              child: headerSilverAppBar(maxline: maxLine),
+                            ),
+                            SliverAppBar(
+                              automaticallyImplyLeading: false,
+                              pinned: true,
+                              toolbarHeight: 0,
+                              backgroundColor:  Colors.grey[800],
+                              bottom: TabBar(
+                                  controller: primaryTC,
+                                  labelColor: Colors.blue,
+                                  unselectedLabelColor: Colors.white,
+                                  tabs: [
+                  Tab(text: "CONTENTS"),
+                  Tab(text: "TRANSCRIPT"),
+                                  ],
                                 ),
+                            )
+                          ];
+                        },
+                        body: TabBarView(
+                          controller: primaryTC,
+                          children: <Widget>[
+                            SingleChildScrollView(
+                              child: Column(
+                                children: makeListContent(),
                               ),
-                              Text('This is tab oe'),
-                            ],
-                          ),
-                        )
-                      ],
-                    )),
-              ),
-            ],
-          ),
-        ));
+                            ),
+                            Text('This is tab oe'),
+                          ],
+                        )),
+                ),
+              ],
+            ),
+          )),
+    );
   }
 
   Widget makeItemButton({Widget icon, String title}) {
