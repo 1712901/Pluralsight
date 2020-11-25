@@ -4,14 +4,24 @@ import 'package:Pluralsight/Page/BrowsePage.dart';
 import 'package:Pluralsight/Page/DowloadPage.dart';
 import 'package:Pluralsight/Page/HomePage.dart';
 import 'package:Pluralsight/Page/SearchPage.dart';
+import 'package:Pluralsight/models/CourseList.dart';
 import 'package:Pluralsight/models/User.dart';
 import 'package:custom_navigator/custom_navigation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MaterialApp(
-    home: Home(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_)=>User(),),
+        ChangeNotifierProvider(create: (_)=>CourseList(),)
+      ],
+      child: MaterialApp(
+        home: Home(),
+      ),
+    ),
+  );
 }
 
 class Home extends StatefulWidget {
@@ -24,9 +34,10 @@ class _HomeState extends State<Home> {
   GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   void onItemTapped(int index) {
-    if (index == 1 ){
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => SignIn(),settings: RouteSettings(name: "SignIn")));
+    if (index == 1 && !context.read<User>().isAuthorization) {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => SignIn(),
+          settings: RouteSettings(name: "SignIn")));
     } else {
       setState(() {
         _selectedIndex = index;

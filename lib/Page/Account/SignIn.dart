@@ -3,6 +3,7 @@ import 'package:Pluralsight/Page/Account/SignUp.dart';
 import 'package:Pluralsight/main.dart';
 import 'package:Pluralsight/models/User.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -87,8 +88,10 @@ class _SignInState extends State<SignIn> {
                     child: RaisedButton(
                       color: Colors.blue[400],
                       onPressed: () {
+                        if(context.read<User>().checkAuthorization(userName: userNameController.text,password: passwordController.text)){
                          Navigator.push(context,
                               MaterialPageRoute(builder: (context) => Home()));
+                        }
                       },
                       child: Text(
                         'SIGN IN',
