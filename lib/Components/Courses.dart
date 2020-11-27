@@ -19,6 +19,7 @@ class _CoursesState extends State<Courses> {
   List<CourseModel> _list;
   CourseListModel courseList;
   List<MyChannelModel> list;
+  List<CourseModel> courseByType;
   final int type;
   _CoursesState({this.type});
   @override
@@ -28,13 +29,14 @@ class _CoursesState extends State<Courses> {
     _list = courseList.couserList
         .where((element) => element.category == type)
         .toList();
+    courseByType = _list.sublist(0, _list.length >= 4 ? 4 : _list.length);
     return Container(
       height: 200,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: _list.length,
+          itemCount: courseByType.length,
           itemBuilder: (context, index) {
-            return courseCard(course: _list[index]);
+            return courseCard(course: courseByType[index]);
           }),
     );
   }
@@ -272,7 +274,7 @@ class _CoursesState extends State<Courses> {
           if (value.isNotEmpty) {
             Provider.of<MyChannelListModel>(context, listen: false)
                 .addMyChannel(value);
-            _showToast(context,"Created Channel");
+            _showToast(context, "Created Channel");
           }
         }
       });
@@ -280,7 +282,7 @@ class _CoursesState extends State<Courses> {
       list[index].addCourse(idCourse);
       Provider.of<MyChannelListModel>(context, listen: false)
           .addCourse(index, idCourse);
-      _showToast(context,"Added Course");
+      _showToast(context, "Added Course");
     }
   }
 

@@ -120,7 +120,7 @@ class CourseListTitle extends StatelessWidget {
                         child: Text(
                           'Remove',
                         ))
-                    : Container(),
+                    : PopupMenuItem(child: Container(),height: 0,),
               ];
             }),
       ),

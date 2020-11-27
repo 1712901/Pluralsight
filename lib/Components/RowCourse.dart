@@ -28,7 +28,7 @@ class RowCourse extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) => MoreCourse(
-                              title: title,
+                              title: title,type: type,
                             )));
               },
               icon: Text('see all'),
