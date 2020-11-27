@@ -1,4 +1,4 @@
-class Course {
+class CourseModel {
   int ID;
   String name;
   String author;
@@ -9,7 +9,7 @@ class Course {
   String image;
   int category;
   bool bookmark=false;
-  Course(
+  CourseModel(
       {this.image,
       this.ID,
       this.author,

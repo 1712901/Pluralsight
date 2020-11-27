@@ -5,6 +5,7 @@ import 'package:Pluralsight/Page/DowloadPage.dart';
 import 'package:Pluralsight/Page/HomePage.dart';
 import 'package:Pluralsight/Page/SearchPage.dart';
 import 'package:Pluralsight/models/CourseList.dart';
+import 'package:Pluralsight/models/MyChannelList.dart';
 import 'package:Pluralsight/models/User.dart';
 import 'package:custom_navigator/custom_navigation.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +16,16 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_)=>User(),),
-        ChangeNotifierProvider(create: (_)=>CourseList(),)
+        ChangeNotifierProvider(create: (_)=>CourseListModel(),),
+        ChangeNotifierProvider(create: (_)=>MyChannelListModel(),)
       ],
       child: MaterialApp(
+        theme: ThemeData(
+          brightness: Brightness.dark,
+          primaryColor: Colors.grey[800],
+          accentColor: Colors.cyan[600],
+          backgroundColor: Colors.black87,
+        ),
         home: Home(),
       ),
     ),

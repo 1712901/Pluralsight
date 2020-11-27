@@ -1,6 +1,7 @@
 import 'package:Pluralsight/Components/AppBar.dart';
 import 'package:Pluralsight/Components/Courses.dart';
 import 'package:Pluralsight/Components/RowCourse.dart';
+import 'package:Pluralsight/Components/RowPathView.dart';
 import 'package:Pluralsight/Page/MoreCourse.dart';
 import 'package:flutter/material.dart';
 
@@ -54,6 +55,7 @@ class HomePage extends StatelessWidget {
               RowCourse(title: 'IT Operations',type: 2,),
               RowCourse(title: 'Data Professional',type: 3,),
               RowCourse(title: 'Security Professional',type: 4,),
+              RowPathView(title:'My Channels')
             ],
           ),
         ),

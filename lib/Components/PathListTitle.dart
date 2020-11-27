@@ -1,7 +1,13 @@
+import 'package:Pluralsight/Page/Home/MyChannelDetail.dart';
 import 'package:Pluralsight/Page/PathDetail.dart';
+import 'package:Pluralsight/models/Course.dart';
+import 'package:Pluralsight/models/MyChannel.dart';
 import 'package:flutter/material.dart';
 
 class PathListTile extends StatelessWidget {
+  final MyChannelModel channel;
+
+  const PathListTile({Key key, this.channel}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -15,13 +21,13 @@ class PathListTile extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => PathDetail(
-                        title: 'Path Detail',
+                  builder: (context) => MyChanelDetail(
+                        channel: channel,
                       )));
         },
         contentPadding: EdgeInsets.symmetric(vertical: 0),
         title: Text(
-          'Spring Framework: Core Spring',
+          channel.name,
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w400,
@@ -29,7 +35,7 @@ class PathListTile extends StatelessWidget {
           maxLines: 2,
         ),
         subtitle: Text(
-          '8 courses',
+          '${channel.listIDCourse.length} courses',
           style: TextStyle(color: Colors.grey),
         ),
         leading: Container(
@@ -41,24 +47,3 @@ class PathListTile extends StatelessWidget {
     );
   }
 }
-
-// Widget pathListTile() {
-//   return Container(
-//     decoration: BoxDecoration(
-//       border: Border(bottom: BorderSide(color: Colors.grey,))
-//     ),
-//     child: ListTile(
-//       onTap: (){
-
-//       },
-//       contentPadding: EdgeInsets.symmetric(vertical: 0),
-//       title: Text('Spring Framework: Core Spring',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w400,),maxLines: 2,),
-//       subtitle: Text('8 courses',style: TextStyle(color: Colors.grey),),
-//       leading: Container(
-//         //height: 75,
-//         width: 75,
-//         color: Colors.orange,
-//       ),
-//     ),
-//   );
-//}

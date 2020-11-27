@@ -1,9 +1,9 @@
 import 'package:Pluralsight/models/Course.dart';
 import 'package:flutter/cupertino.dart';
 
-class CourseList extends ChangeNotifier {
-  final List<Course> couserList = [
-    new Course(
+class CourseListModel extends ChangeNotifier {
+  final List<CourseModel> couserList = [
+    new CourseModel(
         ID: 1,
         name: "Angular Fundamenttals",
         author: "Joe Eames",
@@ -12,7 +12,7 @@ class CourseList extends ChangeNotifier {
         date: DateTime.now(),
         numberComment: 150,
         category: 1),
-    new Course(
+    new CourseModel(
         ID: 2,
         name: "C# Fundamenttals",
         author: "Jim Wilson",
@@ -21,7 +21,7 @@ class CourseList extends ChangeNotifier {
         date: DateTime.now(),
         numberComment: 102,
         category: 1),
-    new Course(
+    new CourseModel(
         ID: 3,
         name: "Managing AWS Operation",
         author: "Brian Harison",
@@ -30,7 +30,7 @@ class CourseList extends ChangeNotifier {
         date: DateTime.now(),
         numberComment: 10,
         category: 1),
-    new Course(
+    new CourseModel(
         ID: 4,
         name: "Spring Framework",
         author: "Janaini Ravi",
@@ -39,7 +39,7 @@ class CourseList extends ChangeNotifier {
         date: DateTime.now(),
         numberComment: 110,
         category: 1),
-    new Course(
+    new CourseModel(
         ID: 5,
         name: "Spring: The Big Picture",
         author: "Eugene",
@@ -48,7 +48,7 @@ class CourseList extends ChangeNotifier {
         date: DateTime.now(),
         numberComment: 201,
         category: 2),
-    new Course(
+    new CourseModel(
         ID: 6,
         name: "Dependency Injection in APS.NET Core",
         author: "Nigel Poulton",
@@ -57,7 +57,7 @@ class CourseList extends ChangeNotifier {
         date: DateTime.now(),
         numberComment: 10,
         category: 2),
-    new Course(
+    new CourseModel(
         ID: 7,
         name: "Designing RESTful Web APIs",
         author: "Danial Lachance",
@@ -66,7 +66,7 @@ class CourseList extends ChangeNotifier {
         date: DateTime.now(),
         numberComment: 152,
         category: 3),
-    new Course(
+    new CourseModel(
         ID: 8,
         name: "Node.js: The big Picture",
         author: "Neil Morissey",
@@ -75,7 +75,7 @@ class CourseList extends ChangeNotifier {
         date: DateTime.now(),
         numberComment: 513,
         category: 2),
-    new Course(
+    new CourseModel(
         ID: 9,
         name: "Architecting for Reliablility on AWS",
         author: "Scott Allen",
@@ -84,7 +84,7 @@ class CourseList extends ChangeNotifier {
         date: DateTime.now(),
         numberComment: 215,
         category: 3),
-    new Course(
+    new CourseModel(
         ID: 10,
         name: "Architecting for Security on AWS",
         author: "Andru Estes",
@@ -93,7 +93,7 @@ class CourseList extends ChangeNotifier {
         date: DateTime.now(),
         numberComment: 545,
         category: 4),
-    new Course(
+    new CourseModel(
         ID: 11,
         name: "Python: The Big Picture",
         author: "Bryan Hansen",
@@ -102,7 +102,7 @@ class CourseList extends ChangeNotifier {
         date: DateTime.now(),
         numberComment: 321,
         category: 3),
-    new Course(
+    new CourseModel(
         ID: 12,
         name: "Programming with R",
         author: "Dustin Schultz",
@@ -111,7 +111,7 @@ class CourseList extends ChangeNotifier {
         date: DateTime.now(),
         numberComment: 313,
         category: 4),
-    new Course(
+    new CourseModel(
         ID: 13,
         name: "Malware Analysis: Identifying and Defeating",
         author: "Adam Bertram",
@@ -120,7 +120,7 @@ class CourseList extends ChangeNotifier {
         date: DateTime.now(),
         numberComment: 211,
         category: 2),
-    new Course(
+    new CourseModel(
         ID: 14,
         name: "Creating Security Baseline in Microsoft",
         author: "Hansen Eames",
@@ -129,7 +129,7 @@ class CourseList extends ChangeNotifier {
         date: DateTime.now(),
         numberComment: 215,
         category: 3),
-    new Course(
+    new CourseModel(
         ID: 15,
         name: "Python for Data Analysts",
         author: "Hansen",
