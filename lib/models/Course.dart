@@ -8,7 +8,8 @@ class CourseModel {
   DateTime date;
   String image;
   int category;
-  bool bookmark=false;
+  bool bookmark = false;
+  int size;
   CourseModel(
       {this.image,
       this.ID,
@@ -19,7 +20,8 @@ class CourseModel {
       this.date,
       this.level,
       this.category,
-      this.bookmark}){
-        this.bookmark=false;
-      }
+      this.bookmark,
+      this.size}) {
+    this.bookmark = false;
+  }
 }

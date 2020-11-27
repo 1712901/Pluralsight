@@ -11,7 +11,8 @@ class CourseListModel extends ChangeNotifier {
         rating: 3.5,
         date: DateTime.now(),
         numberComment: 150,
-        category: 1),
+        category: 1,
+        size: 150),
     new CourseModel(
         ID: 2,
         name: "C# Fundamenttals",
@@ -20,7 +21,8 @@ class CourseListModel extends ChangeNotifier {
         rating: 4.5,
         date: DateTime.now(),
         numberComment: 102,
-        category: 1),
+        category: 1,
+        size: 150),
     new CourseModel(
         ID: 3,
         name: "Managing AWS Operation",
@@ -29,7 +31,8 @@ class CourseListModel extends ChangeNotifier {
         rating: 3.5,
         date: DateTime.now(),
         numberComment: 10,
-        category: 1),
+        category: 1,
+        size: 150),
     new CourseModel(
         ID: 4,
         name: "Spring Framework",
@@ -38,7 +41,8 @@ class CourseListModel extends ChangeNotifier {
         rating: 4.5,
         date: DateTime.now(),
         numberComment: 110,
-        category: 1),
+        category: 1,
+        size: 150),
     new CourseModel(
         ID: 5,
         name: "Spring: The Big Picture",
@@ -47,7 +51,8 @@ class CourseListModel extends ChangeNotifier {
         rating: 3.5,
         date: DateTime.now(),
         numberComment: 201,
-        category: 2),
+        category: 2,
+        size: 150),
     new CourseModel(
         ID: 6,
         name: "Dependency Injection in APS.NET Core",
@@ -56,7 +61,8 @@ class CourseListModel extends ChangeNotifier {
         rating: 4.5,
         date: DateTime.now(),
         numberComment: 10,
-        category: 2),
+        category: 2,
+        size: 150),
     new CourseModel(
         ID: 7,
         name: "Designing RESTful Web APIs",
@@ -65,7 +71,8 @@ class CourseListModel extends ChangeNotifier {
         rating: 3.5,
         date: DateTime.now(),
         numberComment: 152,
-        category: 3),
+        category: 3,
+        size: 150),
     new CourseModel(
         ID: 8,
         name: "Node.js: The big Picture",
@@ -74,7 +81,8 @@ class CourseListModel extends ChangeNotifier {
         rating: 3.5,
         date: DateTime.now(),
         numberComment: 513,
-        category: 2),
+        category: 2,
+        size: 150),
     new CourseModel(
         ID: 9,
         name: "Architecting for Reliablility on AWS",
@@ -83,7 +91,8 @@ class CourseListModel extends ChangeNotifier {
         rating: 3.5,
         date: DateTime.now(),
         numberComment: 215,
-        category: 3),
+        category: 3,
+        size: 150),
     new CourseModel(
         ID: 10,
         name: "Architecting for Security on AWS",
@@ -92,7 +101,8 @@ class CourseListModel extends ChangeNotifier {
         rating: 2.5,
         date: DateTime.now(),
         numberComment: 545,
-        category: 4),
+        category: 4,
+        size: 150),
     new CourseModel(
         ID: 11,
         name: "Python: The Big Picture",
@@ -101,7 +111,8 @@ class CourseListModel extends ChangeNotifier {
         rating: 3.5,
         date: DateTime.now(),
         numberComment: 321,
-        category: 3),
+        category: 3,
+        size: 150),
     new CourseModel(
         ID: 12,
         name: "Programming with R",
@@ -110,7 +121,8 @@ class CourseListModel extends ChangeNotifier {
         rating: 5,
         date: DateTime.now(),
         numberComment: 313,
-        category: 4),
+        category: 4,
+        size: 150),
     new CourseModel(
         ID: 13,
         name: "Malware Analysis: Identifying and Defeating",
@@ -119,7 +131,8 @@ class CourseListModel extends ChangeNotifier {
         rating: 3.5,
         date: DateTime.now(),
         numberComment: 211,
-        category: 2),
+        category: 2,
+        size: 150),
     new CourseModel(
         ID: 14,
         name: "Creating Security Baseline in Microsoft",
@@ -128,7 +141,8 @@ class CourseListModel extends ChangeNotifier {
         rating: 3.5,
         date: DateTime.now(),
         numberComment: 215,
-        category: 3),
+        category: 3,
+        size: 150),
     new CourseModel(
         ID: 15,
         name: "Python for Data Analysts",
@@ -137,7 +151,8 @@ class CourseListModel extends ChangeNotifier {
         rating: 3.5,
         date: DateTime.now(),
         numberComment: 111,
-        category: 2),
+        category: 2,
+        size: 150),
   ];
   void setBookmark(int id, bool b) {
     couserList.firstWhere((element) => element.ID == id).bookmark = b;

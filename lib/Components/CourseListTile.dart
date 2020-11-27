@@ -1,7 +1,9 @@
 import 'package:Pluralsight/Page/CourseDetail.dart';
 import 'package:Pluralsight/models/Course.dart';
 import 'package:Pluralsight/models/CourseList.dart';
+import 'package:Pluralsight/models/DownloadModel.dart';
 import 'package:Pluralsight/models/MyChannelList.dart';
+import 'package:Pluralsight/models/User.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -15,6 +17,7 @@ class CourseListTitle extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
+    bool isLogin = Provider.of<User>(context, listen: false).isAuthorization;
     return Container(
       decoration: BoxDecoration(
         border: Border(
@@ -72,57 +75,83 @@ class CourseListTitle extends StatelessWidget {
           ],
         ),
         isThreeLine: true,
-        trailing: PopupMenuButton(
-            offset: Offset(0, 35),
-            icon: Icon(
-              Icons.more_vert,
-              color: Colors.white,
-            ),
-            onSelected: (value) {
-              switch (value) {
-                case 0:
-                  Provider.of<CourseListModel>(context, listen: false)
-                      .setBookmark(course.ID, !course.bookmark);
-                  break;
-                case 1:
-                  openDialog(context, course.ID);
-                  break;
-                case 2:
-                  break;
-                case 3:
-                  Provider.of<MyChannelListModel>(context,listen: false)
-                      .removeCourseInChannel(indexChannel,course.ID);
-                  break;
-                default:
-              }
-            },
-            color: Colors.grey[800],
-            itemBuilder: (BuildContext context) {
-              return <PopupMenuEntry<int>>[
-                PopupMenuItem(
-                    value: 0,
-                    child: Text(
-                      course.bookmark ? 'Unbookmark' : 'Bookmark',
-                    )),
-                PopupMenuItem(
-                    value: 1,
-                    child: Text(
-                      'Add to channel',
-                    )),
-                PopupMenuItem(
-                    value: 2,
-                    child: Text(
-                      'Download',
-                    )),
-                indexChannel >= 0
-                    ? PopupMenuItem(
-                        value: 3,
+        trailing: Consumer<DownloadModel>(
+          builder: (context, provider, _) {
+            bool isDownload = provider.containsCourse(course.ID);
+
+            return PopupMenuButton(
+                offset: Offset(0, 35),
+                icon: Icon(
+                  Icons.more_vert,
+                  color: Colors.white,
+                ),
+                onSelected: (value) {
+                  switch (value) {
+                    case 0:
+                      Provider.of<CourseListModel>(context, listen: false)
+                          .setBookmark(course.ID, !course.bookmark);
+                      break;
+                    case 1:
+                      openDialog(context, course.ID);
+                      break;
+                    case 2:
+                      if (isLogin) {// Đã login
+                        if (!isDownload) {
+                          //Chưa download 
+                          provider.downloadCourse(course);
+                          _showToast(context, "Downloading");
+                        } else if (isDownload) {
+                          //Remove download
+                          provider.removeCourse(course);
+                          _showToast(context, "Deleted");
+                        }
+                      }else{
+                        _showToast(context, "Delete Failed");
+                      }
+                      break;
+                    case 3:
+                      Provider.of<MyChannelListModel>(context, listen: false)
+                          .removeCourseInChannel(indexChannel, course.ID);
+                      break;
+                    default:
+                  }
+                },
+                color: Colors.grey[800],
+                itemBuilder: (BuildContext context) {
+                  return <PopupMenuEntry<int>>[
+                    PopupMenuItem(
+                        value: 0,
                         child: Text(
-                          'Remove',
-                        ))
-                    : PopupMenuItem(child: Container(),height: 0,),
-              ];
-            }),
+                          course.bookmark ? 'Unbookmark' : 'Bookmark',
+                        )),
+                    PopupMenuItem(
+                        value: 1,
+                        child: Text(
+                          'Add to channel',
+                        )),
+                    PopupMenuItem(
+                        value: 2,
+                        child: Consumer<DownloadModel>(
+                          builder: (context, provider, _) {
+                            return Text(
+                              isDownload ? 'Remove Download' : 'Download',
+                            );
+                          },
+                        )),
+                    indexChannel >= 0
+                        ? PopupMenuItem(
+                            value: 3,
+                            child: Text(
+                              'Remove',
+                            ))
+                        : PopupMenuItem(
+                            child: Container(),
+                            height: 0,
+                          ),
+                  ];
+                });
+          },
+        ),
       ),
     );
   }

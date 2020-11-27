@@ -1,8 +1,10 @@
 import 'package:Pluralsight/Page/CourseDetail.dart';
 import 'package:Pluralsight/models/Course.dart';
 import 'package:Pluralsight/models/CourseList.dart';
+import 'package:Pluralsight/models/DownloadModel.dart';
 import 'package:Pluralsight/models/MyChannel.dart';
 import 'package:Pluralsight/models/MyChannelList.dart';
+import 'package:Pluralsight/models/User.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
@@ -87,6 +89,17 @@ class _CoursesState extends State<Courses> {
                                         break;
                                       case 1:
                                         openDialog(course.ID);
+                                        break;
+                                      case 2:
+                                        if (Provider.of<User>(context,listen: false)
+                                            .isAuthorization) {
+                                          Provider.of<DownloadModel>(context,
+                                                  listen: false)
+                                              .downloadCourse(course);
+                                          _showToast(context, "Downloading");
+                                          break;
+                                        }
+                                         _showToast(context, "Dowload failed");
                                         break;
                                       default:
                                     }
