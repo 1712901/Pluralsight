@@ -9,8 +9,10 @@ import 'package:provider/provider.dart';
 
 class CourseListTitle extends StatelessWidget {
   final CourseModel course;
+  final int indexChannel;
 
-  const CourseListTitle({Key key, this.course}) : super(key: key);
+  const CourseListTitle({Key key, this.course, this.indexChannel})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -79,13 +81,17 @@ class CourseListTitle extends StatelessWidget {
             onSelected: (value) {
               switch (value) {
                 case 0:
-                  Provider.of<CourseListModel>(context,listen: false)
+                  Provider.of<CourseListModel>(context, listen: false)
                       .setBookmark(course.ID, !course.bookmark);
                   break;
                 case 1:
                   openDialog(context, course.ID);
                   break;
                 case 2:
+                  break;
+                case 3:
+                  Provider.of<MyChannelListModel>(context,listen: false)
+                      .removeCourseInChannel(indexChannel,course.ID);
                   break;
                 default:
               }
@@ -96,7 +102,7 @@ class CourseListTitle extends StatelessWidget {
                 PopupMenuItem(
                     value: 0,
                     child: Text(
-                      course.bookmark?'Unbookmark':'Bookmark',
+                      course.bookmark ? 'Unbookmark' : 'Bookmark',
                     )),
                 PopupMenuItem(
                     value: 1,
@@ -108,6 +114,13 @@ class CourseListTitle extends StatelessWidget {
                     child: Text(
                       'Download',
                     )),
+                indexChannel >= 0
+                    ? PopupMenuItem(
+                        value: 3,
+                        child: Text(
+                          'Remove',
+                        ))
+                    : Container(),
               ];
             }),
       ),

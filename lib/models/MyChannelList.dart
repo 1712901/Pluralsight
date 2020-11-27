@@ -25,4 +25,9 @@ class MyChannelListModel extends ChangeNotifier {
     listChannel.remove(channelModel);
     notifyListeners();
   }
+
+  void removeCourseInChannel(int indexChannel, int id) {
+    listChannel[indexChannel].removeCourse(id);
+    notifyListeners();
+  }
 }

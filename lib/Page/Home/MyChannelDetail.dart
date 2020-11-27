@@ -15,8 +15,8 @@ class MyChanelDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     List<CourseModel> list =
         Provider.of<CourseListModel>(context, listen: false).couserList;
-    //MyChannel myChannel = Provider.of<MyChannel>(context);
-    //print(myChannel.name);
+    int indexChannel =
+        Provider.of<MyChannelListModel>(context).listChannel.indexOf(channel);
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
@@ -33,12 +33,8 @@ class MyChanelDetail extends StatelessWidget {
               onSelected: (index) {
                 switch (index) {
                   case 0:
-                    print('Share');
                     break;
                   case 1:
-                    print('Edit');
-                    // Provider.of<MyChannelList>(context, listen: false)
-                    //     .editChannel(channel, name);
                     creatAlertDialog(context).then((value) {
                       if (value != null) {
                         if (value.isNotEmpty) {
@@ -51,9 +47,9 @@ class MyChanelDetail extends StatelessWidget {
                     });
                     break;
                   case 2:
-                    print('Delete');
                     Provider.of<MyChannelListModel>(context, listen: false)
                         .removeChannel(channel);
+                    _showToast(context,"Deleted Channel");
                     break;
                 }
               },
@@ -115,8 +111,10 @@ class MyChanelDetail extends StatelessWidget {
                     return Consumer<MyChannelListModel>(
                         builder: (context, provider, _) {
                       return CourseListTitle(
-                          course: list.firstWhere((cour) =>
-                              cour.ID == channel.listIDCourse[index]));
+                        course: list.firstWhere(
+                            (cour) => cour.ID == channel.listIDCourse[index]),
+                        indexChannel: indexChannel,
+                      );
                     });
                   }),
             )
