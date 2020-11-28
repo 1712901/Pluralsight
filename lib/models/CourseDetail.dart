@@ -11,7 +11,7 @@ class CourseDetailModel {
 
 class CourseDetailListModel {
   List<CourseDetailModel> courses = List.generate(
-      10,
+      16,
       (indexCourse) => new CourseDetailModel(
           urlCurrent: "http://course/id=${indexCourse}",
           id: indexCourse,

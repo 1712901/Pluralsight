@@ -1,3 +1,5 @@
+import 'package:Pluralsight/Page/AuthorDetail.dart';
+import 'package:Pluralsight/models/Author.dart';
 import 'package:Pluralsight/models/Course.dart';
 import 'package:Pluralsight/models/CourseDetail.dart';
 import 'package:Pluralsight/models/CourseList.dart';
@@ -42,7 +44,8 @@ class _CourseDetailState extends State<CourseDetail>
   @override
   Widget build(BuildContext context) {
     final CourseDetailModel courseDetail =
-        Provider.of<CourseDetailListModel>(context).getCourseDetail(course.ID);
+        Provider.of<CourseDetailListModel>(context,listen: false).getCourseDetail(course.ID);
+    
     return SafeArea(
       child: ChangeNotifierProvider(
         create: (_) => LoadURL(url: courseDetail.urlCurrent),
@@ -191,6 +194,7 @@ class _CourseDetailState extends State<CourseDetail>
 
   Widget headerSilverAppBar(
       {bool maxline, CourseDetailModel courseDetail, CourseModel course}) {
+        final List<AuthorModel> authors=Provider.of<AuthorsModel>(context,listen: false).getAllAuthor(course.ID);
     return Container(
       padding: EdgeInsets.only(top: 5.0, left: 5.0, right: 5.0),
       color: Colors.grey[800],
@@ -202,14 +206,28 @@ class _CourseDetailState extends State<CourseDetail>
             course.name,
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
-          Chip(
-            padding: EdgeInsets.zero,
-            avatar: ClipOval(
-              child: Container(
-                color: Colors.orange,
-              ),
-            ),
-            label: Text(course.author),
+          Container(
+            height: 50,
+            child: ListView.builder(
+              itemCount: authors.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+              return InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => AuthorDetail(author: authors[index],)));
+                },
+                child: Chip(
+                  padding: EdgeInsets.zero,
+                  avatar: ClipOval(
+                    child: Container(
+                      color: Colors.orange,
+                    ),
+                  ),
+                  label: Text(authors[index].name),
+                ),
+              );
+            }),
           ),
           Row(
             children: [

@@ -3,6 +3,16 @@ import 'package:flutter/cupertino.dart';
 
 class CourseListModel extends ChangeNotifier {
   final List<CourseModel> couserList = [
+     new CourseModel(
+        ID: 0,
+        name: "Designing RESTful Web APIs",
+        author: "Joe Eames",
+        level: 1,
+        rating: 3.5,
+        date: DateTime.now(),
+        numberComment: 150,
+        category: 1,
+        size: 150),
     new CourseModel(
         ID: 1,
         name: "Angular Fundamenttals",

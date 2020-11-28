@@ -1,13 +1,23 @@
 import 'package:Pluralsight/Components/CourseListTile.dart';
+import 'package:Pluralsight/models/Author.dart';
+import 'package:Pluralsight/models/CourseList.dart';
+import 'package:Pluralsight/models/User.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AuthorDetail extends StatefulWidget {
+  final AuthorModel author;
+
+  const AuthorDetail({Key key, this.author}) : super(key: key);
   @override
-  _AuthorDetailState createState() => _AuthorDetailState();
+  _AuthorDetailState createState() => _AuthorDetailState(author);
 }
 
 class _AuthorDetailState extends State<AuthorDetail> {
   bool maxline = true;
+  final AuthorModel author;
+
+  _AuthorDetailState(this.author);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +51,7 @@ class _AuthorDetailState extends State<AuthorDetail> {
               Column(
                 children: [
                   Text(
-                    'Jon Flanders',
+                    author.name,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Colors.white,
@@ -54,18 +64,31 @@ class _AuthorDetailState extends State<AuthorDetail> {
                   ),
                   SizedBox(
                     width: double.infinity,
-                    child: RaisedButton(
-                      onPressed: () {},
-                      child:
-                          Text('FOLLOW', style: TextStyle(color: Colors.white)),
-                      color: Colors.blue,
+                    child: Consumer<User>(
+                      builder: (context, provider, _) {
+                        bool isFollow = provider.isFollow(author.id);
+                        return RaisedButton(
+                          onPressed: () {
+                            if (isFollow) {
+                              // Đã follow
+                              provider.removeFollow(author.id);
+                            } else {
+                              //Chưa Follow
+                              provider.addFollow(author.id);
+                            }
+                          },
+                          child: Text('${isFollow ? 'FOLLOWING' : 'FOLLOW'}',
+                              style: TextStyle(color: Colors.white)),
+                          color: Colors.blue,
+                        );
+                      },
                     ),
                   ),
                   Text('Follow to be notified when new courses are published',
                       style: TextStyle(color: Colors.grey[400], fontSize: 12)),
                 ],
               ),
-              SizedBox(height:10.0),
+              SizedBox(height: 10.0),
               IntrinsicHeight(
                 child: Row(
                   children: [
@@ -73,8 +96,7 @@ class _AuthorDetailState extends State<AuthorDetail> {
                       flex: 15,
                       child: Container(
                         child: Text(
-                          'Otherwise, the widget has a child but no height, no width, no constraints, and no alignment, and the Container passes the constraints from the parent to the child and sizes itself to match the child.'
-                          'Otherwise, the widget has a child but no height, no width, no constraints, and no alignment, and the Container passes the constraints from the parent to the child and sizes itself to match the child.',
+                          author.description,
                           style: TextStyle(color: Colors.white),
                           maxLines: maxline ? 2 : null,
                           //overflow: TextOverflow.ellipsis,
@@ -105,7 +127,7 @@ class _AuthorDetailState extends State<AuthorDetail> {
               FlatButton.icon(
                 onPressed: () {},
                 icon: Icon(Icons.link),
-                label: Text('http://wwww.master'),
+                label: Text(author.link),
                 textColor: Colors.white,
               ),
               Row(
@@ -130,14 +152,25 @@ class _AuthorDetailState extends State<AuthorDetail> {
                   ),
                 ],
               ),
-              SizedBox(height: 10,),
-              Text('Courses',style: TextStyle(color: Colors.white),),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                'Courses',
+                style: TextStyle(color: Colors.white),
+              ),
               ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: 10,
+                  itemCount: author.courses.length,
                   itemBuilder: (context, index) {
-                    return CourseListTitle();
+                    return CourseListTitle(
+                      course: Provider.of<CourseListModel>(context)
+                          .couserList
+                          .firstWhere(
+                              (element) => author.courses[index] == element.ID),
+                      indexChannel: -1,
+                    );
                   })
             ],
           ),

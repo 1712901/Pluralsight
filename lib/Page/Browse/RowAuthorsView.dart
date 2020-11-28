@@ -1,6 +1,8 @@
 import 'package:Pluralsight/Page/AuthorDetail.dart';
 import 'package:Pluralsight/Page/Search/AuthourPage.dart';
+import 'package:Pluralsight/models/Author.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RowAuthorsView extends StatelessWidget {
   final String title;
@@ -8,6 +10,7 @@ class RowAuthorsView extends StatelessWidget {
   const RowAuthorsView({Key key, this.title}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    List<AuthorModel> authors= Provider.of<AuthorsModel>(context,listen: false).authors;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -18,7 +21,7 @@ class RowAuthorsView extends StatelessWidget {
         Container(
           height: 150,
           child: ListView.builder(
-              itemCount: 10,
+              itemCount: authors.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 return InkWell(
@@ -26,7 +29,7 @@ class RowAuthorsView extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => AuthorDetail()));
+                            builder: (context) => AuthorDetail(author: authors[index],)));
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -55,7 +58,7 @@ class RowAuthorsView extends StatelessWidget {
                         Container(
                             width: 75,
                             child: Text(
-                              'Ross Bagurdes',
+                              authors[index].name,
                               style: TextStyle(color: Colors.white),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,

@@ -1,4 +1,5 @@
 import 'package:Pluralsight/Page/CourseDetail.dart';
+import 'package:Pluralsight/models/Author.dart';
 import 'package:Pluralsight/models/Course.dart';
 import 'package:Pluralsight/models/CourseList.dart';
 import 'package:Pluralsight/models/DownloadModel.dart';
@@ -45,6 +46,9 @@ class _CoursesState extends State<Courses> {
   }
 
   Widget courseCard({CourseModel course}) {
+    final List<AuthorModel> authors =
+        Provider.of<AuthorsModel>(context, listen: false)
+            .getAllAuthor(course.ID);
     return Container(
       margin: EdgeInsets.only(right: 5),
       width: 220,
@@ -53,8 +57,10 @@ class _CoursesState extends State<Courses> {
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => CourseDetail(course: course,)));
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => CourseDetail(
+                      course: course,
+                    )));
           },
           child: Container(
             child: Column(
@@ -89,18 +95,22 @@ class _CoursesState extends State<Courses> {
                                             course.ID, !course.bookmark);
                                         break;
                                       case 1:
-                                        HandleAdd2Channel.openDialog(context,course.ID);
+                                        HandleAdd2Channel.openDialog(
+                                            context, course.ID);
                                         break;
                                       case 2:
-                                        if (Provider.of<User>(context,listen: false)
+                                        if (Provider.of<User>(context,
+                                                listen: false)
                                             .isAuthorization) {
                                           Provider.of<DownloadModel>(context,
                                                   listen: false)
                                               .downloadCourse(course);
-                                          HandleAdd2Channel.showToast(context, "Downloading");
+                                          HandleAdd2Channel.showToast(
+                                              context, "Downloading");
                                           break;
                                         }
-                                         HandleAdd2Channel.showToast(context, "Dowload failed");
+                                        HandleAdd2Channel.showToast(
+                                            context, "Dowload failed");
                                         break;
                                       default:
                                     }
@@ -181,7 +191,7 @@ class _CoursesState extends State<Courses> {
                           height: 5,
                         ),
                         Text(
-                          course.author,
+                          "${authors[0].name}" + "${authors.length > 1?",+1":""}",
                           style: TextStyle(
                             color: Colors.grey,
                           ),
