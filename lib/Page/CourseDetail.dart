@@ -1,3 +1,11 @@
+import 'package:Pluralsight/models/Course.dart';
+import 'package:Pluralsight/models/CourseDetail.dart';
+import 'package:Pluralsight/models/CourseList.dart';
+import 'package:Pluralsight/models/DownloadModel.dart';
+import 'package:Pluralsight/models/HandleAdd2Channel.dart';
+import 'package:Pluralsight/models/LoadURL.dart';
+import 'package:Pluralsight/models/MyChannelList.dart';
+import 'package:Pluralsight/models/User.dart';
 import 'package:android_intent/android_intent.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
     as extend;
@@ -7,34 +15,23 @@ import 'dart:io' show Platform;
 import 'package:intent/intent.dart' as android_intent;
 import 'package:intent/action.dart' as android_action;
 import 'package:intent/extra.dart' as android_extra;
+import 'package:provider/provider.dart';
 
 class CourseDetail extends StatefulWidget {
+  final CourseModel course;
+
+  const CourseDetail({Key key, this.course}) : super(key: key);
   @override
-  _CourseDetailState createState() => _CourseDetailState();
+  _CourseDetailState createState() => _CourseDetailState(course);
 }
 
 class _CourseDetailState extends State<CourseDetail>
     with TickerProviderStateMixin {
   TabController primaryTC;
   bool maxLine = true;
+  final CourseModel course;
 
-  List<SubContent> list = [
-    SubContent(title: "abc", time: 60, list: [
-      Content(title: "abc1", time: 20),
-      Content(title: "abc2", time: 20),
-      Content(title: "abc3", time: 20),
-    ]),
-    SubContent(title: "abcd", time: 60, list: [
-      Content(title: "abcd1", time: 20),
-      Content(title: "abcd2", time: 20),
-      Content(title: "abcd3", time: 20),
-    ]),
-    SubContent(title: "abcde", time: 60, list: [
-      Content(title: "abcde1", time: 20),
-      Content(title: "abcde2", time: 20),
-      Content(title: "abcde3", time: 20),
-    ]),
-  ];
+  _CourseDetailState(this.course);
 
   @override
   void initState() {
@@ -44,76 +41,95 @@ class _CourseDetailState extends State<CourseDetail>
 
   @override
   Widget build(BuildContext context) {
+    final CourseDetailModel courseDetail =
+        Provider.of<CourseDetailListModel>(context).getCourseDetail(course.ID);
     return SafeArea(
-          child: Scaffold(
-          backgroundColor: Colors.black87,
-          body: DefaultTabController(
-            length: 2,
-            child: Column(
-              children: [
-                Container(
-                  height: 220,
-                  width: double.infinity,
-                  color: Colors.orange,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 0),
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                            icon: Icon(
-                              Icons.arrow_back,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            //alignment: Alignment.topLeft,
-                            //padding: EdgeInsets.only(top: 25, left: 10)
-                          ),
-                          IconButton(
-                              icon: Icon(
-                                Icons.share,
-                                color: Colors.white,
+      child: ChangeNotifierProvider(
+        create: (_) => LoadURL(url: courseDetail.urlCurrent),
+        //builder: (context, child) => child,
+        child: Scaffold(
+            backgroundColor: Colors.black87,
+            body: DefaultTabController(
+              length: 2,
+              child: Column(
+                children: [
+                  Container(
+                    height: 220,
+                    width: double.infinity,
+                    color: Colors.orange,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 0),
+                      child: Stack(children: [
+                        Consumer<LoadURL>(
+                          builder: (context, provider, _) {
+                            return Container(
+                              child:
+                                  Center(child: Text('URL :${provider.url}')),
+                            );
+                          },
+                        ),
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconButton(
+                                icon: Icon(
+                                  Icons.arrow_back,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                //alignment: Alignment.topLeft,
+                                //padding: EdgeInsets.only(top: 25, left: 10)
                               ),
-                              onPressed: () async {
-                                if (Platform.isAndroid) {
-                                  final AndroidIntent intent = AndroidIntent(
-                                    action: 'action_send',
-                                    //data: Uri.encodeFull('https://flutter.io'),
-                                    //package: 'com.android.chrome'
-                                  );
-                                  intent.launch();
-                                }
-                              })
-                        ],
-                      ),
+                              IconButton(
+                                  icon: Icon(
+                                    Icons.share,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () async {
+                                    if (Platform.isAndroid) {
+                                      final AndroidIntent intent =
+                                          AndroidIntent(
+                                        action: 'action_send',
+                                        //data: Uri.encodeFull('https://flutter.io'),
+                                        //package: 'com.android.chrome'
+                                      );
+                                      intent.launch();
+                                    }
+                                  })
+                            ],
+                          ),
+                        ),
+                      ]),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: extend.NestedScrollView(
+                  Expanded(
+                    child: extend.NestedScrollView(
                         headerSliverBuilder: (c, f) {
                           return [
                             SliverToBoxAdapter(
-                              child: headerSilverAppBar(maxline: maxLine),
+                              child: headerSilverAppBar(
+                                  maxline: maxLine,
+                                  course: course,
+                                  courseDetail: courseDetail),
                             ),
                             SliverAppBar(
                               automaticallyImplyLeading: false,
                               pinned: true,
                               toolbarHeight: 0,
-                              backgroundColor:  Colors.grey[800],
+                              backgroundColor: Colors.grey[800],
                               bottom: TabBar(
-                                  controller: primaryTC,
-                                  labelColor: Colors.blue,
-                                  unselectedLabelColor: Colors.white,
-                                  tabs: [
-                  Tab(text: "CONTENTS"),
-                  Tab(text: "TRANSCRIPT"),
-                                  ],
-                                ),
+                                controller: primaryTC,
+                                labelColor: Colors.blue,
+                                unselectedLabelColor: Colors.white,
+                                tabs: [
+                                  Tab(text: "CONTENTS"),
+                                  Tab(text: "TRANSCRIPT"),
+                                ],
+                              ),
                             )
                           ];
                         },
@@ -122,26 +138,25 @@ class _CourseDetailState extends State<CourseDetail>
                           children: <Widget>[
                             SingleChildScrollView(
                               child: Column(
-                                children: makeListContent(),
+                                children: makeListContent(courseDetail),
                               ),
                             ),
                             Text('This is tab oe'),
                           ],
                         )),
-                ),
-              ],
-            ),
-          )),
+                  ),
+                ],
+              ),
+            )),
+      ),
     );
   }
 
-  Widget makeItemButton({Widget icon, String title}) {
+  Widget makeItemButton({Widget icon, String title, Function opTap}) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: () {
-          print('Click');
-        },
+        onTap: opTap,
         child: Container(
           height: 60,
           width: 100,
@@ -174,15 +189,17 @@ class _CourseDetailState extends State<CourseDetail>
     return list;
   }
 
-  Widget headerSilverAppBar({bool maxline}) {
+  Widget headerSilverAppBar(
+      {bool maxline, CourseDetailModel courseDetail, CourseModel course}) {
     return Container(
+      padding: EdgeInsets.only(top: 5.0, left: 5.0, right: 5.0),
       color: Colors.grey[800],
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Architecting for Reliablity on AWS',
+            course.name,
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
           Chip(
@@ -192,7 +209,7 @@ class _CourseDetailState extends State<CourseDetail>
                 color: Colors.orange,
               ),
             ),
-            label: Text('Mike Pfeiffer'),
+            label: Text(course.author),
           ),
           Row(
             children: [
@@ -204,7 +221,7 @@ class _CourseDetailState extends State<CourseDetail>
                 width: 10,
               ),
               RatingBarIndicator(
-                rating: 3.45,
+                rating: course.rating,
                 itemBuilder: (context, index) => Icon(
                   Icons.star,
                   color: Colors.amber,
@@ -214,7 +231,7 @@ class _CourseDetailState extends State<CourseDetail>
                 direction: Axis.horizontal,
               ),
               Text(
-                '(555)',
+                '(${course.numberComment})',
                 style: TextStyle(color: Colors.grey),
               )
             ],
@@ -222,12 +239,37 @@ class _CourseDetailState extends State<CourseDetail>
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
+              Consumer<CourseListModel>(builder: (context, provider, _) {
+                return makeItemButton(
+                    icon: Icon(course.bookmark
+                        ? Icons.bookmark
+                        : Icons.bookmark_outline),
+                    title: course.bookmark ? 'Bookmarked' : 'Bookmark',
+                    opTap: () {
+                      provider.setBookmark(course.ID, !course.bookmark);
+                    });
+              }),
               makeItemButton(
-                  icon: Icon(Icons.bookmark_outline), title: 'Bookmarked'),
+                  icon: Icon(Icons.playlist_add),
+                  title: 'Add to Channel',
+                  opTap: () {
+                    print("Add to Channel");
+                    HandleAdd2Channel.openDialog(context, course.ID);
+                  }),
               makeItemButton(
-                  icon: Icon(Icons.playlist_add), title: 'Add to Channel'),
-              makeItemButton(
-                  icon: Icon(Icons.arrow_circle_down), title: 'Dowload'),
+                  icon: Icon(Icons.arrow_circle_down),
+                  title: 'Download',
+                  opTap: () {
+                    print("Download");
+                    if (Provider.of<User>(context, listen: false)
+                        .isAuthorization) {
+                      Provider.of<DownloadModel>(context, listen: false)
+                          .downloadCourse(course);
+                      HandleAdd2Channel.showToast(context, "Downloading");
+                      return;
+                    }
+                    HandleAdd2Channel.showToast(context, "Dowload failed");
+                  }),
             ],
           ),
           SizedBox(
@@ -240,8 +282,7 @@ class _CourseDetailState extends State<CourseDetail>
                   flex: 15,
                   child: Container(
                     child: Text(
-                      'Otherwise, the widget has a child but no height, no width, no constraints, and no alignment, and the Container passes the constraints from the parent to the child and sizes itself to match the child.'
-                      'Otherwise, the widget has a child but no height, no width, no constraints, and no alignment, and the Container passes the constraints from the parent to the child and sizes itself to match the child.',
+                      courseDetail.description,
                       style: TextStyle(color: Colors.white),
                       maxLines: maxline ? 2 : null,
                       //overflow: TextOverflow.ellipsis,
@@ -258,7 +299,7 @@ class _CourseDetailState extends State<CourseDetail>
                     },
                     child: Container(
                       height: double.infinity,
-                      color: Colors.grey,
+                      color: Theme.of(context).buttonColor,
                       child: Icon(
                         Icons.expand_more,
                         color: Colors.black,
@@ -286,17 +327,17 @@ class _CourseDetailState extends State<CourseDetail>
     );
   }
 
-  List<Column> makeListContent() {
-    return list
-        .map((item) => Column(
+  List<Column> makeListContent(CourseDetailModel courseDetail) {
+    return courseDetail.modules
+        .map((module) => Column(
               children: [
                 ListTile(
                   title: Text(
-                    item.title,
+                    module.name,
                     style: TextStyle(color: Colors.white),
                   ),
                   subtitle: Text(
-                    item.time.toString(),
+                    module.getTotalTime().toString(),
                     style: TextStyle(color: Colors.white),
                   ),
                   leading: Container(
@@ -312,72 +353,59 @@ class _CourseDetailState extends State<CourseDetail>
                       ),
                       color: Colors.grey[800],
                       itemBuilder: (BuildContext context) {
-                        return <PopupMenuEntry<FlatButton>>[
+                        return <PopupMenuEntry<int>>[
                           PopupMenuItem(
-                              child: FlatButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    'Bookmark',
-                                    style: TextStyle(color: Colors.white),
-                                  ))),
+                              child: Text(
+                            'Bookmark',
+                            style: TextStyle(color: Colors.white),
+                          )),
                           PopupMenuItem(
-                              child: FlatButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    'Add to channel',
-                                    style: TextStyle(color: Colors.white),
-                                  ))),
+                              child: Text(
+                            'Add to channel',
+                            style: TextStyle(color: Colors.white),
+                          )),
                           PopupMenuItem(
-                              child: FlatButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    'Remove Download',
-                                    style: TextStyle(color: Colors.white),
-                                  ))),
+                              child: Text(
+                            'Remove Download',
+                            style: TextStyle(color: Colors.white),
+                          )),
                         ];
                       }),
                 ),
                 Column(
-                  children: item.list
-                      .map((it) => ListTile(
-                            //leading:
-                            title: Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Icon(
-                                    Icons.check_circle,
-                                    color: Colors.grey,
-                                    size: 10,
+                  children: module.contents
+                      .map((content) =>
+                          Builder(builder: (BuildContext newContext) {
+                            return ListTile(
+                              onTap: () {
+                                newContext.read<LoadURL>().setUrl(content.url);
+                              },
+                              title: Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Icon(
+                                      Icons.check_circle,
+                                      color: Colors.grey,
+                                      size: 10,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  it.title,
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ],
-                            ),
-                            trailing: Text(
-                              it.time.toString(),
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ))
+                                  Text(
+                                    content.name,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                              trailing: Text(
+                                content.time.toString(),
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            );
+                          }))
                       .toList(),
                 )
               ],
             ))
         .toList();
   }
-}
-
-class Content {
-  String title;
-  int time;
-  Content({this.time, this.title});
-}
-
-class SubContent extends Content {
-  List<Content> list;
-  SubContent({this.list, String title, int time})
-      : super(time: time, title: title);
 }

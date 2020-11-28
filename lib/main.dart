@@ -4,6 +4,7 @@ import 'package:Pluralsight/Page/BrowsePage.dart';
 import 'package:Pluralsight/Page/DowloadPage.dart';
 import 'package:Pluralsight/Page/HomePage.dart';
 import 'package:Pluralsight/Page/SearchPage.dart';
+import 'package:Pluralsight/models/CourseDetail.dart';
 import 'package:Pluralsight/models/CourseList.dart';
 import 'package:Pluralsight/models/DownloadModel.dart';
 import 'package:Pluralsight/models/MyChannelList.dart';
@@ -19,7 +20,8 @@ void main() {
         ChangeNotifierProvider(create: (_)=>User(),),
         ChangeNotifierProvider(create: (_)=>CourseListModel(),),
         ChangeNotifierProvider(create: (_)=>MyChannelListModel(),),
-        ChangeNotifierProvider(create: (_)=>DownloadModel(),)
+        ChangeNotifierProvider(create: (_)=>DownloadModel(),),
+        Provider(create: (_)=>CourseDetailListModel(),)
       ],
       child: MaterialApp(
         theme: ThemeData(
@@ -27,6 +29,7 @@ void main() {
           primaryColor: Colors.grey[800],
           accentColor: Colors.cyan[600],
           backgroundColor: Colors.black87,
+          buttonColor: Colors.grey
         ),
         home: Home(),
       ),

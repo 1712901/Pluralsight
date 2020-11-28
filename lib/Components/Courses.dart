@@ -2,6 +2,7 @@ import 'package:Pluralsight/Page/CourseDetail.dart';
 import 'package:Pluralsight/models/Course.dart';
 import 'package:Pluralsight/models/CourseList.dart';
 import 'package:Pluralsight/models/DownloadModel.dart';
+import 'package:Pluralsight/models/HandleAdd2Channel.dart';
 import 'package:Pluralsight/models/MyChannel.dart';
 import 'package:Pluralsight/models/MyChannelList.dart';
 import 'package:Pluralsight/models/User.dart';
@@ -53,7 +54,7 @@ class _CoursesState extends State<Courses> {
         child: InkWell(
           onTap: () {
             Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => CourseDetail()));
+                .push(MaterialPageRoute(builder: (context) => CourseDetail(course: course,)));
           },
           child: Container(
             child: Column(
@@ -88,7 +89,7 @@ class _CoursesState extends State<Courses> {
                                             course.ID, !course.bookmark);
                                         break;
                                       case 1:
-                                        openDialog(course.ID);
+                                        HandleAdd2Channel.openDialog(context,course.ID);
                                         break;
                                       case 2:
                                         if (Provider.of<User>(context,listen: false)
@@ -96,10 +97,10 @@ class _CoursesState extends State<Courses> {
                                           Provider.of<DownloadModel>(context,
                                                   listen: false)
                                               .downloadCourse(course);
-                                          _showToast(context, "Downloading");
+                                          HandleAdd2Channel.showToast(context, "Downloading");
                                           break;
                                         }
-                                         _showToast(context, "Dowload failed");
+                                         HandleAdd2Channel.showToast(context, "Dowload failed");
                                         break;
                                       default:
                                     }
@@ -221,127 +222,6 @@ class _CoursesState extends State<Courses> {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Future<void> openDialog(int idCourse) async {
-    int index = await showDialog(
-        context: context,
-        builder: (context) {
-          return SimpleDialog(
-            backgroundColor: Colors.grey[800],
-            title:
-                Text('Add to channel', style: TextStyle(color: Colors.white)),
-            children: [
-              SimpleDialogOption(
-                onPressed: () {
-                  Navigator.pop(context, -1);
-                },
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.add,
-                      color: Colors.white,
-                    ),
-                    Text(
-                      'New Channel',
-                      style: TextStyle(color: Colors.white),
-                    )
-                  ],
-                ),
-              ),
-              Consumer<MyChannelListModel>(
-                builder: (context, provider, _) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: provider.listChannel
-                        .map((e) => SimpleDialogOption(
-                              onPressed: () {
-                                Navigator.pop(
-                                    context, provider.listChannel.indexOf(e));
-                              },
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.check,
-                                    color: Colors.white,
-                                  ),
-                                  Text(
-                                    e.name,
-                                    style: TextStyle(color: Colors.white),
-                                  )
-                                ],
-                              ),
-                            ))
-                        .toList(),
-                  );
-                },
-              )
-            ],
-          );
-        });
-    if (index == -1) {
-      creatAlertDialog(context).then((value) {
-        if (value != null) {
-          if (value.isNotEmpty) {
-            Provider.of<MyChannelListModel>(context, listen: false)
-                .addMyChannel(value);
-            _showToast(context, "Created Channel");
-          }
-        }
-      });
-    } else if (index != null) {
-      list[index].addCourse(idCourse);
-      Provider.of<MyChannelListModel>(context, listen: false)
-          .addCourse(index, idCourse);
-      _showToast(context, "Added Course");
-    }
-  }
-
-  Future<String> creatAlertDialog(BuildContext context) {
-    TextEditingController editingController = new TextEditingController();
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            insetPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-            title: Text('Create channel'),
-            content: TextField(
-              controller: editingController,
-              maxLines: 1,
-              maxLength: 20,
-              decoration: InputDecoration(
-                hintText: 'Name',
-              ),
-            ),
-            actions: [
-              FlatButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    'CANCEL',
-                    style: TextStyle(color: Theme.of(context).accentColor),
-                  )),
-              FlatButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(editingController.text);
-                  },
-                  child: Text('SAVE',
-                      style: TextStyle(color: Theme.of(context).accentColor))),
-            ],
-          );
-        });
-  }
-
-  void _showToast(BuildContext context, String content) {
-    final scaffold = Scaffold.of(context);
-    scaffold.showSnackBar(
-      SnackBar(
-        content: Text('${content}'),
-        action: SnackBarAction(
-            label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
       ),
     );
   }
