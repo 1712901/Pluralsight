@@ -2,7 +2,11 @@ import 'package:Pluralsight/Page/Search/AllPage.dart';
 import 'package:Pluralsight/Page/Search/AuthourPage.dart';
 import 'package:Pluralsight/Page/Search/CoursesPage.dart';
 import 'package:Pluralsight/Page/Search/PathPage.dart';
+import 'package:Pluralsight/models/Author.dart';
+import 'package:Pluralsight/models/Course.dart';
+import 'package:Pluralsight/models/CourseList.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -20,17 +24,20 @@ class _SearchPageState extends State<SearchPage>
   List<String> recents = ["Android", "C#", "Java"];
   List<String> dataSearch = [
     "Android",
+    "IOS",
+    "Flutter",
     "C#",
     "Java",
     "HTML/CSS",
     "Nodejs",
-    "C/C++",
+    "APS.NET",
     "Design parttern"
   ];
   List<String> showData;
   TextEditingController _controller;
 
-  final List<String> listTile = ['ALL', 'COURSES', 'PATHS', 'AUTHOURS'];
+  final List<String> listTile = ['ALL', 'COURSES', 'AUTHOURS'];
+  List<CourseModel> courses = [];
 
   @override
   void initState() {
@@ -49,7 +56,7 @@ class _SearchPageState extends State<SearchPage>
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4,
+      length: 3,
       child: Scaffold(
         backgroundColor: Colors.black87,
         appBar: AppBar(
@@ -90,7 +97,7 @@ class _SearchPageState extends State<SearchPage>
           ),
           bottom: !searchResult ? null : tabBar(),
         ),
-        body: !searchResult ? searchView() : tabBarView(),
+        body: !searchResult ? searchView() : tabBarView(courses),
       ),
     );
   }
@@ -99,7 +106,9 @@ class _SearchPageState extends State<SearchPage>
     return finding ? searchResultView() : searchRecentView();
   }
 
-  Widget tabBarView() {
+  Widget tabBarView(List<CourseModel> list) {
+    List<AuthorModel> authors =
+        Provider.of<AuthorsModel>(context).getAllAuthorOfListCourse(list);
     return TabBarView(
       controller: _tabController,
       children: [
@@ -107,10 +116,13 @@ class _SearchPageState extends State<SearchPage>
           funCallBack: (index) {
             _tabController.animateTo(index);
           },
+          courses: list,
+          authors: authors,
         ),
-        CoursesPage(),
-        PathPage(),
-        AuthourPage(),
+        CoursesPage(
+          list: list,
+        ),
+        AuthourPage(authors: authors),
       ],
     );
   }
@@ -127,7 +139,6 @@ class _SearchPageState extends State<SearchPage>
         tabs: [
           Text('ALL'),
           Text('COURSES'),
-          Text('PATHS'),
           Text('AUTHORS'),
         ]);
   }
@@ -152,6 +163,8 @@ class _SearchPageState extends State<SearchPage>
   void onSubmitted(String text) {
     setState(() {
       recents.add(text);
+      courses =
+          Provider.of<CourseListModel>(context, listen: false).findByTag(text);
     });
   }
 
@@ -164,6 +177,8 @@ class _SearchPageState extends State<SearchPage>
               setState(() {
                 searchResult = true;
                 _controller.text = recents[index].toString();
+                courses = Provider.of<CourseListModel>(context, listen: false)
+                    .findByTag(recents[index].toString());
               });
             },
             leading: Icon(
@@ -194,9 +209,13 @@ class _SearchPageState extends State<SearchPage>
         itemBuilder: (context, index) {
           return ListTile(
             onTap: () {
+              print(showData[index].toString());
               setState(() {
                 searchResult = true;
                 _controller.text = showData[index].toString();
+                courses = Provider.of<CourseListModel>(context, listen: false)
+                    .findByTag(showData[index].toString());
+                print(courses.length);
               });
             },
             title: Text(

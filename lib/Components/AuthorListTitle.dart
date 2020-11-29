@@ -1,7 +1,8 @@
 import 'package:Pluralsight/Page/AuthorDetail.dart';
+import 'package:Pluralsight/models/Author.dart';
 import 'package:flutter/material.dart';
 
-Widget authorListTitle(BuildContext context) {
+Widget authorListTitle(BuildContext context,AuthorModel author) {
   return Container(
     decoration: BoxDecoration(
         border: Border(
@@ -11,11 +12,11 @@ Widget authorListTitle(BuildContext context) {
     child: ListTile(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => AuthorDetail()));
+            context, MaterialPageRoute(builder: (context) => AuthorDetail(author: author,)));
       },
       contentPadding: EdgeInsets.symmetric(horizontal: 0),
       title: Text(
-        'Dan Bunker',
+        author.name,
         style: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.w400,
@@ -23,7 +24,7 @@ Widget authorListTitle(BuildContext context) {
         maxLines: 2,
       ),
       subtitle: Text(
-        '8 courses',
+        '${author.courses.length} courses',
         style: TextStyle(color: Colors.grey),
       ),
       leading: ClipOval(

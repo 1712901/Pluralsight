@@ -10,6 +10,7 @@ class CourseModel {
   int category;
   bool bookmark = false;
   int size;
+  List<String> tags;
   CourseModel(
       {this.image,
       this.ID,
@@ -21,7 +22,8 @@ class CourseModel {
       this.level,
       this.category,
       this.bookmark,
-      this.size}) {
+      this.size,
+      this.tags}) {
     this.bookmark = false;
   }
 }

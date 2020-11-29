@@ -1,22 +1,29 @@
 import 'package:Pluralsight/Components/AuthorListTitle.dart';
 import 'package:Pluralsight/Components/CourseListTile.dart';
 import 'package:Pluralsight/Components/PathListTitle.dart';
+import 'package:Pluralsight/models/Author.dart';
+import 'package:Pluralsight/models/Course.dart';
 import 'package:flutter/material.dart';
 
 class AllPage extends StatefulWidget {
   final Function(int index) funCallBack;
+  final List<CourseModel> courses;
+  final List<AuthorModel> authors;
 
-  AllPage({this.funCallBack});
+  AllPage({this.funCallBack, this.courses,this.authors});
 
   @override
-  _AllPageState createState() => _AllPageState(funCallBack: funCallBack);
+  _AllPageState createState() =>
+      _AllPageState(funCallBack: funCallBack, courses: courses,authors: authors);
 }
 
 class _AllPageState extends State<AllPage> {
   List<String> list = ['1', '2', '3', '4'];
   final Function(int index) funCallBack;
-  _AllPageState({this.funCallBack});
+  _AllPageState({this.funCallBack, this.courses,this.authors});
   final int numItems = 4;
+  final List<CourseModel> courses;
+  final List<AuthorModel> authors;
 
   @override
   Widget build(BuildContext context) {
@@ -51,39 +58,13 @@ class _AllPageState extends State<AllPage> {
                 ),
               ),
               Column(
-                children: list
-                    .sublist(
-                        0, list.length <= numItems ? list.length : numItems)
-                    .map((item) => CourseListTitle())
-                    .toList(),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Path',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    FlatButton.icon(
-                      onPressed: () {
-                        funCallBack(2);
-                      },
-                      icon: Text(
-                        'See all',
-                      ),
-                      label: Icon(Icons.navigate_next),
-                      textColor: Colors.grey,
-                    )
-                  ],
-                ),
-              ),
-              Column(
-                children: list
-                    .sublist(
-                        0, list.length <= numItems ? list.length : numItems)
-                    .map((item) => PathListTile())
+                children: courses
+                    .sublist(0,
+                        courses.length <= numItems ? courses.length : numItems)
+                    .map((course) => CourseListTitle(
+                          course: course,
+                          indexChannel: -1,
+                        ))
                     .toList(),
               ),
               Padding(
@@ -109,10 +90,10 @@ class _AllPageState extends State<AllPage> {
                 ),
               ),
               Column(
-                children: list
+                children: authors
                     .sublist(
-                        0, list.length <= numItems ? list.length : numItems)
-                    .map((item) => authorListTitle(context))
+                        0, authors.length <= numItems ? authors.length : numItems)
+                    .map((author) => authorListTitle(context,author))
                     .toList(),
               ),
             ],

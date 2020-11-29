@@ -1,7 +1,11 @@
 import 'package:Pluralsight/Components/CourseListTile.dart';
+import 'package:Pluralsight/models/Course.dart';
 import 'package:flutter/material.dart';
 
 class CoursesPage extends StatelessWidget {
+  final List<CourseModel> list;
+
+  const CoursesPage({Key key, this.list}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +29,7 @@ class CoursesPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '58 Results',
+                  '${list.length} Results',
                   style: TextStyle(color: Colors.grey),
                 ),
                 DropdownButtonHideUnderline(
@@ -53,11 +57,11 @@ class CoursesPage extends StatelessWidget {
           ),
           Flexible(
             child: ListView.builder(
-                itemCount: 5,
+                itemCount: list.length,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: CourseListTitle(),
+                    child: CourseListTitle(course: list[index],indexChannel: -1,),
                   );
                 }),
           )

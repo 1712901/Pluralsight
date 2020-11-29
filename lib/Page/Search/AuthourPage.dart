@@ -1,7 +1,11 @@
 import 'package:Pluralsight/Components/AuthorListTitle.dart';
+import 'package:Pluralsight/models/Author.dart';
 import 'package:flutter/material.dart';
 
 class AuthourPage extends StatelessWidget {
+  final List<AuthorModel> authors;
+
+  const AuthourPage({Key key, this.authors}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -10,17 +14,17 @@ class AuthourPage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            '6 Results',
+            '${authors.length} Results',
             style: TextStyle(color: Colors.grey),
           ),
         ),
         Flexible(
             child: ListView.builder(
-                itemCount: 10,
+                itemCount: authors.length,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: authorListTitle(context),
+                    child: authorListTitle(context,authors[index]),
                   );
                 })),
       ],
