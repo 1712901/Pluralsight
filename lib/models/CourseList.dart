@@ -12,7 +12,7 @@ class CourseListModel extends ChangeNotifier {
         numberComment: 150,
         category: 1,
         size: 150,
-        tags: ["JAVA", "ANDROID", "MOBLIE"]),
+        tags: ["JAVA", "ANDROID", "MOBLIE","Angular"]),
     new CourseModel(
         ID: 1,
         name: "Angular Fundamenttals",
@@ -22,7 +22,7 @@ class CourseListModel extends ChangeNotifier {
         numberComment: 150,
         category: 1,
         size: 150,
-        tags: ["FLUTTER", "ANDROID", "IOS"]),
+        tags: ["Angular", "ANDROID", "IOS"]),
     new CourseModel(
         ID: 2,
         name: "C# Fundamenttals",
@@ -34,7 +34,7 @@ class CourseListModel extends ChangeNotifier {
         size: 150,
         tags: [
           "OPP",
-          "DESIGN PATTERN",
+          "DESIGN PATTERNS",
         ]),
     new CourseModel(
         ID: 3,
@@ -45,7 +45,7 @@ class CourseListModel extends ChangeNotifier {
         numberComment: 10,
         category: 1,
         size: 150,
-        tags: ["AWS"]),
+        tags: ["AWS","C++"]),
     new CourseModel(
         ID: 4,
         name: "Spring Framework",
@@ -75,7 +75,7 @@ class CourseListModel extends ChangeNotifier {
         numberComment: 10,
         category: 2,
         size: 150,
-        tags: ["C#", "APS.NET"]),
+        tags: ["C#", "APS.NET",".NET"]),
     new CourseModel(
         ID: 7,
         name: "Designing RESTful Web APIs",
@@ -85,7 +85,7 @@ class CourseListModel extends ChangeNotifier {
         numberComment: 152,
         category: 3,
         size: 150,
-        tags: ["API"]),
+        tags: ["API","JavaScript"]),
     new CourseModel(
         ID: 8,
         name: "Node.js: The big Picture",
@@ -95,7 +95,7 @@ class CourseListModel extends ChangeNotifier {
         numberComment: 513,
         category: 2,
         size: 150,
-        tags: ["NODEJS", "WEB"]),
+        tags: ["NODEJS", "WEB","JavaScript"]),
     new CourseModel(
         ID: 9,
         name: "Architecting for Reliablility on AWS",
@@ -105,7 +105,7 @@ class CourseListModel extends ChangeNotifier {
         numberComment: 215,
         category: 3,
         size: 150,
-        tags: ["AWS"]),
+        tags: ["AWS","C++","C"]),
     new CourseModel(
         ID: 10,
         name: "Architecting for Security on AWS",
@@ -173,6 +173,12 @@ class CourseListModel extends ChangeNotifier {
   }
 
   List<CourseModel> findByTag(String tag) {
-    return couserList.where((element) => element.tags.contains(tag.toUpperCase())).toList();
+    return couserList
+        .where((element) => element.tags.contains(tag.toUpperCase()))
+        .toList();
+  }
+
+  List<CourseModel> getCoursesByCate(int category) {
+    return couserList.where((course) => course.category == category).toList();
   }
 }

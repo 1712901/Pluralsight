@@ -3,7 +3,10 @@ import 'package:Pluralsight/Components/Courses.dart';
 import 'package:Pluralsight/Components/RowCourse.dart';
 import 'package:Pluralsight/Components/RowPathView.dart';
 import 'package:Pluralsight/Page/MoreCourse.dart';
+import 'package:Pluralsight/models/Course.dart';
+import 'package:Pluralsight/models/CourseList.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   final String title;
@@ -51,10 +54,10 @@ class HomePage extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              RowCourse(title: 'Software Development',type: 1,),
-              RowCourse(title: 'IT Operations',type: 2,),
-              RowCourse(title: 'Data Professional',type: 3,),
-              RowCourse(title: 'Security Professional',type: 4,),
+              RowCourse(title: 'Software Development',courses: Provider.of<CourseListModel>(context,listen: false).getCoursesByCate(1),),
+              RowCourse(title: 'IT Operations',courses: Provider.of<CourseListModel>(context,listen: false).getCoursesByCate(2),),
+              RowCourse(title: 'Data Professional',courses: Provider.of<CourseListModel>(context,listen: false).getCoursesByCate(3),),
+              RowCourse(title: 'Security Professional',courses: Provider.of<CourseListModel>(context,listen: false).getCoursesByCate(4),),
               RowPathView(title:'My Channels')
             ],
           ),

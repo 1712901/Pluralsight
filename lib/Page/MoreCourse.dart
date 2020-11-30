@@ -7,16 +7,16 @@ import 'package:provider/provider.dart';
 
 class MoreCourse extends StatelessWidget {
   final String title;
-  final int type;
-  const MoreCourse({Key key, this.title, this.type}) : super(key: key);
+  final List<CourseModel> courses;
+  const MoreCourse({Key key, this.title, this.courses}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    CourseListModel courseList =
-        Provider.of<CourseListModel>(context, listen: false);
-    List<CourseModel> _list = courseList.couserList
-        .where((element) => element.category == type)
-        .toList();
+    // CourseListModel courseList =
+    //     Provider.of<CourseListModel>(context, listen: false);
+    // List<CourseModel> _list = courseList.couserList
+    //     .where((element) => element.category == type)
+    //     .toList();
     return Scaffold(
         backgroundColor: Colors.black87,
         appBar: AppBar(
@@ -33,9 +33,9 @@ class MoreCourse extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: ListView.builder(
             itemBuilder: (context, index) {
-              return CourseListTitle(course: _list[index],indexChannel: -1,);
+              return CourseListTitle(course: courses[index],indexChannel: -1,);
             },
-            itemCount: _list.length,
+            itemCount: courses.length,
           ),
         ));
   }

@@ -4,43 +4,33 @@ import 'package:Pluralsight/models/Course.dart';
 import 'package:Pluralsight/models/CourseList.dart';
 import 'package:Pluralsight/models/DownloadModel.dart';
 import 'package:Pluralsight/models/HandleAdd2Channel.dart';
-import 'package:Pluralsight/models/MyChannel.dart';
-import 'package:Pluralsight/models/MyChannelList.dart';
 import 'package:Pluralsight/models/User.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
 class Courses extends StatefulWidget {
-  final int type;
+  final List<CourseModel> courses;
 
-  const Courses({Key key, this.type}) : super(key: key);
+  const Courses({Key key, this.courses}) : super(key: key);
   @override
-  _CoursesState createState() => _CoursesState(type: type);
+  _CoursesState createState() => _CoursesState(courses: courses);
 }
 
 class _CoursesState extends State<Courses> {
-  List<CourseModel> _list;
-  CourseListModel courseList;
-  List<MyChannelModel> list;
-  List<CourseModel> courseByType;
-  final int type;
-  _CoursesState({this.type});
+  final List<CourseModel> courses;
+  List<CourseModel> subCourse;
+  _CoursesState({this.courses});
   @override
   Widget build(BuildContext context) {
-    courseList = Provider.of<CourseListModel>(context, listen: false);
-    list = Provider.of<MyChannelListModel>(context, listen: true).listChannel;
-    _list = courseList.couserList
-        .where((element) => element.category == type)
-        .toList();
-    courseByType = _list.sublist(0, _list.length >= 4 ? 4 : _list.length);
+    subCourse = courses.sublist(0, courses.length >= 4 ? 4 : courses.length);
     return Container(
       height: 200,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: courseByType.length,
+          itemCount: subCourse.length,
           itemBuilder: (context, index) {
-            return courseCard(course: courseByType[index]);
+            return courseCard(course: subCourse[index]);
           }),
     );
   }
@@ -91,7 +81,7 @@ class _CoursesState extends State<Courses> {
                                   onSelected: (index) {
                                     switch (index) {
                                       case 0:
-                                        courseList.setBookmark(
+                                        Provider.of<CourseListModel>(context,listen: false).setBookmark(
                                             course.ID, !course.bookmark);
                                         break;
                                       case 1:
@@ -164,7 +154,7 @@ class _CoursesState extends State<Courses> {
                                     color: Colors.white,
                                   ),
                                   onPressed: () {
-                                    courseList.setBookmark(
+                                    Provider.of<CourseListModel>(context,listen: false).setBookmark(
                                         course.ID, !course.bookmark);
                                   })
                             ],

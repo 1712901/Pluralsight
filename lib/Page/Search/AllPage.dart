@@ -78,7 +78,7 @@ class _AllPageState extends State<AllPage> {
                     ),
                     FlatButton.icon(
                       onPressed: () {
-                        funCallBack(3);
+                        funCallBack(2);
                       },
                       icon: Text(
                         'See all',

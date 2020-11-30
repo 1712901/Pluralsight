@@ -1,4 +1,5 @@
 import 'package:Pluralsight/Components/AppBar.dart';
+import 'package:Pluralsight/Components/RowCourse.dart';
 import 'package:Pluralsight/Components/RowPathView.dart';
 import 'package:Pluralsight/Page/Browse/BrMoreCourse.dart';
 import 'package:Pluralsight/Page/Browse/CategoryPage.dart';
@@ -7,7 +8,10 @@ import 'package:Pluralsight/Page/Browse/PathsPage.dart';
 import 'package:Pluralsight/Page/Browse/RowAuthorsView.dart';
 import 'package:Pluralsight/Page/Browse/SkillDetail.dart';
 import 'package:Pluralsight/Page/PathDetail.dart';
+import 'package:Pluralsight/models/Author.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:Pluralsight/models/CourseList.dart';
 
 class BrowsePase extends StatelessWidget {
   final List<Category> category = [
@@ -60,7 +64,8 @@ class BrowsePase extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              BrMoreCourse(title: 'NEW RELEASES')));
+                              BrMoreCourse(title: 'NEW RELEASES',
+                              courses: Provider.of<CourseListModel>(context,listen: false).getCoursesByCate(2),)));
                 },
                 child: Container(
                   margin: EdgeInsets.only(bottom: 8.0),
@@ -97,7 +102,8 @@ class BrowsePase extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              BrMoreCourse(title: 'RECOMMENDED FOR YOU')));
+                              BrMoreCourse(title: 'RECOMMENDED FOR YOU',
+                              courses: Provider.of<CourseListModel>(context,listen: false).getCoursesByCate(1),)));
                 },
                 child: Container(
                   margin: EdgeInsets.only(bottom: 8.0),
@@ -209,95 +215,13 @@ class BrowsePase extends StatelessWidget {
                       );
                     }),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Path',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  FlatButton.icon(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => PathsPage()));
-                    },
-                    icon: Text(
-                      'See all',
-                    ),
-                    label: Icon(Icons.navigate_next),
-                    textColor: Colors.grey,
-                  )
-                ],
-              ),
-              Container(
-                height: 150,
-                child: ListView.builder(
-                    itemCount: 10,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => PathDetail(
-                                        title: 'Name',
-                                      )));
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: AspectRatio(
-                            aspectRatio: 2 / 1.5,
-                            child: Container(
-                              color: Colors.grey[800],
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.orange,
-                                      ),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          gradient: LinearGradient(colors: [
-                                            Colors.black.withOpacity(0.3),
-                                            Colors.black.withOpacity(0.3),
-                                          ]),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: ListTile(
-                                      title: Text(
-                                        'Pluralsight live 2020',
-                                        style: TextStyle(color: Colors.white),
-                                        textAlign: TextAlign.start,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      subtitle: Text(
-                                        '95 courses',
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
-              ),
+              RowCourse(title: 'Trending',courses: Provider.of<CourseListModel>(context).findByTag('Java'),),
               SizedBox(
                 height: 15,
               ),
               RowAuthorsView(
                 title: 'Top auhors',
+                authors: Provider.of<AuthorsModel>(context).authors,
               ),
             ],
           ),

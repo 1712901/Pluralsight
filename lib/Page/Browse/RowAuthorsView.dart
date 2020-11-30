@@ -6,11 +6,11 @@ import 'package:provider/provider.dart';
 
 class RowAuthorsView extends StatelessWidget {
   final String title;
+  final List<AuthorModel> authors;
 
-  const RowAuthorsView({Key key, this.title}) : super(key: key);
+  const RowAuthorsView({Key key, this.title,this.authors}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    List<AuthorModel> authors= Provider.of<AuthorsModel>(context,listen: false).authors;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
