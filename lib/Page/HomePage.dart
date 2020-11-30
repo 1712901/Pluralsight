@@ -15,9 +15,10 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("HomePage");
     return Scaffold(
       backgroundColor: Colors.black54,
-      appBar: myAppbar(title: title),
+      appBar: myAppbar(title: title, context: context),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -54,11 +55,27 @@ class HomePage extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              RowCourse(title: 'Software Development',courses: Provider.of<CourseListModel>(context,listen: false).getCoursesByCate(1),),
-              RowCourse(title: 'IT Operations',courses: Provider.of<CourseListModel>(context,listen: false).getCoursesByCate(2),),
-              RowCourse(title: 'Data Professional',courses: Provider.of<CourseListModel>(context,listen: false).getCoursesByCate(3),),
-              RowCourse(title: 'Security Professional',courses: Provider.of<CourseListModel>(context,listen: false).getCoursesByCate(4),),
-              RowPathView(title:'My Channels')
+              RowCourse(
+                title: 'Software Development',
+                courses: Provider.of<CourseListModel>(context, listen: false)
+                    .getCoursesByCate(1),
+              ),
+              RowCourse(
+                title: 'IT Operations',
+                courses: Provider.of<CourseListModel>(context, listen: false)
+                    .getCoursesByCate(2),
+              ),
+              RowCourse(
+                title: 'Data Professional',
+                courses: Provider.of<CourseListModel>(context, listen: false)
+                    .getCoursesByCate(3),
+              ),
+              RowCourse(
+                title: 'Security Professional',
+                courses: Provider.of<CourseListModel>(context, listen: false)
+                    .getCoursesByCate(4),
+              ),
+              RowPathView(title: 'My Channels')
             ],
           ),
         ),

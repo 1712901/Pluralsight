@@ -1,6 +1,7 @@
 import 'package:Pluralsight/Page/Account/ForgotPassword.dart';
 import 'package:Pluralsight/Page/Account/SignUp.dart';
 import 'package:Pluralsight/main.dart';
+import 'package:Pluralsight/models/HandleAdd2Channel.dart';
 import 'package:Pluralsight/models/User.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -85,17 +86,24 @@ class _SignInState extends State<SignIn> {
                 padding: const EdgeInsets.only(top: 8.0),
                 child: SizedBox(
                     width: double.infinity,
-                    child: RaisedButton(
-                      color: Colors.blue[400],
-                      onPressed: () {
-                        if(context.read<User>().checkAuthorization(userName: userNameController.text,password: passwordController.text)){
-                         Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => Home()));
-                        }
-                      },
-                      child: Text(
-                        'SIGN IN',
-                        style: TextStyle(color: Colors.white),
+                    child: Builder(
+                                          builder:(newContext )=> RaisedButton(
+                        color: Colors.blue[400],
+                        onPressed: () {
+                          if (context.read<User>().checkAuthorization(
+                              userName: userNameController.text,
+                              password: passwordController.text)) {
+                            Navigator.of(context, rootNavigator: true).push(
+                                MaterialPageRoute(builder: (context) => Home()));
+                                Scaffold.of(newContext).showSnackBar(SnackBar(content: Text('Login sucessfully')));
+                          } else {
+                            Scaffold.of(newContext).showSnackBar(SnackBar(content: Text('Login Falied')));
+                          }
+                        },
+                        child: Text(
+                          'SIGN IN',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                     )),
               ),
@@ -131,15 +139,5 @@ class _SignInState extends State<SignIn> {
         ),
       ),
     );
-  }
-
-  bool checkUser({String username, String password}) {
-    if (username.isEmpty || password.isEmpty) {
-      return false;
-    } else {
-      print(
-          "UserName:${userNameController.text}\nPassword: ${passwordController.text}");
-    }
-    return true;
   }
 }

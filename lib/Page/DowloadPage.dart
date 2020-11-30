@@ -14,7 +14,7 @@ class _DownLoadsPageState extends State<DownLoadsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black87,
-      appBar: myAppbar(title: "Downloads"),
+      appBar: myAppbar(title: "Downloads",context: context),
       body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Consumer<DownloadModel>(builder: (context, provider, _) {

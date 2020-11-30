@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 
 class User extends ChangeNotifier {
   final int ID = 1;
-  String name;
+  String name = '1712901';
+  String email = "1712901@gmail.com";
   final String userName = "1712901";
   final String password = "1712901";
   bool isAuthorization = false;
@@ -28,5 +29,15 @@ class User extends ChangeNotifier {
 
   bool isFollow(int idAuthor) {
     return followAuthors.contains(idAuthor);
+  }
+
+  void setProfile({String name, String email}) {
+    this.name = name;
+    this.email = email;
+  }
+
+  void logout() {
+    this.isAuthorization = false;
+    notifyListeners();
   }
 }

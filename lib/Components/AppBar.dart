@@ -1,6 +1,12 @@
+import 'package:Pluralsight/Page/Account/SignIn.dart';
+import 'package:Pluralsight/models/User.dart';
 import 'package:flutter/material.dart';
+import 'package:Pluralsight/Page/Account/Profile.Dart';
+import 'package:provider/provider.dart';
 
-Widget myAppbar({title}) {
+Widget myAppbar({title, BuildContext context}) {
+  bool isLogin = Provider.of<User>(context, listen: true).isAuthorization;
+  print(isLogin);
   return AppBar(
     backgroundColor: Colors.grey[800],
     title: Text(title),
@@ -21,14 +27,56 @@ Widget myAppbar({title}) {
         ),
       ),
       PopupMenuButton(
-        color: Colors.grey[800],
-        itemBuilder: (BuildContext context) {
-        return <PopupMenuEntry<FlatButton>>[
-          PopupMenuItem(child: FlatButton(onPressed: (){}, child: Text('Setting',style: TextStyle(color: Colors.white),))),
-          PopupMenuItem(child: FlatButton(onPressed: (){}, child: Text('Send feedBack',style: TextStyle(color: Colors.white),))),
-          PopupMenuItem(child: FlatButton(onPressed: (){}, child: Text('Contact support',style: TextStyle(color: Colors.white),))),
-        ];
-      })
+        captureInheritedThemes:false,
+          color: Colors.grey[800],
+          onSelected: (value) {
+            switch (value) {
+              case 0:
+                break;
+              case 1:
+                break;
+              case 2:
+                break;
+              case 3:
+                if (isLogin) {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ProfilePage()));
+                } else {
+                  Navigator.of(context, rootNavigator: true)
+                      .push(MaterialPageRoute(builder: (context) => SignIn()));
+                }
+                break;
+              default:
+            }
+          },
+          itemBuilder: (BuildContext context) {
+            return <PopupMenuEntry<int>>[
+              PopupMenuItem(
+                  value: 0,
+                  child: Text(
+                    'Setting',
+                    style: TextStyle(color: Colors.white),
+                  )),
+              PopupMenuItem(
+                  value: 1,
+                  child: Text(
+                    'Send feedBack',
+                    style: TextStyle(color: Colors.white),
+                  )),
+              PopupMenuItem(
+                  value: 2,
+                  child: Text(
+                    'Contact support',
+                    style: TextStyle(color: Colors.white),
+                  )),
+              PopupMenuItem(
+                  value: 3,
+                  child: Text(
+                    isLogin ? 'Profile' : 'Login',
+                    style: TextStyle(color: Colors.white),
+                  )),
+            ];
+          })
     ],
   );
 }

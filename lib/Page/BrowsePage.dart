@@ -51,7 +51,7 @@ class BrowsePase extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black87,
-      appBar: myAppbar(title: 'Browse'),
+      appBar: myAppbar(title: 'Browse',context: context),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
