@@ -53,7 +53,7 @@ class CourseListTitle extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "${authors[0].name}" + "${authors.length > 1?",+1":""}",
+              "${authors[0].name}" + "${authors.length > 1 ? ",+1" : ""}",
               style: TextStyle(color: Colors.grey),
             ),
             Text(
@@ -90,6 +90,7 @@ class CourseListTitle extends StatelessWidget {
 
             return PopupMenuButton(
                 offset: Offset(0, 35),
+                captureInheritedThemes: false,
                 icon: Icon(
                   Icons.more_vert,
                   color: Colors.white,

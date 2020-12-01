@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 
 Widget myAppbar({title, BuildContext context}) {
   bool isLogin = Provider.of<User>(context, listen: true).isAuthorization;
-  print(isLogin);
   return AppBar(
     backgroundColor: Colors.grey[800],
     title: Text(title),

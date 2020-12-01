@@ -143,7 +143,6 @@ class BrowsePase extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: GridTile(
-                        //color: Colors.white,
                         child: InkWell(
                           onTap: () {
                             Navigator.push(

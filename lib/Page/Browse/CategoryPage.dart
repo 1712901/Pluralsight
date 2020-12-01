@@ -1,8 +1,11 @@
 import 'package:Pluralsight/Components/RowCourse.dart';
 import 'package:Pluralsight/Components/RowPathView.dart';
 import 'package:Pluralsight/Page/Browse/SkillDetail.dart';
+import 'package:Pluralsight/models/Author.dart';
+import 'package:Pluralsight/models/CourseList.dart';
 import 'package:flutter/material.dart';
 import 'package:Pluralsight/Page/BrowsePage.dart';
+import 'package:provider/provider.dart';
 
 import 'RowAuthorsView.dart';
 
@@ -102,20 +105,20 @@ class CategoryPage extends StatelessWidget {
                           );
                         }),
                   ),
-                  RowPathView(
-                    title: 'Paths in ${category.name}',
-                  ),
                   RowCourse(
                     title: 'New in ${category.name}',
+                     courses: Provider.of<CourseListModel>(context,listen: false).getCoursesByCate(3)
                   ),
                   RowCourse(
                     title: 'Trending in ${category.name}',
+                    courses: Provider.of<CourseListModel>(context,listen: false).getCoursesByCate(2),
                   ),
                   SizedBox(
                     height: 10,
                   ),
                   RowAuthorsView(
                     title: 'Top authors in Software Development',
+                    authors: Provider.of<AuthorsModel>(context).authors,
                   )
                 ],
               ),

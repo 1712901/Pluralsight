@@ -78,11 +78,14 @@ class _CoursesState extends State<Courses> {
                             children: [
                               PopupMenuButton(
                                   offset: Offset(0, 35),
+                                  captureInheritedThemes: false,
                                   onSelected: (index) {
                                     switch (index) {
                                       case 0:
-                                        Provider.of<CourseListModel>(context,listen: false).setBookmark(
-                                            course.ID, !course.bookmark);
+                                        Provider.of<CourseListModel>(context,
+                                                listen: false)
+                                            .setBookmark(
+                                                course.ID, !course.bookmark);
                                         break;
                                       case 1:
                                         HandleAdd2Channel.openDialog(
@@ -154,8 +157,10 @@ class _CoursesState extends State<Courses> {
                                     color: Colors.white,
                                   ),
                                   onPressed: () {
-                                    Provider.of<CourseListModel>(context,listen: false).setBookmark(
-                                        course.ID, !course.bookmark);
+                                    Provider.of<CourseListModel>(context,
+                                            listen: false)
+                                        .setBookmark(
+                                            course.ID, !course.bookmark);
                                   })
                             ],
                           );
@@ -181,7 +186,8 @@ class _CoursesState extends State<Courses> {
                           height: 5,
                         ),
                         Text(
-                          "${authors[0].name}" + "${authors.length > 1?",+1":""}",
+                          "${authors[0].name}" +
+                              "${authors.length > 1 ? ",+1" : ""}",
                           style: TextStyle(
                             color: Colors.grey,
                           ),
