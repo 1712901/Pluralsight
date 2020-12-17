@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:Pluralsight/Page/Account/SignIn.dart';
 import 'package:Pluralsight/Page/CourseDetail.dart';
 import 'package:Pluralsight/Page/BrowsePage.dart';
@@ -10,29 +12,45 @@ import 'package:Pluralsight/models/CourseList.dart';
 import 'package:Pluralsight/models/DownloadModel.dart';
 import 'package:Pluralsight/models/MyChannelList.dart';
 import 'package:Pluralsight/models/User.dart';
+import 'package:Pluralsight/models/AccountInf.dart';
 import 'package:custom_navigator/custom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_)=>User(),),
-        ChangeNotifierProvider(create: (_)=>CourseListModel(),),
-        ChangeNotifierProvider(create: (_)=>MyChannelListModel(),),
-        ChangeNotifierProvider(create: (_)=>DownloadModel(),),
-        Provider(create: (_)=>CourseDetailListModel(),),
-        Provider(create: (_)=>AuthorsModel(),)
+        ChangeNotifierProvider(
+          create: (_) => User(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AccountInf(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => CourseListModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => MyChannelListModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => DownloadModel(),
+        ),
+        Provider(
+          create: (_) => CourseDetailListModel(),
+        ),
+        Provider(
+          create: (_) => AuthorsModel(),
+        )
       ],
       child: MaterialApp(
         theme: ThemeData(
-          brightness: Brightness.dark,
-          primaryColor: Colors.grey[800],
-          accentColor: Colors.cyan[600],
-          backgroundColor: Colors.black87,
-          buttonColor: Colors.grey
-        ),
+            brightness: Brightness.dark,
+            primaryColor: Colors.grey[800],
+            accentColor: Colors.cyan[600],
+            backgroundColor: Colors.black87,
+            buttonColor: Colors.grey),
         home: Home(),
       ),
     ),
@@ -48,8 +66,22 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
   GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
+  Future<void> loadInforAccount() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String inforAccountString = prefs.getString('Infor') ?? null;
+    if (inforAccountString != null)
+      Provider.of<AccountInf>(context, listen: false)
+          .setAcountInf(inforAccountString);
+  }
+
+  @override
+  void initState() {
+    loadInforAccount();
+    super.initState();
+  }
+
   void onItemTapped(int index) {
-    if (index == 1 && !context.read<User>().isAuthorization) {
+    if (index == 1 && !context.read<AccountInf>().isAuthorization()) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => SignIn(),
           settings: RouteSettings(name: "SignIn")));

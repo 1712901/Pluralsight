@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:Pluralsight/Page/Account/OTP.dart';
+import 'package:Pluralsight/models/Toast.dart';
+import 'package:Pluralsight/service/UserService.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPassword extends StatelessWidget {
@@ -75,17 +79,26 @@ class ForgotPassword extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 8.0),
                 child: SizedBox(
                     width: double.infinity,
-                    child: RaisedButton(
-                      color: Colors.blue[400],
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => OTP()));
-                      },
-                      child: Text(
-                        'Next',
-                        style: TextStyle(color: Colors.white),
+                    child: Builder(
+                      builder: (newContext) => RaisedButton(
+                        color: Colors.blue[400],
+                        onPressed: () async {
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => OTP()));
+                          if (emailController.text.isNotEmpty) {
+                            var res = await UserService.forgetPassword(
+                                email: emailController.text);
+                            Toast.show(
+                                context: newContext,
+                                content: jsonDecode(res.body)['message']);
+                          }
+                        },
+                        child: Text(
+                          'Send',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                     )),
               ),

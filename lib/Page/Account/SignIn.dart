@@ -1,10 +1,15 @@
+import 'dart:convert';
+
 import 'package:Pluralsight/Page/Account/ForgotPassword.dart';
 import 'package:Pluralsight/Page/Account/SignUp.dart';
 import 'package:Pluralsight/main.dart';
-import 'package:Pluralsight/models/HandleAdd2Channel.dart';
-import 'package:Pluralsight/models/User.dart';
+import 'package:Pluralsight/models/AccountInf.dart';
+import 'package:Pluralsight/models/Toast.dart';
+import 'package:Pluralsight/service/UserService.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -49,7 +54,7 @@ class _SignInState extends State<SignIn> {
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                     isDense: true,
-                    labelText: 'Username (or Email)',
+                    labelText: 'Email',
                     labelStyle: TextStyle(color: Colors.grey[600])),
               ),
               SizedBox(
@@ -87,17 +92,44 @@ class _SignInState extends State<SignIn> {
                 child: SizedBox(
                     width: double.infinity,
                     child: Builder(
-                                          builder:(newContext )=> RaisedButton(
+                      builder: (newContext) => RaisedButton(
                         color: Colors.blue[400],
-                        onPressed: () {
-                          if (context.read<User>().checkAuthorization(
-                              userName: userNameController.text,
-                              password: passwordController.text)) {
-                            Navigator.of(context, rootNavigator: true).push(
-                                MaterialPageRoute(builder: (context) => Home()));
-                                Scaffold.of(newContext).showSnackBar(SnackBar(content: Text('Login sucessfully')));
+                        onPressed: () async {
+                          String email = userNameController.text;
+                          String password = passwordController.text;
+                          if (email.isEmpty | password.isEmpty) {
+                            return;
+                          }
+
+                          var res = await UserService.login(
+                              email: email, password: password);
+                          if (res == null) {
+                            print('Error');
+                            return;
+                          }
+                          if (res.statusCode == 400) {
+                            Toast.show(
+                                context: newContext,
+                                content: (jsonDecode(res.body))['message']);
+                          } else if (res.statusCode == 403) {
+                            Toast.show(
+                                context: newContext,
+                                content: (jsonDecode(res.body))['message']);
+                          } else if (res.statusCode == 200) {
+                            Provider.of<AccountInf>(context, listen: false)
+                                .setAcountInf(res.body);
+                                //save data
+                            // final storage = new FlutterSecureStorage();
+                            // await storage.write(key: "token", value: "sdfsdfsd");
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            prefs.setString('Infor', res.body);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Home()));
                           } else {
-                            Scaffold.of(newContext).showSnackBar(SnackBar(content: Text('Login Falied')));
+                            print(res.body);
                           }
                         },
                         child: Text(
