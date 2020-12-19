@@ -9,17 +9,14 @@ String accountInfToJson(AccountInf data) => json.encode(data.toJson());
 
 class AccountInf extends ChangeNotifier {
   AccountInf({
-    this.message,
     this.userInfo,
     this.token,
   });
-  String message;
   UserInfo userInfo;
   String token;
 
   void setAcountInf(String body) {
     AccountInf accountInf = accountInfFromJson(body);
-    this.message = accountInf.message;
     this.userInfo = accountInf.userInfo;
     this.token = accountInf.token;
     notifyListeners();
@@ -30,13 +27,11 @@ class AccountInf extends ChangeNotifier {
   }
 
   factory AccountInf.fromJson(Map<String, dynamic> json) => AccountInf(
-        message: json["message"],
         userInfo: UserInfo.fromJson(json["userInfo"]),
         token: json["token"],
       );
 
   Map<String, dynamic> toJson() => {
-        "message": message,
         "userInfo": userInfo.toJson(),
         "token": token,
       };
@@ -45,8 +40,13 @@ class AccountInf extends ChangeNotifier {
     return this.token != null;
   }
 
-  void Logout() {
+  void logout() {
     this.token = null;
+    notifyListeners();
+  }
+
+  void setToken({String token}) {
+    this.token = token;
     notifyListeners();
   }
 }

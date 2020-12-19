@@ -55,16 +55,16 @@ class CoursesPage extends StatelessWidget {
               ],
             ),
           ),
-          Flexible(
-            child: ListView.builder(
-                itemCount: list.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: CourseListTitle(course: list[index],indexChannel: -1,),
-                  );
-                }),
-          )
+          // Flexible(
+          //   child: ListView.builder(
+          //       itemCount: list.length,
+          //       itemBuilder: (context, index) {
+          //         return Padding(
+          //           padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          //           child: CourseListTitle(course: list[index],indexChannel: -1,),
+          //         );
+          //       }),
+          // )
         ],
       ),
     );

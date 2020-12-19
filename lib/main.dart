@@ -1,7 +1,7 @@
+import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:Pluralsight/Page/Account/SignIn.dart';
-import 'package:Pluralsight/Page/CourseDetail.dart';
 import 'package:Pluralsight/Page/BrowsePage.dart';
 import 'package:Pluralsight/Page/DowloadPage.dart';
 import 'package:Pluralsight/Page/HomePage.dart';
@@ -10,13 +10,18 @@ import 'package:Pluralsight/models/Author.dart';
 import 'package:Pluralsight/models/CourseDetail.dart';
 import 'package:Pluralsight/models/CourseList.dart';
 import 'package:Pluralsight/models/DownloadModel.dart';
+import 'package:Pluralsight/models/FavoriteCourses.dart';
 import 'package:Pluralsight/models/MyChannelList.dart';
+import 'package:Pluralsight/models/Response/ResFavoriteCourses.dart';
 import 'package:Pluralsight/models/User.dart';
 import 'package:Pluralsight/models/AccountInf.dart';
+import 'package:Pluralsight/models/TopCourses.Dart';
+import 'package:Pluralsight/service/UserService.dart';
 import 'package:custom_navigator/custom_navigation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(
@@ -27,6 +32,12 @@ void main() {
         ),
         ChangeNotifierProvider(
           create: (_) => AccountInf(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => FavoriteCourses(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => TopCourses(),
         ),
         ChangeNotifierProvider(
           create: (_) => CourseListModel(),
@@ -67,11 +78,23 @@ class _HomeState extends State<Home> {
   GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   Future<void> loadInforAccount() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String inforAccountString = prefs.getString('Infor') ?? null;
-    if (inforAccountString != null)
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // String inforAccountString = prefs.getString('Infor') ?? null;
+    // if (inforAccountString != null)
+
+    final storage = new FlutterSecureStorage();
+    String valueToken = await storage.read(key: "token");
+    if (valueToken != null) {
       Provider.of<AccountInf>(context, listen: false)
-          .setAcountInf(inforAccountString);
+          .setToken(token: valueToken);
+      Response res = await UserService.getFavoriteCourses(token: valueToken);
+      if (res.statusCode == 200) {
+        ResFavoriteCourses resFavoriteCourses =
+            ResFavoriteCourses.fromJson(jsonDecode(res.body));
+        Provider.of<FavoriteCourses>(context, listen: false).setFavoriteCourses(
+            favoriteCourses: resFavoriteCourses.favoriteCourse);
+      }
+    }
   }
 
   @override

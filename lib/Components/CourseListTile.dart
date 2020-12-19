@@ -1,28 +1,33 @@
 import 'package:Pluralsight/Page/CourseDetail.dart';
+import 'package:Pluralsight/models/AccountInf.dart';
 import 'package:Pluralsight/models/Author.dart';
 import 'package:Pluralsight/models/Course.dart';
 import 'package:Pluralsight/models/CourseList.dart';
 import 'package:Pluralsight/models/DownloadModel.dart';
+import 'package:Pluralsight/models/FavoriteCourses.dart';
+import 'package:Pluralsight/models/Format.dart';
 import 'package:Pluralsight/models/HandleAdd2Channel.dart';
 import 'package:Pluralsight/models/MyChannelList.dart';
+import 'package:Pluralsight/models/Response/ResGetTopSell.dart';
 import 'package:Pluralsight/models/User.dart';
+import 'package:Pluralsight/service/CourseService.dart';
+import 'package:Pluralsight/service/UserService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 
 class CourseListTitle extends StatelessWidget {
-  final CourseModel course;
+  final CourseInfor course;
   final int indexChannel;
 
-  const CourseListTitle({Key key, this.course, this.indexChannel})
+  const CourseListTitle({Key key, this.course, this.indexChannel = -1})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    bool isLogin = Provider.of<User>(context, listen: false).isAuthorization;
-    final List<AuthorModel> authors =
-        Provider.of<AuthorsModel>(context, listen: false)
-            .getAllAuthor(course.ID);
+    bool islogin =
+        Provider.of<AccountInf>(context, listen: false).isAuthorization();
     return Container(
       decoration: BoxDecoration(
         border: Border(
@@ -43,29 +48,56 @@ class CourseListTitle extends StatelessWidget {
         leading: Container(
           width: 75,
           height: 75,
-          color: Colors.orange,
+          decoration: BoxDecoration(
+            color: Colors.grey[800],
+            image: DecorationImage(
+                image: NetworkImage(course.imageUrl), fit: BoxFit.cover),
+          ),
+          child: Consumer<FavoriteCourses>(
+            builder: (context, provider, _) => Align(
+              alignment: Alignment.topLeft,
+              child: provider.isFavorite(courseId: course.id) && islogin
+                  ? Icon(
+                      Icons.star,
+                      color: Colors.orange,
+                      size: 15,
+                    )
+                  : Container(),
+            ),
+          ),
         ),
         title: Text(
-          course.name,
+          course.title,
           style: TextStyle(color: Colors.white),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "${authors[0].name}" + "${authors.length > 1 ? ",+1" : ""}",
+              "${course.instructorUserName}",
               style: TextStyle(color: Colors.grey),
             ),
-            Text(
-              'Intermediate Feb_2019 9h35m',
-              style: TextStyle(color: Colors.grey),
-              overflow: TextOverflow.visible,
-              maxLines: 1,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  Format.getInstantDateFormat().format(course.updatedAt),
+                  style: TextStyle(color: Colors.grey),
+                  overflow: TextOverflow.visible,
+                  maxLines: 1,
+                ),
+                Text(
+                  Format.printDuration(course.totalHours),
+                  style: TextStyle(color: Colors.grey),
+                  overflow: TextOverflow.visible,
+                  maxLines: 1,
+                ),
+              ],
             ),
             Row(
               children: [
                 RatingBarIndicator(
-                  rating: course.rating,
+                  rating: course.ratedNumber * 1.0,
                   itemBuilder: (context, index) => Icon(
                     Icons.star,
                     //size: 15,
@@ -75,19 +107,14 @@ class CourseListTitle extends StatelessWidget {
                   itemSize: 15.0,
                   direction: Axis.horizontal,
                 ),
-                Text(
-                  '(${course.numberComment})',
-                  style: TextStyle(color: Colors.grey),
-                )
               ],
             )
           ],
         ),
         isThreeLine: true,
-        trailing: Consumer<DownloadModel>(
+        trailing: Consumer<FavoriteCourses>(
           builder: (context, provider, _) {
-            bool isDownload = provider.containsCourse(course.ID);
-
+            //bool isDownload = provider.containsCourse(course.ID);
             return PopupMenuButton(
                 offset: Offset(0, 35),
                 captureInheritedThemes: false,
@@ -95,34 +122,47 @@ class CourseListTitle extends StatelessWidget {
                   Icons.more_vert,
                   color: Colors.white,
                 ),
-                onSelected: (value) {
+                onSelected: (value) async {
                   switch (value) {
                     case 0:
-                      Provider.of<CourseListModel>(context, listen: false)
-                          .setBookmark(course.ID, !course.bookmark);
-                      break;
-                    case 1:
-                      HandleAdd2Channel.openDialog(context, course.ID);
-                      break;
-                    case 2:
-                      if (isLogin) {
-                        // Đã login
-                        if (!isDownload) {
-                          //Chưa download
-                          provider.downloadCourse(course);
-                          HandleAdd2Channel.showToast(context, "Downloading");
-                        } else if (isDownload) {
-                          //Remove download
-                          provider.removeCourse(course);
-                          HandleAdd2Channel.showToast(context, "Deleted");
+                      String token =
+                          Provider.of<AccountInf>(context, listen: false).token;
+                      if (token != null) {
+                        Response res = await UserService.likeCourse(
+                            token: token, courseId: course.id);
+                        if (res.statusCode == 200) {
+                          provider.likeCourse(courseInfor: course);
+                        } else if (res.statusCode == 401) {
+                          Provider.of<AccountInf>(context, listen: false)
+                              .logout();
+                          print('Chưa Đăng Nhập');
                         }
                       } else {
-                        HandleAdd2Channel.showToast(context, "Delete Failed");
+                        print('Chưa Đăng Nhập');
                       }
                       break;
+                    case 1:
+                      //HandleAdd2Channel.openDialog(context, course.ID);
+                      break;
+                    case 2:
+                      // if (isLogin) {
+                      //   // Đã login
+                      //   if (!isDownload) {
+                      //     //Chưa download
+                      //     provider.downloadCourse(course);
+                      //     HandleAdd2Channel.showToast(context, "Downloading");
+                      //   } else if (isDownload) {
+                      //     //Remove download
+                      //     provider.removeCourse(course);
+                      //     HandleAdd2Channel.showToast(context, "Deleted");
+                      //   }
+                      // } else {
+                      //   HandleAdd2Channel.showToast(context, "Delete Failed");
+                      // }
+                      break;
                     case 3:
-                      Provider.of<MyChannelListModel>(context, listen: false)
-                          .removeCourseInChannel(indexChannel, course.ID);
+                      // Provider.of<MyChannelListModel>(context, listen: false)
+                      //     .removeCourseInChannel(indexChannel, course.ID);
                       break;
                     default:
                   }
@@ -133,25 +173,22 @@ class CourseListTitle extends StatelessWidget {
                     PopupMenuItem(
                         value: 0,
                         child: Text(
-                          course.bookmark ? 'Unbookmark' : 'Bookmark',
+                          provider.isFavorite(courseId: course.id)
+                              ? 'Un like'
+                              : 'Like',
                         )),
                     PopupMenuItem(
                         value: 1,
-                        child: Text(
-                          'Add to channel',
-                        )),
-                    PopupMenuItem(
-                        value: 2,
                         child: Consumer<DownloadModel>(
                           builder: (context, provider, _) {
                             return Text(
-                              isDownload ? 'Remove Download' : 'Download',
-                            );
+                                //isDownload ? 'Remove Download' : 'Download',
+                                "Download");
                           },
                         )),
                     indexChannel >= 0
                         ? PopupMenuItem(
-                            value: 3,
+                            value: 2,
                             child: Text(
                               'Remove',
                             ))

@@ -1,11 +1,18 @@
+import 'dart:convert';
+
 import 'package:Pluralsight/Components/AppBar.dart';
 import 'package:Pluralsight/Components/Courses.dart';
 import 'package:Pluralsight/Components/RowCourse.dart';
 import 'package:Pluralsight/Components/RowPathView.dart';
 import 'package:Pluralsight/Page/MoreCourse.dart';
+import 'package:Pluralsight/models/AccountInf.dart';
 import 'package:Pluralsight/models/Course.dart';
 import 'package:Pluralsight/models/CourseList.dart';
+import 'package:Pluralsight/models/Response/ResGetTopSell.dart';
+import 'package:Pluralsight/service/CourseService.dart';
+import 'package:Pluralsight/service/UserService.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
@@ -54,27 +61,70 @@ class HomePage extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              RowCourse(
-                title: 'Software Development',
-                courses: Provider.of<CourseListModel>(context, listen: false)
-                    .getCoursesByCate(1),
+              FutureBuilder(
+                future: CourseService.getTopSell(limit: 4, page: 1),
+                builder: (context, snapshot) {
+                  if (snapshot.data != null) {
+                    Response response = snapshot.data;
+                    if (response.statusCode == 200) {
+                      ResGetTopCourse resGetTopSell =
+                          ResGetTopCourse.fromJson(jsonDecode(response.body));
+                      return RowCourse(
+                        title: 'Top sell',
+                        courses: resGetTopSell.courses,
+                        type: CourseService.TOP_SELL,
+                      );
+                    } else {
+                      return Container();
+                    }
+                  } else {
+                    return Container();
+                  }
+                },
               ),
-              RowCourse(
-                title: 'IT Operations',
-                courses: Provider.of<CourseListModel>(context, listen: false)
-                    .getCoursesByCate(2),
+              FutureBuilder(
+                future: CourseService.getTopNew(limit: 4, page: 1),
+                builder: (context, snapshot) {
+                  if (snapshot.data != null) {
+                    Response response = snapshot.data;
+                    if (response.statusCode == 200) {
+                      ResGetTopCourse resGetTopSell =
+                          ResGetTopCourse.fromJson(jsonDecode(response.body));
+                      return RowCourse(
+                        title: 'Top new',
+                        courses: resGetTopSell.courses,
+                        type: CourseService.TOP_NEW,
+                      );
+                    } else {
+                      return Container();
+                    }
+                  } else {
+                    return Container();
+                  }
+                },
               ),
-              RowCourse(
-                title: 'Data Professional',
-                courses: Provider.of<CourseListModel>(context, listen: false)
-                    .getCoursesByCate(3),
+              FutureBuilder(
+                future: CourseService.getTopRate(limit: 4, page: 1),
+                builder: (context, snapshot) {
+                  if (snapshot.data != null) {
+                    Response response = snapshot.data;
+                    if (response.statusCode == 200) {
+                      ResGetTopCourse resGetTopSell =
+                          ResGetTopCourse.fromJson(jsonDecode(response.body));
+                      return RowCourse(
+                        title: 'Top Rating',
+                        courses: resGetTopSell.courses,
+                        type: CourseService.TOP_RATE,
+                      );
+                    } else {
+                      return Container();
+                    }
+                  } else {
+                    return Container();
+                  }
+                },
               ),
-              RowCourse(
-                title: 'Security Professional',
-                courses: Provider.of<CourseListModel>(context, listen: false)
-                    .getCoursesByCate(4),
-              ),
-              RowPathView(title: 'My Channels')
+              Provider.of<AccountInf>(context).isAuthorization()? RowPathView(title: 'My Favorite'):Container()
             ],
           ),
         ),

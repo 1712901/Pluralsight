@@ -1,6 +1,5 @@
 import 'package:Pluralsight/Page/Account/SignIn.dart';
 import 'package:Pluralsight/models/AccountInf.dart';
-import 'package:Pluralsight/models/User.dart';
 import 'package:flutter/material.dart';
 import 'package:Pluralsight/Page/Account/Profile.Dart';
 import 'package:provider/provider.dart';

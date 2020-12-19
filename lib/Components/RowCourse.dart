@@ -1,13 +1,16 @@
 import 'package:Pluralsight/Components/Courses.dart';
 import 'package:Pluralsight/Page/MoreCourse.dart';
 import 'package:Pluralsight/models/Course.dart';
+import 'package:Pluralsight/models/Response/ResGetTopSell.dart';
+import 'package:Pluralsight/service/CourseService.dart';
 import 'package:flutter/material.dart';
 
 class RowCourse extends StatelessWidget {
   final String title;
-  final List<CourseModel> courses;
+  final List<CourseInfor> courses;
+  final int type;
 
-  const RowCourse({Key key, this.title, this.courses}) : super(key: key);
+  const RowCourse({Key key, this.title, this.courses,this.type}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +33,7 @@ class RowCourse extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) => MoreCourse(
                               title: title,
-                              courses: courses,
+                              type: type,
                             )));
               },
               icon: Text('see all'),

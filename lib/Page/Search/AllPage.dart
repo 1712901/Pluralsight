@@ -57,16 +57,16 @@ class _AllPageState extends State<AllPage> {
                   ],
                 ),
               ),
-              Column(
-                children: courses
-                    .sublist(0,
-                        courses.length <= numItems ? courses.length : numItems)
-                    .map((course) => CourseListTitle(
-                          course: course,
-                          indexChannel: -1,
-                        ))
-                    .toList(),
-              ),
+              // Column(
+              //   children: courses
+              //       .sublist(0,
+              //           courses.length <= numItems ? courses.length : numItems)
+              //       .map((course) => CourseListTitle(
+              //             course: course,
+              //             indexChannel: -1,
+              //           ))
+              //       .toList(),
+              // ),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: Row(

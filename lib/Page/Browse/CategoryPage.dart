@@ -105,14 +105,14 @@ class CategoryPage extends StatelessWidget {
                           );
                         }),
                   ),
-                  RowCourse(
-                    title: 'New in ${category.name}',
-                     courses: Provider.of<CourseListModel>(context,listen: false).getCoursesByCate(3)
-                  ),
-                  RowCourse(
-                    title: 'Trending in ${category.name}',
-                    courses: Provider.of<CourseListModel>(context,listen: false).getCoursesByCate(2),
-                  ),
+                  // RowCourse(
+                  //   title: 'New in ${category.name}',
+                  //    courses: Provider.of<CourseListModel>(context,listen: false).getCoursesByCate(3)
+                  // ),
+                  // RowCourse(
+                  //   title: 'Trending in ${category.name}',
+                  //   courses: Provider.of<CourseListModel>(context,listen: false).getCoursesByCate(2),
+                  // ),
                   SizedBox(
                     height: 10,
                   ),

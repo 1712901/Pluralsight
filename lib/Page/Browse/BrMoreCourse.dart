@@ -31,13 +31,13 @@ class BrMoreCourse extends StatelessWidget {
                   background: Image.asset('assets/images/background.jpg',
                       fit: BoxFit.cover)),
             ),
-            SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              sliver: SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                      (context, index) => CourseListTitle(course: courses[index],indexChannel: -1,),
-                      childCount: courses.length)),
-            )
+            // SliverPadding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 10),
+            //   sliver: SliverList(
+            //       delegate: SliverChildBuilderDelegate(
+            //           (context, index) => CourseListTitle(course: courses[index],indexChannel: -1,),
+            //           childCount: courses.length)),
+            // )
           ],
         ),
       ),

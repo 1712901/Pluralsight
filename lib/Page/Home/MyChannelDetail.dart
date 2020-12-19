@@ -110,11 +110,11 @@ class MyChanelDetail extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return Consumer<MyChannelListModel>(
                         builder: (context, provider, _) {
-                      return CourseListTitle(
-                        course: list.firstWhere(
-                            (cour) => cour.ID == channel.listIDCourse[index]),
-                        indexChannel: indexChannel,
-                      );
+                      // return CourseListTitle(
+                      //   course: list.firstWhere(
+                      //       (cour) => cour.ID == channel.listIDCourse[index]),
+                      //   indexChannel: indexChannel,
+                      // );
                     });
                   }),
             )

@@ -28,14 +28,14 @@ class SkillDetail extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RowCourse(
-                title: 'New in ${title}',
-                courses: courses,
-              ),
-              RowCourse(
-                title: 'Trending in ${title}',
-                courses: courses,
-              ),
+              // RowCourse(
+              //   title: 'New in ${title}',
+              //   courses: courses,
+              // ),
+              // RowCourse(
+              //   title: 'Trending in ${title}',
+              //   courses: courses,
+              // ),
               SizedBox(height: 10,),
               RowAuthorsView(
                 title: 'Top authors in Software Development',

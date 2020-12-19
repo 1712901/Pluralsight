@@ -7,6 +7,7 @@ import 'package:Pluralsight/models/DownloadModel.dart';
 import 'package:Pluralsight/models/HandleAdd2Channel.dart';
 import 'package:Pluralsight/models/LoadURL.dart';
 import 'package:Pluralsight/models/MyChannelList.dart';
+import 'package:Pluralsight/models/Response/ResGetTopSell.dart';
 import 'package:Pluralsight/models/User.dart';
 import 'package:android_intent/android_intent.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
@@ -20,7 +21,7 @@ import 'package:intent/extra.dart' as android_extra;
 import 'package:provider/provider.dart';
 
 class CourseDetail extends StatefulWidget {
-  final CourseModel course;
+  final CourseInfor course;
 
   const CourseDetail({Key key, this.course}) : super(key: key);
   @override
@@ -31,7 +32,7 @@ class _CourseDetailState extends State<CourseDetail>
     with TickerProviderStateMixin {
   TabController primaryTC;
   bool maxLine = true;
-  final CourseModel course;
+  final CourseInfor course;
 
   _CourseDetailState(this.course);
 
@@ -44,8 +45,9 @@ class _CourseDetailState extends State<CourseDetail>
   @override
   Widget build(BuildContext context) {
     final CourseDetailModel courseDetail =
-        Provider.of<CourseDetailListModel>(context,listen: false).getCourseDetail(course.ID);
-    
+        Provider.of<CourseDetailListModel>(context, listen: false)
+            .getCourseDetail(5);
+
     return SafeArea(
       child: ChangeNotifierProvider(
         create: (_) => LoadURL(url: courseDetail.urlCurrent),
@@ -193,8 +195,10 @@ class _CourseDetailState extends State<CourseDetail>
   }
 
   Widget headerSilverAppBar(
-      {bool maxline, CourseDetailModel courseDetail, CourseModel course}) {
-        final List<AuthorModel> authors=Provider.of<AuthorsModel>(context,listen: false).getAllAuthor(course.ID);
+      {bool maxline, CourseDetailModel courseDetail, CourseInfor course}) {
+    // final List<AuthorModel> authors =
+    //     Provider.of<AuthorsModel>(context, listen: false)
+    //         .getAllAuthor(course.ID);
     return Container(
       padding: EdgeInsets.only(top: 5.0, left: 5.0, right: 5.0),
       color: Colors.grey[800],
@@ -203,32 +207,36 @@ class _CourseDetailState extends State<CourseDetail>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            course.name,
+            course.title,
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
-          Container(
-            height: 50,
-            child: ListView.builder(
-              itemCount: authors.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-              return InkWell(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => AuthorDetail(author: authors[index],)));
-                },
-                child: Chip(
-                  padding: EdgeInsets.zero,
-                  avatar: ClipOval(
-                    child: Container(
-                      color: Colors.orange,
-                    ),
-                  ),
-                  label: Text(authors[index].name),
-                ),
-              );
-            }),
-          ),
+          // Container(
+          //   height: 50,
+          //   child: ListView.builder(
+          //       itemCount: authors.length,
+          //       scrollDirection: Axis.horizontal,
+          //       itemBuilder: (context, index) {
+          //         return InkWell(
+          //           onTap: () {
+          //             Navigator.push(
+          //                 context,
+          //                 MaterialPageRoute(
+          //                     builder: (context) => AuthorDetail(
+          //                           author: authors[index],
+          //                         )));
+          //           },
+          //           child: Chip(
+          //             padding: EdgeInsets.zero,
+          //             avatar: ClipOval(
+          //               child: Container(
+          //                 color: Colors.orange,
+          //               ),
+          //             ),
+          //             label: Text(authors[index].name),
+          //           ),
+          //         );
+          //       }),
+          // ),
           Row(
             children: [
               Text(
@@ -239,7 +247,7 @@ class _CourseDetailState extends State<CourseDetail>
                 width: 10,
               ),
               RatingBarIndicator(
-                rating: course.rating,
+                rating: (course.ratedNumber) * 1.0,
                 itemBuilder: (context, index) => Icon(
                   Icons.star,
                   color: Colors.amber,
@@ -248,45 +256,45 @@ class _CourseDetailState extends State<CourseDetail>
                 itemSize: 15.0,
                 direction: Axis.horizontal,
               ),
-              Text(
-                '(${course.numberComment})',
-                style: TextStyle(color: Colors.grey),
-              )
+              // Text(
+              //   '(${course.numberComment})',
+              //   style: TextStyle(color: Colors.grey),
+              // )
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Consumer<CourseListModel>(builder: (context, provider, _) {
-                return makeItemButton(
-                    icon: Icon(course.bookmark
-                        ? Icons.bookmark
-                        : Icons.bookmark_outline),
-                    title: course.bookmark ? 'Bookmarked' : 'Bookmark',
-                    opTap: () {
-                      provider.setBookmark(course.ID, !course.bookmark);
-                    });
-              }),
+              // Consumer<CourseListModel>(builder: (context, provider, _) {
+              //   return makeItemButton(
+              //       icon: Icon(course.bookmark
+              //           ? Icons.bookmark
+              //           : Icons.bookmark_outline),
+              //       title: course.bookmark ? 'Bookmarked' : 'Bookmark',
+              //       opTap: () {
+              //         provider.setBookmark(course.ID, !course.bookmark);
+              //       });
+              // }),
               makeItemButton(
                   icon: Icon(Icons.playlist_add),
                   title: 'Add to Channel',
                   opTap: () {
-                    print("Add to Channel");
-                    HandleAdd2Channel.openDialog(context, course.ID);
+                    // print("Add to Channel");
+                    // HandleAdd2Channel.openDialog(context, course.ID);
                   }),
               makeItemButton(
                   icon: Icon(Icons.arrow_circle_down),
                   title: 'Download',
                   opTap: () {
-                    print("Download");
-                    if (Provider.of<User>(context, listen: false)
-                        .isAuthorization) {
-                      Provider.of<DownloadModel>(context, listen: false)
-                          .downloadCourse(course);
-                      HandleAdd2Channel.showToast(context, "Downloading");
-                      return;
-                    }
-                    HandleAdd2Channel.showToast(context, "Dowload failed");
+                    // print("Download");
+                    // if (Provider.of<User>(context, listen: false)
+                    //     .isAuthorization) {
+                    //   Provider.of<DownloadModel>(context, listen: false)
+                    //       .downloadCourse(course);
+                    //   HandleAdd2Channel.showToast(context, "Downloading");
+                    //   return;
+                    // }
+                    // HandleAdd2Channel.showToast(context, "Dowload failed");
                   }),
             ],
           ),

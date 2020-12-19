@@ -119,11 +119,11 @@ class _SignInState extends State<SignIn> {
                             Provider.of<AccountInf>(context, listen: false)
                                 .setAcountInf(res.body);
                                 //save data
-                            // final storage = new FlutterSecureStorage();
-                            // await storage.write(key: "token", value: "sdfsdfsd");
-                            SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-                            prefs.setString('Infor', res.body);
+                            final storage = new FlutterSecureStorage();
+                            await storage.write(key: "token", value: jsonDecode(res.body)["token"]);
+                            // SharedPreferences prefs =
+                            //     await SharedPreferences.getInstance();
+                            // prefs.setString('Infor', res.body);
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(

@@ -159,19 +159,19 @@ class _AuthorDetailState extends State<AuthorDetail> {
                 'Courses',
                 style: TextStyle(color: Colors.white),
               ),
-              ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: author.courses.length,
-                  itemBuilder: (context, index) {
-                    return CourseListTitle(
-                      course: Provider.of<CourseListModel>(context)
-                          .couserList
-                          .firstWhere(
-                              (element) => author.courses[index] == element.ID),
-                      indexChannel: -1,
-                    );
-                  })
+              // ListView.builder(
+              //     physics: NeverScrollableScrollPhysics(),
+              //     shrinkWrap: true,
+              //     itemCount: author.courses.length,
+              //     itemBuilder: (context, index) {
+              //       return CourseListTitle(
+              //         course: Provider.of<CourseListModel>(context)
+              //             .couserList
+              //             .firstWhere(
+              //                 (element) => author.courses[index] == element.ID),
+              //         indexChannel: -1,
+              //       );
+              //     })
             ],
           ),
         ),

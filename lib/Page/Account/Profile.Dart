@@ -5,6 +5,7 @@ import 'package:Pluralsight/models/Response/ResGetProfile.dart';
 import 'package:Pluralsight/models/User.dart';
 import 'package:Pluralsight/service/UserService.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -156,12 +157,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: OutlineButton(
                             borderSide: BorderSide(color: Colors.blue),
                             onPressed: () async {
-                              //user.logout();
-                              SharedPreferences preferences =
-                                  await SharedPreferences.getInstance();
-                              await preferences.remove('Infor');
+                              final storage = new FlutterSecureStorage();
+                              await storage.delete(key: 'token');
                               Provider.of<AccountInf>(context, listen: false)
-                                  .Logout();
+                                  .logout();
                               Navigator.pop(context);
                             },
                             child: Text(

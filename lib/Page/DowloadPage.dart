@@ -41,15 +41,15 @@ class _DownLoadsPageState extends State<DownLoadsPage> {
                     ],
                   ),
                 ),
-                Flexible(
-                    child: ListView.builder(
-                        itemCount: provider.courses.length,
-                        itemBuilder: (context, index) {
-                          return CourseListTitle(
-                            course: provider.courses[index],
-                            indexChannel: -1,
-                          );
-                        })),
+                // Flexible(
+                //     child: ListView.builder(
+                //         itemCount: provider.courses.length,
+                //         itemBuilder: (context, index) {
+                //           return CourseListTitle(
+                //             course: provider.courses[index],
+                //             indexChannel: -1,
+                //           );
+                //         })),
               ],
             );
           })),

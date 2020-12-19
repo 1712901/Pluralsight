@@ -1,26 +1,26 @@
 import 'dart:convert';
 
-ResGetProfile resGetProfileFromJson(String str) => ResGetProfile.fromJson(json.decode(str));
+ResGetTopCourse resResGetTopCourseFromJson(String str) => ResGetTopCourse.fromJson(json.decode(str));
 
-String resGetProfileToJson(ResGetProfile data) => json.encode(data.toJson());
+String resResGetTopCourseToJson(ResGetTopCourse data) => json.encode(data.toJson());
 
-class ResGetProfile {
-    ResGetProfile({
+class ResGetTopCourse {
+    ResGetTopCourse({
         this.message,
-        this.payload,
+        this.courses,
     });
 
     String message;
-    List<CourseInfor> payload;
+    List<CourseInfor> courses;
 
-    factory ResGetProfile.fromJson(Map<String, dynamic> json) => ResGetProfile(
+    factory ResGetTopCourse.fromJson(Map<String, dynamic> json) => ResGetTopCourse(
         message: json["message"],
-        payload: List<CourseInfor>.from(json["payload"].map((x) => CourseInfor.fromJson(x))),
+        courses: List<CourseInfor>.from(json["payload"].map((x) => CourseInfor.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
         "message": message,
-        "payload": List<dynamic>.from(payload.map((x) => x.toJson())),
+        "payload": List<dynamic>.from(courses.map((x) => x.toJson())),
     };
 }
 

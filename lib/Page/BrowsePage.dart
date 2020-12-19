@@ -214,7 +214,7 @@ class BrowsePase extends StatelessWidget {
                       );
                     }),
               ),
-              RowCourse(title: 'Trending',courses: Provider.of<CourseListModel>(context).findByTag('Java'),),
+              //RowCourse(title: 'Trending',courses: Provider.of<CourseListModel>(context).findByTag('Java'),),
               SizedBox(
                 height: 15,
               ),
