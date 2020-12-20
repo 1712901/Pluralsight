@@ -94,22 +94,6 @@ class _MoreCourseState extends State<MoreCourse> {
         //         );
         //       }
         //     })
-
-        // body: Padding(
-        //   padding: const EdgeInsets.symmetric(horizontal: 10),
-        //   child: list.length > 0
-        //       ? ListView.builder(
-        //           controller: controller,
-        //           itemBuilder: (context, index) {
-        //             return CourseListTitle(
-        //               course: list[index],
-        //               indexChannel: -1,
-        //             );
-        //           },
-        //           itemCount: list.length,
-        //         )
-        //       : Center(child: new CircularProgressIndicator()),
-        // )
         body: Consumer<TopCourses>(builder: (context, provider, _) {
           List<CourseInfor> list = provider.getTopCourse(type: widget.type);
           return Padding(

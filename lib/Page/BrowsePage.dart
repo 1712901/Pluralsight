@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:Pluralsight/Components/AppBar.dart';
 import 'package:Pluralsight/Components/RowCourse.dart';
 import 'package:Pluralsight/Components/RowPathView.dart';
@@ -8,28 +10,24 @@ import 'package:Pluralsight/Page/Browse/PathsPage.dart';
 import 'package:Pluralsight/Page/Browse/RowAuthorsView.dart';
 import 'package:Pluralsight/Page/Browse/SkillDetail.dart';
 import 'package:Pluralsight/Page/PathDetail.dart';
+import 'package:Pluralsight/models/AccountInf.dart';
 import 'package:Pluralsight/models/Author.dart';
+import 'package:Pluralsight/models/Response/ResGetAllCategory.dart';
+import 'package:Pluralsight/service/CategoryService.dart';
+import 'package:Pluralsight/service/CourseService.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:Pluralsight/models/CourseList.dart';
 
 class BrowsePase extends StatelessWidget {
-  final List<Category> category = [
-    Category(
-        image: "assets/images/DownloadPage/category1.jpg", title: "CONFERENCES",name: "Conferences"),
-    Category(image: "assets/images/DownloadPage/category3.jpg", title: "IT OPS",name: "IT Ops"),
-    Category(
-        image: "assets/images/DownloadPage/category2.jpg",
-        title: "CERTIFICATIONS",name: "Certifications"),
-    Category(
-        image: "assets/images/DownloadPage/category4.jpg",
-        title: "DATA\nPROFESSIONAL",name: "Data Professional"),
-    Category(
-        image: "assets/images/DownloadPage/category4.jpg",
-        title: "CREATIVE\nPROFESSIONAL",name: "Creative Professsional"),
-    Category(
-        image: "assets/images/DownloadPage/category1.jpg",
-        title: "DESIGN\nPATTERNS",name: "Design Patterns"),
+  final List<String> categoryImg = [
+    "assets/images/DownloadPage/category1.jpg",
+    "assets/images/DownloadPage/category2.jpg",
+    "assets/images/DownloadPage/category3.jpg",
+    "assets/images/DownloadPage/category4.jpg",
+    "assets/images/DownloadPage/category4.jpg",
+    "assets/images/DownloadPage/category1.jpg",
   ];
   final List<String> skills = [
     'C++',
@@ -51,7 +49,7 @@ class BrowsePase extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black87,
-      appBar: myAppbar(title: 'Browse',context: context),
+      appBar: myAppbar(title: 'Browse', context: context),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -63,9 +61,10 @@ class BrowsePase extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              BrMoreCourse(title: 'NEW RELEASES',
-                              courses: Provider.of<CourseListModel>(context,listen: false).getCoursesByCate(2),)));
+                          builder: (context) => BrMoreCourse(
+                                title: 'NEW RELEASES',
+                                type: CourseService.TOP_NEW,
+                              )));
                 },
                 child: Container(
                   margin: EdgeInsets.only(bottom: 8.0),
@@ -98,12 +97,18 @@ class BrowsePase extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
+                  if (!Provider.of<AccountInf>(context, listen: false)
+                      .isAuthorization()) {
+                    print("Chưa đăng nhập");
+                    return;
+                  }
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              BrMoreCourse(title: 'RECOMMENDED FOR YOU',
-                              courses: Provider.of<CourseListModel>(context,listen: false).getCoursesByCate(1),)));
+                          builder: (context) => BrMoreCourse(
+                                title: 'RECOMMENDED FOR YOU',
+                                type: -1,
+                              )));
                 },
                 child: Container(
                   margin: EdgeInsets.only(bottom: 8.0),
@@ -133,52 +138,83 @@ class BrowsePase extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
-                height: 200,
-                child: GridView.count(
-                  scrollDirection: Axis.horizontal,
-                  crossAxisCount: 2,
-                  childAspectRatio: 2 / 3,
-                  children: category.map((item) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GridTile(
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => CategoryPage(
-                                          category: item,
-                                        )));
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage('${item.image}'),
-                                    fit: BoxFit.cover)),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  gradient: LinearGradient(colors: [
-                                Colors.black.withOpacity(0.5),
-                                Colors.black.withOpacity(0.5)
-                              ])),
-                              child: Align(
-                                  child: Text(
-                                '${item.title}',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              )),
-                            ),
+              FutureBuilder(
+                  future: CategoryService.getAll(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      Response res = snapshot.data;
+                      ResGetAllCategory resGetAllCategory;
+                      if (res.statusCode == 200) {
+                        resGetAllCategory =
+                            ResGetAllCategory.fromJson(jsonDecode(res.body));
+                        return Container(
+                          height: 200,
+                          child: GridView.count(
+                            scrollDirection: Axis.horizontal,
+                            crossAxisCount: 2,
+                            childAspectRatio: 2 / 3,
+                            children: resGetAllCategory.category
+                                .asMap()
+                                .map((index, item) {
+                                  return MapEntry(
+                                      index,
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: GridTile(
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) => CategoryPage(
+                                                            category: item,
+                                                            image: 'assets/images/DownloadPage/category${index % 4 + 1}.jpg',
+                                                          )));
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: AssetImage(
+                                                          'assets/images/DownloadPage/category${index % 4 + 1}.jpg'),
+                                                      fit: BoxFit.cover)),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    gradient:
+                                                        LinearGradient(colors: [
+                                                  Colors.black.withOpacity(0.5),
+                                                  Colors.black.withOpacity(0.5)
+                                                ])),
+                                                child: Align(
+                                                    child: Text(
+                                                  '${item.name}',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                  textAlign: TextAlign.center,
+                                                )),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ));
+                                })
+                                .values
+                                .toList(),
                           ),
+                        );
+                      } else {
+                        return Container();
+                      }
+                    } else {
+                      return Container(
+                        height: 200,
+                        child: Center(
+                          child: CircularProgressIndicator(),
                         ),
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ),
+                      );
+                    }
+                  }),
               SizedBox(
                 height: 15,
               ),
@@ -230,9 +266,3 @@ class BrowsePase extends StatelessWidget {
   }
 }
 
-class Category {
-  String name;
-  String image;
-  String title;
-  Category({this.name, this.image, this.title});
-}

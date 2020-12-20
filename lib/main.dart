@@ -22,6 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
+import 'package:video_player/video_player.dart';
 
 void main() {
   runApp(
@@ -78,10 +79,6 @@ class _HomeState extends State<Home> {
   GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   Future<void> loadInforAccount() async {
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
-    // String inforAccountString = prefs.getString('Infor') ?? null;
-    // if (inforAccountString != null)
-
     final storage = new FlutterSecureStorage();
     String valueToken = await storage.read(key: "token");
     if (valueToken != null) {

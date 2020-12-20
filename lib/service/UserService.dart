@@ -19,8 +19,9 @@ class UserService {
   static String _urlForgetPass = _API_HOST + "/user/forget-pass/send-email";
   static String _urlGetProfile = _API_HOST + "/user/me";
   static String _urlLikeCourse = _API_HOST + "/user/like-course";
-  static String _urlGetFavoriteCourses = _API_HOST + "/user/get-favorite-courses";
-
+  static String _urlGetFavoriteCourses =
+      _API_HOST + "/user/get-favorite-courses";
+  static String _urlRecommend = _API_HOST + "/user/recommend-course";
 
   static Future<http.Response> registerAccount(
       {String username, String email, String phone, String password}) async {
@@ -96,14 +97,20 @@ class UserService {
         }));
   }
 
-  static Future<http.Response> getFavoriteCourses(
-      {String token}) async {
+  static Future<http.Response> getFavoriteCourses({String token}) async {
     return await http.get(
       _urlGetFavoriteCourses,
       headers: {
         'Content-type': 'application/json',
         'Authorization': 'Bearer ' + token,
       },
+    );
+  }
+
+  static Future<http.Response> getRecommendCourses(
+      {String idUser, int limit, int offset}) async {
+    return await http.get(
+      "${_urlRecommend}/${idUser}/${limit}/${offset}",
     );
   }
 }

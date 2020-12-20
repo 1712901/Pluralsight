@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:Pluralsight/models/SearchMode.dart';
 import 'package:http/http.dart' as http;
 
 class CourseService {
@@ -16,6 +17,7 @@ class CourseService {
   static String _urlTopSell = API_HOST + "/course/top-sell";
   static String _urlTopNew = API_HOST + "/course/top-new";
   static String _urlTopRate = API_HOST + "/course/top-rate";
+  static String _urlSearch = API_HOST + "/course/search";
 
   static Future<http.Response> getTopSell({int limit, int page}) async {
     try {
@@ -53,5 +55,13 @@ class CourseService {
     if (type == TOP_RATE) return getTopRate(limit: limit, page: page);
     if (type == TOP_SELL) return getTopSell(limit: limit, page: page);
     return null;
+  }
+
+  static Future<http.Response> search(
+      {String keyword, Opt opt, int limit, int offset}) async {
+    return await http.post(_urlSearch,
+        headers: {'Content-type': 'application/json'},
+        body: jsonEncode(Search(keyword: keyword, opt: opt, limit: limit, offset: offset)
+            .toJson()));
   }
 }

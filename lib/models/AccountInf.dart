@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:Pluralsight/models/Response/ResGetTopSell.dart';
 import 'package:flutter/cupertino.dart';
 
 AccountInf accountInfFromJson(String str) =>
@@ -14,6 +15,8 @@ class AccountInf extends ChangeNotifier {
   });
   UserInfo userInfo;
   String token;
+  List<CourseInfor> recommendCourse = [];
+  int offset = 0;
 
   void setAcountInf(String body) {
     AccountInf accountInf = accountInfFromJson(body);
@@ -42,11 +45,24 @@ class AccountInf extends ChangeNotifier {
 
   void logout() {
     this.token = null;
+
+    this.recommendCourse.clear();
+    offset = 0;
     notifyListeners();
   }
 
   void setToken({String token}) {
     this.token = token;
+    notifyListeners();
+  }
+
+  List<CourseInfor> getRecommendCourse() {
+    return this.recommendCourse;
+  }
+
+  void setCommendCourse({List<CourseInfor> course, int offset}) {
+    this.recommendCourse.addAll(course);
+    this.offset = offset;
     notifyListeners();
   }
 }

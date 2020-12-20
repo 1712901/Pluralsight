@@ -1,18 +1,26 @@
+import 'dart:convert';
+
+import 'package:Pluralsight/Components/CourseListTile.dart';
 import 'package:Pluralsight/Components/RowCourse.dart';
 import 'package:Pluralsight/Components/RowPathView.dart';
 import 'package:Pluralsight/Page/Browse/SkillDetail.dart';
 import 'package:Pluralsight/models/Author.dart';
 import 'package:Pluralsight/models/CourseList.dart';
+import 'package:Pluralsight/models/Response/ResGetAllCategory.dart';
+import 'package:Pluralsight/models/Response/ResGetTopSell.dart';
+import 'package:Pluralsight/models/Response/ResSearch.dart';
+import 'package:Pluralsight/service/CategoryService.dart';
 import 'package:flutter/material.dart';
-import 'package:Pluralsight/Page/BrowsePage.dart';
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 
 import 'RowAuthorsView.dart';
 
 class CategoryPage extends StatelessWidget {
   final Category category;
+  final String image;
 
-  CategoryPage({Key key, this.category}) : super(key: key);
+  CategoryPage({Key key, this.category, this.image}) : super(key: key);
   final List<String> skills = [
     'C++',
     'javaScrip',
@@ -52,7 +60,7 @@ class CategoryPage extends StatelessWidget {
               background: Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage(category.image), fit: BoxFit.cover),
+                      image: AssetImage(image), fit: BoxFit.cover),
                 ),
                 child: Container(
                   decoration: BoxDecoration(
@@ -68,62 +76,32 @@ class CategoryPage extends StatelessWidget {
           ),
           SliverPadding(
             padding: EdgeInsets.all(10.0),
-            sliver: SliverFillRemaining(
-              hasScrollBody: false,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${category.name} Skill',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  Container(
-                    height: 50,
-                    child: ListView.builder(
-                        itemCount: skills.length,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 5.0),
-                            child: GestureDetector(
-                              onTap: () {
-                                print(skills[index].toString());
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => SkillDetail(
-                                              title: skills[index].toString(),
-                                            )));
-                              },
-                              child: Chip(
-                                  backgroundColor: Colors.grey[800],
-                                  label: Text(
-                                    '${skills[index]}',
-                                    style: TextStyle(color: Colors.white),
-                                  )),
-                            ),
-                          );
-                        }),
-                  ),
-                  // RowCourse(
-                  //   title: 'New in ${category.name}',
-                  //    courses: Provider.of<CourseListModel>(context,listen: false).getCoursesByCate(3)
-                  // ),
-                  // RowCourse(
-                  //   title: 'Trending in ${category.name}',
-                  //   courses: Provider.of<CourseListModel>(context,listen: false).getCoursesByCate(2),
-                  // ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  RowAuthorsView(
-                    title: 'Top authors in Software Development',
-                    authors: Provider.of<AuthorsModel>(context).authors,
-                  )
-                ],
-              ),
-            ),
+            sliver: FutureBuilder(
+                future: CategoryService.getCourseByCategory(
+                    courseId: category.id),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    Response res = snapshot.data;
+                    ResSearch resSearch =
+                        ResSearch.fromJson(jsonDecode(res.body));
+                    print(resSearch.payload.count);
+                    List<CourseInfor> courses = resSearch.payload.courses;
+                    return SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                            (context, index) => CourseListTitle(
+                                  course: courses[index],
+                                ),
+                            childCount: courses.length));
+                  } else {
+                    return SliverFillRemaining(
+                                          child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
+                }),
           ),
+    
         ],
       ),
     );

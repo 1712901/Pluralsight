@@ -51,7 +51,7 @@ class CourseListTitle extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.grey[800],
             image: DecorationImage(
-                image: NetworkImage(course.imageUrl), fit: BoxFit.cover),
+                image: (course.imageUrl!=null)? NetworkImage(course.imageUrl):AssetImage('assets/images/DownloadPage/category1.jpg'), fit: BoxFit.cover),
           ),
           child: Consumer<FavoriteCourses>(
             builder: (context, provider, _) => Align(
@@ -74,8 +74,9 @@ class CourseListTitle extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "${course.instructorUserName}",
+              "${course.instructorUserName!=null?course.instructorUserName:course.status.toLowerCase()}",
               style: TextStyle(color: Colors.grey),
+              maxLines: 1,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
