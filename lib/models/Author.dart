@@ -16,7 +16,7 @@ class AuthorsModel {
       10,
       (index) => new AuthorModel(
           id: index,
-          name: "Author ${index}",
+          name: "Author ${index} ,jhbkjh hjjk nbhhj ",
           description:
               "Otherwise, the widget has a child but no height, no width, no constraints, and no alignment, and the Container passes the constraints from the parent to the child and sizes itself to match the child.Otherwise, the widget has a child but no height, no width, no constraints, and no alignment, and the Container passes the constraints from the parent to the child and sizes itself to match the child.",
           courses:

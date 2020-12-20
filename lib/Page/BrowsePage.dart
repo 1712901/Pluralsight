@@ -216,48 +216,12 @@ class BrowsePase extends StatelessWidget {
                     }
                   }),
               SizedBox(
-                height: 15,
-              ),
-              Text(
-                'Popular Skill',
-                style: TextStyle(color: Colors.white),
-              ),
-              Container(
-                height: 50,
-                child: ListView.builder(
-                    itemCount: skills.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 5.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            print(skills[index].toString());
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SkillDetail(
-                                          title: skills[index].toString(),
-                                        )));
-                          },
-                          child: Chip(
-                              backgroundColor: Colors.grey[800],
-                              label: Text(
-                                '${skills[index]}',
-                                style: TextStyle(color: Colors.white),
-                              )),
-                        ),
-                      );
-                    }),
-              ),
-              //RowCourse(title: 'Trending',courses: Provider.of<CourseListModel>(context).findByTag('Java'),),
-              SizedBox(
-                height: 15,
+                height: 10,
               ),
               RowAuthorsView(
-                title: 'Top auhors',
-                authors: Provider.of<AuthorsModel>(context).authors,
-              ),
+                  title: 'Instructors',
+                  authors: Provider.of<AuthorsModel>(context).authors,
+                ),
             ],
           ),
         ),

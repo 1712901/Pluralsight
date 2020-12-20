@@ -110,7 +110,7 @@ class UserService {
   static Future<http.Response> getRecommendCourses(
       {String idUser, int limit, int offset}) async {
     return await http.get(
-      "${_urlRecommend}/${idUser}/${limit}/${offset}",
+      "$_urlRecommend/$idUser/$limit/$offset",
     );
   }
 }

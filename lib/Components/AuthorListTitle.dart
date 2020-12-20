@@ -11,8 +11,8 @@ Widget authorListTitle(BuildContext context,AuthorModel author) {
     ))),
     child: ListTile(
       onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => AuthorDetail(author: author,)));
+        // Navigator.push(
+        //     context, MaterialPageRoute(builder: (context) => AuthorDetail(author: author,)));
       },
       contentPadding: EdgeInsets.symmetric(horizontal: 0),
       title: Text(

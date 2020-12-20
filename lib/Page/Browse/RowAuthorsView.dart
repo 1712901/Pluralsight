@@ -1,14 +1,19 @@
+import 'dart:convert';
+
 import 'package:Pluralsight/Page/AuthorDetail.dart';
 import 'package:Pluralsight/Page/Search/AuthourPage.dart';
 import 'package:Pluralsight/models/Author.dart';
+import 'package:Pluralsight/models/Response/ResGetIntructor.dart';
+import 'package:Pluralsight/service/IntructorService.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 
 class RowAuthorsView extends StatelessWidget {
   final String title;
   final List<AuthorModel> authors;
 
-  const RowAuthorsView({Key key, this.title,this.authors}) : super(key: key);
+  const RowAuthorsView({Key key, this.title, this.authors}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -18,58 +23,81 @@ class RowAuthorsView extends StatelessWidget {
           title,
           style: TextStyle(color: Colors.white),
         ),
-        Container(
-          height: 150,
-          child: ListView.builder(
-              itemCount: authors.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AuthorDetail(author: authors[index],)));
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 75,
-                          child: ClipOval(
-                            child: AspectRatio(
-                              aspectRatio: 1 / 1,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.orange,
-                                ),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      gradient: LinearGradient(colors: [
-                                    Colors.black.withOpacity(0.3),
-                                    Colors.black.withOpacity(0.3),
-                                  ])),
+        SizedBox(
+          height: 10,
+        ),
+        FutureBuilder(
+            future: InstructorService.getInstructor(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                Response res = snapshot.data;
+                if (res.statusCode == 200) {
+                  ResGetIntructor resGetIntructor =
+                      ResGetIntructor.fromJson(jsonDecode(res.body));
+                  List<Intructor> intructors = resGetIntructor.intructor;
+                  return Container(
+                    height: 230,
+                    child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          childAspectRatio: 2.2 / 1.5, crossAxisCount: 2),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: intructors.length,
+                      itemBuilder: (context, index) => InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AuthorDetail(
+                                        instructorId: resGetIntructor.intructor[index].id,
+                                      )));
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(right: 10),
+                              child: ClipOval(
+                                child: AspectRatio(
+                                  aspectRatio: 1 / 1,
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image: NetworkImage(
+                                                  intructors[index].userAvatar),
+                                              fit: BoxFit.cover)),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            gradient: LinearGradient(colors: [
+                                          Colors.black.withOpacity(0.3),
+                                          Colors.black.withOpacity(0.3),
+                                        ])),
+                                      ),
+                                    ),
                                 ),
                               ),
                             ),
-                          ),
-                        ),
-                        Container(
-                            width: 75,
-                            child: Text(
-                              authors[index].name,
+                            Container(
+                                child: Text(
+                              intructors[index].userName,
                               style: TextStyle(color: Colors.white),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
                               textAlign: TextAlign.center,
                             ))
-                      ],
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
+                  );
+                } else {
+                  print("error");
+                  return Container();
+                }
+              } else {
+                return Center(
+                  child: CircularProgressIndicator(),
                 );
-              }),
-        ),
+              }
+            })
       ],
     );
   }
