@@ -3,11 +3,12 @@ import 'package:Pluralsight/Components/CourseListTile.dart';
 import 'package:Pluralsight/Components/PathListTitle.dart';
 import 'package:Pluralsight/models/Author.dart';
 import 'package:Pluralsight/models/Course.dart';
+import 'package:Pluralsight/models/Response/ResGetTopSell.dart';
 import 'package:flutter/material.dart';
 
 class AllPage extends StatefulWidget {
   final Function(int index) funCallBack;
-  final List<CourseModel> courses;
+  final List<CourseInfor> courses;
   final List<AuthorModel> authors;
 
   AllPage({this.funCallBack, this.courses,this.authors});
@@ -22,7 +23,7 @@ class _AllPageState extends State<AllPage> {
   final Function(int index) funCallBack;
   _AllPageState({this.funCallBack, this.courses,this.authors});
   final int numItems = 4;
-  final List<CourseModel> courses;
+  final List<CourseInfor> courses;
   final List<AuthorModel> authors;
 
   @override
@@ -57,16 +58,15 @@ class _AllPageState extends State<AllPage> {
                   ],
                 ),
               ),
-              // Column(
-              //   children: courses
-              //       .sublist(0,
-              //           courses.length <= numItems ? courses.length : numItems)
-              //       .map((course) => CourseListTitle(
-              //             course: course,
-              //             indexChannel: -1,
-              //           ))
-              //       .toList(),
-              // ),
+              Column(
+                children: courses
+                    .sublist(0,
+                        courses.length <= numItems ? courses.length : numItems)
+                    .map((course) => CourseListTitle(
+                          course: course,
+                        ))
+                    .toList(),
+              ),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: Row(

@@ -13,6 +13,7 @@ import 'package:Pluralsight/models/DownloadModel.dart';
 import 'package:Pluralsight/models/FavoriteCourses.dart';
 import 'package:Pluralsight/models/MyChannelList.dart';
 import 'package:Pluralsight/models/Response/ResFavoriteCourses.dart';
+import 'package:Pluralsight/models/SearchBuilder/SearchOption.dart';
 import 'package:Pluralsight/models/User.dart';
 import 'package:Pluralsight/models/AccountInf.dart';
 import 'package:Pluralsight/models/TopCourses.Dart';
@@ -39,6 +40,9 @@ void main() {
         ),
         ChangeNotifierProvider(
           create: (_) => TopCourses(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => SearchOption(),
         ),
         ChangeNotifierProvider(
           create: (_) => CourseListModel(),
@@ -127,7 +131,9 @@ class _HomeState extends State<Home> {
     return Scaffold(
       backgroundColor: Colors.black87,
       body: CustomNavigator(
-        home: optionSlected[_selectedIndex],
+        home: ChangeNotifierProvider(
+          create: (context)=>SearchOption(),
+          child: optionSlected[_selectedIndex]),
         navigatorKey: navigatorKey,
         pageRoute: PageRoutes.cupertinoPageRoute,
       ),

@@ -42,13 +42,14 @@ class Opt {
 
     Sort sort;
     List<String> category;
-    List<Price> time;
+    List<Time> time;
     List<Price> price;
+    
 
     factory Opt.fromJson(Map<String, dynamic> json) => Opt(
         sort: Sort.fromJson(json["sort"]),
         category: List<String>.from(json["category"].map((x) => x)),
-        time: List<Price>.from(json["time"].map((x) => Price.fromJson(x))),
+        time: List<Time>.from(json["time"].map((x) => Price.fromJson(x))),
         price: List<Price>.from(json["price"].map((x) => Price.fromJson(x))),
     );
 
@@ -70,6 +71,25 @@ class Price {
     int min;
 
     factory Price.fromJson(Map<String, dynamic> json) => Price(
+        max: json["max"],
+        min: json["min"] == null ? null : json["min"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "max": max,
+        "min": min == null ? null : min,
+    };
+}
+class Time {
+    Time({
+        this.max,
+        this.min,
+    });
+
+    int max;
+    int min;
+
+    factory Time.fromJson(Map<String, dynamic> json) => Time(
         max: json["max"],
         min: json["min"] == null ? null : json["min"],
     );

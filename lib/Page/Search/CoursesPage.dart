@@ -1,9 +1,10 @@
 import 'package:Pluralsight/Components/CourseListTile.dart';
 import 'package:Pluralsight/models/Course.dart';
+import 'package:Pluralsight/models/Response/ResGetTopSell.dart';
 import 'package:flutter/material.dart';
 
 class CoursesPage extends StatelessWidget {
-  final List<CourseModel> list;
+  final List<CourseInfor> list;
 
   const CoursesPage({Key key, this.list}) : super(key: key);
   @override
@@ -55,16 +56,16 @@ class CoursesPage extends StatelessWidget {
               ],
             ),
           ),
-          // Flexible(
-          //   child: ListView.builder(
-          //       itemCount: list.length,
-          //       itemBuilder: (context, index) {
-          //         return Padding(
-          //           padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          //           child: CourseListTitle(course: list[index],indexChannel: -1,),
-          //         );
-          //       }),
-          // )
+          Flexible(
+            child: ListView.builder(
+                itemCount: list.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: CourseListTitle(course: list[index],),
+                  );
+                }),
+          )
         ],
       ),
     );
