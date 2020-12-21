@@ -1,9 +1,10 @@
 import 'package:Pluralsight/Components/AuthorListTitle.dart';
 import 'package:Pluralsight/models/Author.dart';
+import 'package:Pluralsight/models/Response/ResSearchV2.dart';
 import 'package:flutter/material.dart';
 
 class AuthourPage extends StatelessWidget {
-  final List<AuthorModel> authors;
+  final List<InstructorSearchV2> authors;
 
   const AuthourPage({Key key, this.authors}) : super(key: key);
   @override

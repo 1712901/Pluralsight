@@ -10,7 +10,9 @@ import 'package:Pluralsight/models/Course.dart';
 import 'package:Pluralsight/models/CourseList.dart';
 import 'package:Pluralsight/models/Response/ResGetAllCategory.dart';
 import 'package:Pluralsight/models/Response/ResGetTopSell.dart';
+import 'package:Pluralsight/models/Response/ResHistory.dart';
 import 'package:Pluralsight/models/Response/ResSearch.dart';
+import 'package:Pluralsight/models/Response/ResSearchV2.dart';
 import 'package:Pluralsight/models/SearchBuilder/PriceOption.dart';
 import 'package:Pluralsight/models/SearchBuilder/SearchOption.dart';
 import 'package:Pluralsight/models/SearchBuilder/TimeOption.dart';
@@ -52,6 +54,7 @@ class _SearchPageState extends State<SearchPage>
 
   final List<String> listTile = ['ALL', 'COURSES', 'AUTHOURS'];
   List<CourseInfor> courses = [];
+  List<InstructorSearchV2> instructors = [];
   List<Time> timeOption = [];
   List<Price> priceOption = [];
 
@@ -144,12 +147,12 @@ class _SearchPageState extends State<SearchPage>
             _tabController.animateTo(index);
           },
           courses: list,
-          authors: authors,
+          authors: instructors,
         ),
         CoursesPage(
           list: list,
         ),
-        AuthourPage(authors: authors),
+        AuthourPage(authors: instructors),
       ],
     );
   }
@@ -193,53 +196,84 @@ class _SearchPageState extends State<SearchPage>
       isloading = true;
       findkey = false;
     });
-    print(text);
-    Response res = await CourseService.search(
-        keyword: text,
-        opt: Opt(
-            sort: Sort(attribute: "price", rule: "ASC"),
-            category: catrgory,
-            time: time,
-            price: price));
-    if (res.statusCode == 200) {
-      ResSearch resSearch = ResSearch.fromJson(jsonDecode(res.body));
-      courses = resSearch.payload.courses;
-      print(courses.length);
+    if (!islogin) {
+      // dùng Search
+      Response res = await CourseService.search(
+          keyword: text,
+          opt: Opt(
+              sort: Sort(attribute: "price", rule: "ASC"),
+              category: catrgory,
+              time: time,
+              price: price));
+      if (res.statusCode == 200) {
+        ResSearch resSearch = ResSearch.fromJson(jsonDecode(res.body));
+        courses = resSearch.payload.courses;
+      }
+    } else {
+      // dùng SearchV2
+      Response res = await CourseService.searchV2(
+          keyword: text,
+          token: Provider.of<AccountInf>(context, listen: false).token,
+          opt: Opt(
+              sort: Sort(attribute: "price", rule: "ASC"),
+              category: catrgory,
+              time: time,
+              price: price));
+      if (res.statusCode == 200) {
+        ResSearchV2 resSearchV2 = ResSearchV2.fromJson(jsonDecode(res.body));
+        this.courses = resSearchV2.payload.courses.data;
+        this.instructors = resSearchV2.payload.instructors.data;
+      }
+      setState(() {
+        isloading = false;
+        searchResult = true;
+      });
     }
-    setState(() {
-      isloading = false;
-      searchResult = true;
-    });
   }
 
   Widget searchRecentView() {
     if (islogin) {
-      return ListView.builder(
-          itemCount: recents.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              onTap: () async {
-                await onSubmitted(recents[index].toString());
-              },
-              leading: Icon(
-                Icons.history,
-                color: Colors.white,
-              ),
-              title: Text(
-                recents[index].toString(),
-                style: TextStyle(color: Colors.white),
-              ),
-              trailing: IconButton(
-                icon: Icon(
-                  Icons.close,
-                  color: Colors.grey,
-                ),
-                onPressed: () {
-                  recents.removeAt(index);
-                  setState(() {});
-                },
-              ),
-            );
+      return FutureBuilder(
+          future: CourseService.getHistory(
+              token: Provider.of<AccountInf>(context, listen: false).token),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              Response res = snapshot.data;
+              if (res.statusCode == 200) {
+                ResHistory resHistory =
+                    ResHistory.fromJson(jsonDecode(res.body));
+                List<History> list = resHistory.payload.data;
+                return ListView.builder(
+                    itemCount: list.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        onTap: () async {
+                          await onSubmitted(list[index].content);
+                        },
+                        leading: Icon(
+                          Icons.history,
+                          color: Colors.white,
+                        ),
+                        title: Text(
+                          list[index].content,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        trailing: IconButton(
+                          icon: Icon(
+                            Icons.close,
+                            color: Colors.grey,
+                          ),
+                          onPressed: () {
+                            // recents.removeAt(index);
+                            // setState(() {});
+                          },
+                        ),
+                      );
+                    });
+              }
+            } else {
+              return Container();
+            }
           });
     } else {
       return Container();
@@ -320,9 +354,11 @@ class _SearchPageState extends State<SearchPage>
                           child: Text("Học Phí",
                               style: TextStyle(fontWeight: FontWeight.bold))),
                     ),
-                    IconButton(icon: Icon(Icons.delete), onPressed: () {
-                      provider.clearPrice();
-                    })
+                    IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () {
+                          provider.clearPrice();
+                        })
                   ],
                 ),
                 Divider(),
@@ -352,9 +388,11 @@ class _SearchPageState extends State<SearchPage>
                           child: Text("Chủ đề",
                               style: TextStyle(fontWeight: FontWeight.bold))),
                     ),
-                    IconButton(icon: Icon(Icons.delete), onPressed: () {
-                      provider.clearCatgory();
-                    })
+                    IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () {
+                          provider.clearCatgory();
+                        })
                   ],
                 ),
                 Divider(),

@@ -32,6 +32,42 @@ class Search {
     };
 }
 
+SearchV2 searchV2FromJson(String str) => SearchV2.fromJson(json.decode(str));
+
+String searchV2ToJson(SearchV2 data) => json.encode(data.toJson());
+
+class SearchV2 {
+    SearchV2({
+        this.token,
+        this.keyword,
+        this.limit,
+        this.offset,
+        this.opt,
+    });
+
+    String token;
+    String keyword;
+    int limit;
+    int offset;
+    Opt opt;
+
+    factory SearchV2.fromJson(Map<String, dynamic> json) => SearchV2(
+        token: json["token"],
+        keyword: json["keyword"],
+        limit: json["limit"],
+        offset: json["offset"],
+        opt: Opt.fromJson(json["opt"]),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "token": token,
+        "keyword": keyword,
+        "limit": limit,
+        "offset": offset,
+        "opt": opt.toJson(),
+    };
+}
+
 class Opt {
     Opt({
         this.sort,

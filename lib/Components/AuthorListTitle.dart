@@ -1,8 +1,10 @@
 import 'package:Pluralsight/Page/AuthorDetail.dart';
 import 'package:Pluralsight/models/Author.dart';
+import 'package:Pluralsight/models/Response/ResGetIntructor.dart';
+import 'package:Pluralsight/models/Response/ResSearchV2.dart';
 import 'package:flutter/material.dart';
 
-Widget authorListTitle(BuildContext context,AuthorModel author) {
+Widget authorListTitle(BuildContext context, InstructorSearchV2 author) {
   return Container(
     decoration: BoxDecoration(
         border: Border(
@@ -11,8 +13,8 @@ Widget authorListTitle(BuildContext context,AuthorModel author) {
     ))),
     child: ListTile(
       onTap: () {
-        // Navigator.push(
-        //     context, MaterialPageRoute(builder: (context) => AuthorDetail(author: author,)));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => AuthorDetail(instructorId: author.id,)));
       },
       contentPadding: EdgeInsets.symmetric(horizontal: 0),
       title: Text(
@@ -24,14 +26,17 @@ Widget authorListTitle(BuildContext context,AuthorModel author) {
         maxLines: 2,
       ),
       subtitle: Text(
-        '${author.courses.length} courses',
+        '${author.numcourses} courses',
         style: TextStyle(color: Colors.grey),
       ),
       leading: ClipOval(
         child: AspectRatio(
           aspectRatio: 1 / 1,
           child: Container(
-            color: Colors.orange,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: NetworkImage(author.avatar),
+                    fit: BoxFit.cover)),
           ),
         ),
       ),

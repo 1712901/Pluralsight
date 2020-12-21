@@ -4,12 +4,13 @@ import 'package:Pluralsight/Components/PathListTitle.dart';
 import 'package:Pluralsight/models/Author.dart';
 import 'package:Pluralsight/models/Course.dart';
 import 'package:Pluralsight/models/Response/ResGetTopSell.dart';
+import 'package:Pluralsight/models/Response/ResSearchV2.dart';
 import 'package:flutter/material.dart';
 
 class AllPage extends StatefulWidget {
   final Function(int index) funCallBack;
   final List<CourseInfor> courses;
-  final List<AuthorModel> authors;
+  final List<InstructorSearchV2> authors;
 
   AllPage({this.funCallBack, this.courses,this.authors});
 
@@ -24,7 +25,7 @@ class _AllPageState extends State<AllPage> {
   _AllPageState({this.funCallBack, this.courses,this.authors});
   final int numItems = 4;
   final List<CourseInfor> courses;
-  final List<AuthorModel> authors;
+  final List<InstructorSearchV2> authors;
 
   @override
   Widget build(BuildContext context) {

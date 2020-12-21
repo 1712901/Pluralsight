@@ -18,6 +18,8 @@ class CourseService {
   static String _urlTopNew = API_HOST + "/course/top-new";
   static String _urlTopRate = API_HOST + "/course/top-rate";
   static String _urlSearch = API_HOST + "/course/search";
+  static String _urlSearchV2 = API_HOST + "/course/searchV2";
+  static String _urlHistory = API_HOST + "/course/search-history";
 
   static Future<http.Response> getTopSell({int limit, int page}) async {
     try {
@@ -61,7 +63,30 @@ class CourseService {
       {String keyword, Opt opt, int limit, int offset}) async {
     return await http.post(_urlSearch,
         headers: {'Content-type': 'application/json'},
-        body: jsonEncode(Search(keyword: keyword, opt: opt, limit: limit, offset: offset)
+        body: jsonEncode(
+            Search(keyword: keyword, opt: opt, limit: limit, offset: offset)
+                .toJson()));
+  }
+
+  static Future<http.Response> searchV2(
+      {String token, String keyword, Opt opt, int limit, int offset}) async {
+    return await http.post(_urlSearchV2,
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': 'Bearer ' + token,
+        },
+        body: jsonEncode(SearchV2(
+                token: token,
+                keyword: keyword,
+                opt: opt,
+                limit: limit,
+                offset: offset)
             .toJson()));
+  }
+
+  static Future<http.Response> getHistory({String token}) async {
+    print(token);
+    return await http
+        .get(_urlHistory, headers: {'Authorization': 'Bearer ' + token});
   }
 }
