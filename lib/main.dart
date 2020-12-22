@@ -94,6 +94,9 @@ class _HomeState extends State<Home> {
             ResFavoriteCourses.fromJson(jsonDecode(res.body));
         Provider.of<FavoriteCourses>(context, listen: false).setFavoriteCourses(
             favoriteCourses: resFavoriteCourses.favoriteCourse);
+      }else{
+        Provider.of<AccountInf>(context, listen: false)
+          .setToken(token: null);
       }
     }
   }

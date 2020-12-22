@@ -101,6 +101,7 @@ class _SearchPageState extends State<SearchPage>
                   _controller.clear();
                   setState(() {
                     query = "";
+                    findkey = false;
                   });
                 },
               ),
@@ -137,8 +138,6 @@ class _SearchPageState extends State<SearchPage>
   }
 
   Widget tabBarView(List<CourseInfor> list) {
-    List<AuthorModel> authors = [];
-    //Provider.of<AuthorsModel>(context).getAllAuthorOfListCourse(list);
     return TabBarView(
       controller: _tabController,
       children: [
@@ -249,6 +248,7 @@ class _SearchPageState extends State<SearchPage>
                       return ListTile(
                         onTap: () async {
                           await onSubmitted(list[index].content);
+                          _controller.text = list[index].content;
                         },
                         leading: Icon(
                           Icons.history,
@@ -263,9 +263,13 @@ class _SearchPageState extends State<SearchPage>
                             Icons.close,
                             color: Colors.grey,
                           ),
-                          onPressed: () {
-                            // recents.removeAt(index);
-                            // setState(() {});
+                          onPressed: () async {
+                            await CourseService.deleteHistory(
+                                historyID: list[index].id,
+                                token: Provider.of<AccountInf>(context,
+                                        listen: false)
+                                    .token);
+                            setState(() {});
                           },
                         ),
                       );
@@ -321,6 +325,7 @@ class _SearchPageState extends State<SearchPage>
                               style: TextStyle(fontWeight: FontWeight.bold))),
                     ),
                     IconButton(
+                        padding: EdgeInsets.only(right: 20),
                         icon: Icon(Icons.delete),
                         onPressed: () {
                           provider.clearTime();
@@ -355,6 +360,7 @@ class _SearchPageState extends State<SearchPage>
                               style: TextStyle(fontWeight: FontWeight.bold))),
                     ),
                     IconButton(
+                        padding: EdgeInsets.only(right: 20),
                         icon: Icon(Icons.delete),
                         onPressed: () {
                           provider.clearPrice();
@@ -389,6 +395,7 @@ class _SearchPageState extends State<SearchPage>
                               style: TextStyle(fontWeight: FontWeight.bold))),
                     ),
                     IconButton(
+                        padding: EdgeInsets.only(right: 20),
                         icon: Icon(Icons.delete),
                         onPressed: () {
                           provider.clearCatgory();
@@ -448,7 +455,6 @@ class _SearchPageState extends State<SearchPage>
                 List<Price> price =
                     Provider.of<SearchOption>(contextDialog, listen: false)
                         .getPrice();
-                print("${category.length}${time.length}${price.length}");
                 searchResult = false;
                 onSubmitted(_controller.text,
                     price: price, catrgory: category, time: time);

@@ -20,6 +20,7 @@ class CourseService {
   static String _urlSearch = API_HOST + "/course/search";
   static String _urlSearchV2 = API_HOST + "/course/searchV2";
   static String _urlHistory = API_HOST + "/course/search-history";
+  static String _urlDeleteHistory = API_HOST + "/course/delete-search-history";
 
   static Future<http.Response> getTopSell({int limit, int page}) async {
     try {
@@ -85,8 +86,12 @@ class CourseService {
   }
 
   static Future<http.Response> getHistory({String token}) async {
-    print(token);
     return await http
         .get(_urlHistory, headers: {'Authorization': 'Bearer ' + token});
+  }
+  static Future<http.Response> deleteHistory({String token,String historyID}) async {
+    print(token);
+    return await http
+        .delete("$_urlDeleteHistory/$historyID", headers: {'Authorization': 'Bearer ' + token});
   }
 }
