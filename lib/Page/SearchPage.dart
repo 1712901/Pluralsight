@@ -207,6 +207,10 @@ class _SearchPageState extends State<SearchPage>
       if (res.statusCode == 200) {
         ResSearch resSearch = ResSearch.fromJson(jsonDecode(res.body));
         courses = resSearch.payload.courses;
+         setState(() {
+        isloading = false;
+        searchResult = true;
+      });
       }
     } else {
       // dùng SearchV2

@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class CourseListTitle extends StatelessWidget {
@@ -96,6 +97,7 @@ class CourseListTitle extends StatelessWidget {
               ],
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 RatingBarIndicator(
                   rating: course.ratedNumber * 1.0,
@@ -108,6 +110,17 @@ class CourseListTitle extends StatelessWidget {
                   itemSize: 15.0,
                   direction: Axis.horizontal,
                 ),
+                 course.price == 0
+                     ? Text("Miễn Phí",
+                         style: TextStyle(
+                             color: Colors.white,
+                             fontSize: 15,
+                             fontWeight: FontWeight.bold))
+                     : Text(NumberFormat.currency(locale: "vi")
+                         .format(course.price), style: TextStyle(
+                             color: Colors.white,
+                             fontSize: 15,
+                             fontWeight: FontWeight.bold))
               ],
             )
           ],

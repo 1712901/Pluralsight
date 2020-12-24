@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:Pluralsight/Page/CourseDetail.dart';
 import 'package:Pluralsight/models/AccountInf.dart';
 import 'package:Pluralsight/models/Author.dart';
@@ -32,7 +34,7 @@ class _CoursesState extends State<Courses> {
   Widget build(BuildContext context) {
     //subCourse = courses.sublist(0, courses.length >= 4 ? 4 : courses.length);
     return Container(
-      height: 200,
+      height: 220,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: courses.length,
@@ -58,6 +60,7 @@ class _CoursesState extends State<Courses> {
           },
           child: Container(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
@@ -83,7 +86,11 @@ class _CoursesState extends State<Courses> {
                             children: [
                               IconButton(
                                   alignment: Alignment.bottomRight,
-                                  icon: provider.isFavorite(courseId: course.id)&&Provider.of<AccountInf>(context,listen: false).isAuthorization()
+                                  icon: provider.isFavorite(
+                                              courseId: course.id) &&
+                                          Provider.of<AccountInf>(context,
+                                                  listen: false)
+                                              .isAuthorization()
                                       ? Icon(
                                           Icons.star,
                                           color: Colors.orange,
@@ -105,11 +112,10 @@ class _CoursesState extends State<Courses> {
                                       if (res.statusCode == 200) {
                                         provider.likeCourse(
                                             courseInfor: course);
-                                      }else if(res.statusCode == 401){
-                                        Provider.of<AccountInf>(
-                                            context,
-                                            listen: false)
-                                        .setToken(token:null);
+                                      } else if (res.statusCode == 401) {
+                                        Provider.of<AccountInf>(context,
+                                                listen: false)
+                                            .setToken(token: null);
                                         print('Chưa Đăng Nhập');
                                       }
                                     } else {
@@ -130,11 +136,19 @@ class _CoursesState extends State<Courses> {
                         const EdgeInsets.only(top: 5.0, left: 5.0, right: 5.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Text(
-                          course.title,
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
+                        Flexible(
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              course.title,
+                              maxLines: 2,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
                         ),
                         SizedBox(
                           height: 5,
@@ -165,20 +179,36 @@ class _CoursesState extends State<Courses> {
                             ],
                           ),
                         ),
-                        Row(
-                          children: [
-                            RatingBarIndicator(
-                              rating: (course.ratedNumber) * 1.0,
-                              itemBuilder: (context, index) => Icon(
-                                Icons.star,
-                                //size: 15,
-                                color: Colors.amber,
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              RatingBarIndicator(
+                                rating: (course.ratedNumber) * 1.0,
+                                itemBuilder: (context, index) => Icon(
+                                  Icons.star,
+                                  //size: 15,
+                                  color: Colors.amber,
+                                ),
+                                itemCount: 5,
+                                itemSize: 15.0,
+                                direction: Axis.horizontal,
                               ),
-                              itemCount: 5,
-                              itemSize: 15.0,
-                              direction: Axis.horizontal,
-                            ),
-                          ],
+                              Container(
+                                color: Colors.white,
+                                padding: EdgeInsets.all(5),
+                                child: course.price == 0
+                                    ? Text("Miễn Phí",
+                                        style: TextStyle(
+                                            color: Colors.red,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold))
+                                    : Text(NumberFormat.currency(locale: "vi")
+                                        .format(course.price)),
+                              )
+                            ],
+                          ),
                         )
                       ],
                     ),
