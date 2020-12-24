@@ -12,11 +12,11 @@ class ResGetIntructor {
     });
 
     String message;
-    List<Intructor> intructor;
+    List<Instructor> intructor;
 
     factory ResGetIntructor.fromJson(Map<String, dynamic> json) => ResGetIntructor(
         message: json["message"],
-        intructor: List<Intructor>.from(json["payload"].map((x) => Intructor.fromJson(x))),
+        intructor: List<Instructor>.from(json["payload"].map((x) => Instructor.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -25,8 +25,8 @@ class ResGetIntructor {
     };
 }
 
-class Intructor {
-    Intructor({
+class Instructor {
+    Instructor({
         this.id,
         this.payloadUserId,
         this.major,
@@ -72,7 +72,7 @@ class Intructor {
     DateTime userCreatedAt;
     DateTime userUpdatedAt;
 
-    factory Intructor.fromJson(Map<String, dynamic> json) => Intructor(
+    factory Instructor.fromJson(Map<String, dynamic> json) => Instructor(
         id: json["id"],
         payloadUserId: json["userId"],
         major: json["major"] == null ? null : json["major"],
@@ -92,10 +92,10 @@ class Intructor {
         userType: userTypeValues.map[json["user.type"]],
         userIsDeleted: json["user.isDeleted"],
         userIsActivated: json["user.isActivated"],
-        userCreatedAt: DateTime.parse(json["user.createdAt"]),
-        userUpdatedAt: DateTime.parse(json["user.updatedAt"]),
+        userCreatedAt: json["user.createdAt"]==null?null:DateTime.parse(json["user.createdAt"]),
+        userUpdatedAt: json["user.updatedAt"]==null?null:DateTime.parse(json["user.updatedAt"]),
     );
-
+    
     Map<String, dynamic> toJson() => {
         "id": id,
         "userId": payloadUserId,

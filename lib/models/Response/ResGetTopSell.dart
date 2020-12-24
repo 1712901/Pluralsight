@@ -51,6 +51,7 @@ class CourseInfor {
         this.typeUploadVideoLesson,
         this.instructorUserId,
         this.instructorUserName,
+        this.averagePoint
     });
 
     String id;
@@ -78,6 +79,7 @@ class CourseInfor {
     int typeUploadVideoLesson;
     String instructorUserId;
     String instructorUserName;
+    double averagePoint;
 
     factory CourseInfor.fromJson(Map<String, dynamic> json) => CourseInfor(
         id: json["id"],
@@ -187,5 +189,32 @@ class CourseInfor {
         typeUploadVideoLesson: json["typeUploadVideoLesson"],
         instructorUserId: json["instructor.user.id"],
         instructorUserName: json["name"],
+    );
+    factory CourseInfor.fromJsonGetDetailCourse(Map<String, dynamic> json) => CourseInfor(
+        id: json["id"],
+        title: json["title"],
+        subtitle: json["subtitle"],
+        price: json["price"],
+        description: json["description"],
+        requirement: json["requirement"] == null ? null : List<String>.from(json["requirement"].map((x) => x)),
+        learnWhat: List<String>.from(json["learnWhat"].map((x) => x)),
+        soldNumber: json["soldNumber"],
+        ratedNumber: json["ratedNumber"],
+        videoNumber: json["videoNumber"],
+        totalHours: json["totalHours"].toDouble(),
+        formalityPoint: json["formalityPoint"].toDouble(),
+        contentPoint: json["contentPoint"].toDouble(),
+        presentationPoint: json["presentationPoint"].toDouble(),
+        imageUrl: json["imageUrl"],
+        promoVidUrl: json["promoVidUrl"] == null ? null : json["promoVidUrl"],
+        status: json["status"],
+        isHidden: json["isHidden"],
+        isDeleted: json["isDeleted"],
+        createdAt: DateTime.parse(json["createdAt"]),
+        updatedAt: DateTime.parse(json["updatedAt"]),
+        instructorId: json["instructorId"],
+        typeUploadVideoLesson: json["typeUploadVideoLesson"],
+        instructorUserName: json["instructorName"],
+        averagePoint: json["averagePoint"].toDouble(),
     );
 }

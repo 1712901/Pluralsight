@@ -68,19 +68,22 @@ class AccountInf extends ChangeNotifier {
 }
 
 class UserInfo {
-  UserInfo({
-    this.id,
-    this.email,
-    this.avatar,
-    this.name,
-    this.favoriteCategories,
-    this.phone,
-    this.type,
-    this.isDeleted,
-    this.isActivated,
-    this.createdAt,
-    this.updatedAt,
-  });
+  UserInfo(
+      {this.id,
+      this.email,
+      this.avatar,
+      this.name,
+      this.favoriteCategories,
+      this.phone,
+      this.type,
+      this.isDeleted,
+      this.isActivated,
+      this.createdAt,
+      this.updatedAt,
+      this.facebookId,
+      this.googleId,
+      this.password,
+      this.point});
 
   String id;
   String email;
@@ -93,6 +96,11 @@ class UserInfo {
   bool isActivated;
   DateTime createdAt;
   DateTime updatedAt;
+  int point;
+  dynamic facebookId;
+  String googleId;
+
+  String password;
 
   factory UserInfo.fromJson(Map<String, dynamic> json) => UserInfo(
         id: json["id"],
@@ -123,4 +131,24 @@ class UserInfo {
         "createdAt": createdAt.toIso8601String(),
         "updatedAt": updatedAt.toIso8601String(),
       };
+
+  factory UserInfo.fromJsonGetdetailCourse(Map<String, dynamic> json) =>
+      UserInfo(
+        id: json["id"],
+        email: json["email"],
+        password: json["password"],
+        avatar: json["avatar"],
+        name: json["name"],
+        favoriteCategories:
+            List<String>.from(json["favoriteCategories"].map((x) => x)),
+        point: json["point"],
+        phone: json["phone"] == null ? null : json["phone"],
+        type: json["type"],
+        facebookId: json["facebookId"],
+        googleId: json["googleId"],
+        isDeleted: json["isDeleted"],
+        isActivated: json["isActivated"],
+        createdAt: DateTime.parse(json["createdAt"]),
+        updatedAt: DateTime.parse(json["updatedAt"]),
+      );
 }

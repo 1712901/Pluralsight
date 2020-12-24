@@ -34,7 +34,7 @@ class RowAuthorsView extends StatelessWidget {
                 if (res.statusCode == 200) {
                   ResGetIntructor resGetIntructor =
                       ResGetIntructor.fromJson(jsonDecode(res.body));
-                  List<Intructor> intructors = resGetIntructor.intructor;
+                  List<Instructor> intructors = resGetIntructor.intructor;
                   return Container(
                     height: 230,
                     child: GridView.builder(
