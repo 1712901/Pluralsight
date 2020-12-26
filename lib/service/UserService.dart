@@ -7,8 +7,8 @@ class UserService {
   // email:kih87349@cuoly.com
   // password:123456789
   //dev
-  // email: xkr17684@zwoho.com
-  // password:12345678
+  // email: jbo51181@cuoly.com
+  // password:111111111
 
   static const String _API_HOST = 'http://api.dev.letstudy.org';
   //static const String _API_HOST = 'https://api.letstudy.org';
@@ -22,6 +22,10 @@ class UserService {
   static String _urlGetFavoriteCourses =
       _API_HOST + "/user/get-favorite-courses";
   static String _urlRecommend = _API_HOST + "/user/recommend-course";
+  static String _urlUpdateProfile = _API_HOST + "/user/update-profile";
+  static String _urlChangeEmail = _API_HOST + "/user/change-user-email";
+  static String _urlChangePassword = _API_HOST + "/user/change-password";
+  static String _urlResetPassword = _API_HOST + "/user/reset-password";
 
   static Future<http.Response> registerAccount(
       {String username, String email, String phone, String password}) async {
@@ -111,6 +115,61 @@ class UserService {
       {String idUser, int limit, int offset}) async {
     return await http.get(
       "$_urlRecommend/$idUser/$limit/$offset",
+    );
+  }
+  static Future<http.Response> updateProfile(
+      {String phone, String name , String token}) async {
+    return await http.put(
+      _urlUpdateProfile,
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+      },
+      body: jsonEncode({
+          'name': name,
+          'phone':phone
+        })
+    );
+  }
+  static Future<http.Response> changeEmail(
+      {String newEmail , String token}) async {
+    return await http.put(
+      _urlChangeEmail,
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+      },
+      body: jsonEncode({
+          'newEmail': newEmail,
+        })
+    );
+  }
+  static Future<http.Response> changePassword(
+      {String idUser ,String oldPass,String newPass, String token}) async {
+    return await http.post(
+      _urlChangePassword,
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+      },
+      body: jsonEncode({
+          'id': idUser,
+          'oldPass':oldPass,
+          'newPass':newPass
+        })
+    );
+  }
+  static Future<http.Response> resetPassword(
+      {String idUser ,String password}) async {
+    return await http.post(
+      _urlResetPassword,
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: jsonEncode({
+          'id': idUser,
+          'password':password,
+        })
     );
   }
 }

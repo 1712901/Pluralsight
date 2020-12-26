@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:Pluralsight/Page/Account/UpdatePassword.dart';
 import 'package:Pluralsight/models/AccountInf.dart';
+import 'package:Pluralsight/models/HandleAdd2Channel.dart';
 import 'package:Pluralsight/models/Response/ResGetProfile.dart';
 import 'package:Pluralsight/models/User.dart';
 import 'package:Pluralsight/service/UserService.dart';
@@ -19,16 +21,19 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   TextEditingController userNameController;
-
+  TextEditingController phoneNumberController;
   TextEditingController emailController;
-
+  TextEditingController newEmailController;
   bool isEdit = false;
+  bool isEditEmail = false;
   UserInfo userInfo;
 
   @override
-  Future<void> initState() {
+  void initState() {
     userNameController = TextEditingController();
     emailController = TextEditingController();
+    phoneNumberController = TextEditingController();
+    newEmailController = TextEditingController();
     //getData();
     super.initState();
   }
@@ -59,12 +64,21 @@ class _ProfilePageState extends State<ProfilePage> {
         actions: [
           IconButton(
               icon: Icon(isEdit ? Icons.check : Icons.edit),
-              onPressed: () {
+              onPressed: () async {
                 if (isEdit) {
-                  //Update Proflie
-                  // user.setProfile(
-                  //     name: userNameController.text,
-                  //     email: emailController.text);
+                  Response res = await UserService.updateProfile(
+                      phone: phoneNumberController.text,
+                      name: userNameController.text,
+                      token: Provider.of<AccountInf>(context, listen: false)
+                          .token);
+                  if (res.statusCode == 200) {
+                    Provider.of<AccountInf>(context, listen: false)
+                        .setUserInfor(userInfo);
+                  } else if (res.statusCode == 400) {
+                    HandleAdd2Channel.showToast(
+                        context, jsonDecode(res.body)["message"]);
+                    return;
+                  }
                 }
                 setState(() {
                   isEdit = !isEdit;
@@ -117,6 +131,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       .setUserInfor(userInfo);
                   userNameController.text = userInfo.name;
                   emailController.text = userInfo.email;
+                  phoneNumberController.text = userInfo.phone;
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -126,7 +141,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           aspectRatio: 1 / 1,
                           child: ClipOval(
                             child: Container(
-                              color: Colors.orange[300],
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: NetworkImage(userInfo.avatar),
+                                      fit: BoxFit.cover)),
                             ),
                           ),
                         ),
@@ -142,15 +160,138 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       TextField(
                         enabled: isEdit,
-                        controller: emailController,
+                        controller: phoneNumberController,
                         style: TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                            isDense: true,
+                            labelText: 'Phone number',
+                            labelStyle: TextStyle(color: Colors.grey[600])),
+                      ),
+                      TextField(
+                        enabled: isEditEmail,
+                        style: TextStyle(color: Colors.white),
+                        controller: emailController,
                         decoration: InputDecoration(
                             isDense: true,
                             labelText: 'Email',
                             labelStyle: TextStyle(color: Colors.grey[600])),
                       ),
                       SizedBox(
-                        height: 50,
+                        height: 30,
+                      ),
+                      Row(
+                        children: [
+                          Flexible(
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: RaisedButton(
+                                color: Colors.blue[400],
+                                onPressed: () async {
+                                  bool action = await showDialog(
+                                      context: context,
+                                      builder: (contextDialog) {
+                                        return AlertDialog(
+                                          insetPadding: EdgeInsets.symmetric(
+                                              horizontal: 5, vertical: 5),
+                                          title: Text('New Email'),
+                                          content: TextField(
+                                            controller: newEmailController,
+                                            maxLines: 1,
+                                            maxLength: 20,
+                                            decoration: InputDecoration(
+                                              hintText: 'Email',
+                                            ),
+                                          ),
+                                          actions: [
+                                            FlatButton(
+                                                onPressed: () {
+                                                  newEmailController.dispose();
+                                                  Navigator.pop(
+                                                      contextDialog, false);
+                                                },
+                                                child: Text(
+                                                  'CANCEL',
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .accentColor),
+                                                )),
+                                            FlatButton(
+                                                onPressed: () async {
+                                                  Navigator.pop(
+                                                      contextDialog, true);
+                                                },
+                                                child: Text('SAVE',
+                                                    style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .accentColor))),
+                                          ],
+                                        );
+                                      });
+                                  if (action == true) {
+                                    Response res =
+                                        await UserService.changeEmail(
+                                            newEmail: newEmailController.text,
+                                            token: Provider.of<AccountInf>(
+                                                    context,
+                                                    listen: false)
+                                                .token);
+                                    if (res.statusCode == 200) {
+                                      HandleAdd2Channel.showToast(
+                                          context, "Check email để kích hoạt tài khoản");
+                                      final storage =
+                                          new FlutterSecureStorage();
+                                      await storage.delete(key: 'token');
+                                      Provider.of<AccountInf>(context,
+                                              listen: false)
+                                          .logout();
+                                    } else if (res.statusCode == 400) {
+                                      HandleAdd2Channel.showToast(
+                                          context, "Email đã tồn tại");
+                                    }
+                                  }
+                                },
+                                child: Text(
+                                  'Change Email',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Flexible(
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: RaisedButton(
+                                color: Colors.blue[400],
+                                onPressed: () {
+                                  Navigator.of(context, rootNavigator: true).push(
+                                      MaterialPageRoute(
+                                          builder: (context) => UpdatePassword()));
+                                },
+                                child: Text(
+                                  'Change Password',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: FlatButton(
+                            onPressed: () {
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) => ForgotPassword()));
+                            },
+                            child: Text(
+                              'Reset Password',
+                              style: TextStyle(color: Colors.blue),
+                            )),
                       ),
                       SizedBox(
                         width: double.infinity,

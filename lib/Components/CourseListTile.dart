@@ -117,7 +117,7 @@ class CourseListTitle extends StatelessWidget {
                              fontSize: 15,
                              fontWeight: FontWeight.bold))
                      : Text(NumberFormat.currency(locale: "vi")
-                         .format(course.price), style: TextStyle(
+                         .format(course.price==null?0:course.price), style: TextStyle(
                              color: Colors.white,
                              fontSize: 15,
                              fontWeight: FontWeight.bold))

@@ -1,4 +1,5 @@
 import 'package:Pluralsight/Page/Account/SignIn.dart';
+import 'package:Pluralsight/main.dart';
 import 'package:flutter/material.dart';
 
 class Done extends StatelessWidget {
@@ -42,11 +43,11 @@ class Done extends StatelessWidget {
             ),
             RaisedButton(
               onPressed: () {
-                Navigator.of(context).popUntil((route) {
-                  return route.settings.name == "SignIn";
-                });
+                Navigator.of(context, rootNavigator: true).push(
+                                      MaterialPageRoute(
+                                          builder: (context) => Home()));
               },
-              child: Text('LOGIN'),
+              child: Text('HOME'),
               color: Colors.blue[400],
             )
           ],

@@ -45,18 +45,22 @@ class _CourseDetailState extends State<CourseDetail>
   CourseDetailModel courseDetailModel = null;
 
   _CourseDetailState(this.course);
+  // video_player
+  VideoPlayerController _controller;
+  Future<void> _initializeVideoPlayerFuture;
 
   @override
   void initState() {
     primaryTC = new TabController(length: 2, vsync: this);
-    this.initializePlayer();
+    //this.initializePlayer();
     this.getDetailCourse(courseID: course.id);
+
     super.initState();
   }
 
-  Future<void> initializePlayer() async {
+  Future<void> initializePlayer({String url}) async {
     videoPlayerController = VideoPlayerController.network(
-      'https://storage.googleapis.com/itedu-bucket/Courses/a395c845-506c-4d5d-82d8-a57fe9f80622/promo/8c3dd8f3-18a3-4253-a7b1-24aad7fa81d9.mp4',
+      url,
     );
     // videoPlayerController = VideoPlayerController.network(
     //     'https://storage.googleapis.com/itedu-bucket/Courses/49c92ee0-58fe-47a7-b111-8e9e273b0910/promo/0e3dc369-ffca-4541-ba74-391c07eb8a45.mov');
@@ -88,8 +92,9 @@ class _CourseDetailState extends State<CourseDetail>
   @override
   void dispose() {
     // TODO: implement dispose
-    videoPlayerController.dispose();
-    chewieController.dispose();
+    if (videoPlayerController != null) videoPlayerController.dispose();
+    if (chewieController != null) chewieController.dispose();
+    //_controller.dispose();
     super.dispose();
   }
 
@@ -130,10 +135,10 @@ class _CourseDetailState extends State<CourseDetail>
                                 child: chewieController != null &&
                                         chewieController.videoPlayerController
                                             .value.initialized
-                                    // ? Chewie(
-                                    //     controller: chewieController,
-                                    //   )
-                                    ? VideoPlayer(videoPlayerController)
+                                    ? Chewie(
+                                        controller: chewieController,
+                                      )
+                                    //? VideoPlayer(videoPlayerController)
                                     : Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
@@ -146,6 +151,27 @@ class _CourseDetailState extends State<CourseDetail>
                                         ],
                                       ),
                               ),
+                              // FutureBuilder(
+                              //   future: _initializeVideoPlayerFuture,
+                              //   builder: (context, snapshot) {
+                              //     if (snapshot.connectionState ==
+                              //         ConnectionState.done) {
+                              //       // If the VideoPlayerController has finished initialization, use
+                              //       // the data it provides to limit the aspect ratio of the video.
+                              //       return AspectRatio(
+                              //         aspectRatio:
+                              //             _controller.value.aspectRatio,
+                              //         // Use the VideoPlayer widget to display the video.
+                              //         child: VideoPlayer(_controller),
+                              //       );
+                              //     } else {
+                              //       // If the VideoPlayerController is still initializing, show a
+                              //       // loading spinner.
+                              //       return Center(
+                              //           child: CircularProgressIndicator());
+                              //     }
+                              //   },
+                              // ),
                               Align(
                                 alignment: Alignment.topCenter,
                                 child: Row(
@@ -626,8 +652,15 @@ class _CourseDetailState extends State<CourseDetail>
       ResGetDetailCourseNonUser resGetDetailCourseNonUser =
           ResGetDetailCourseNonUser.fromJson(jsonDecode(res.body));
       courseDetailModel = resGetDetailCourseNonUser.courseDetail;
+      initializePlayer(url: courseDetailModel.promoVidUrl);
       setState(() {});
     }
+
+    // _controller = VideoPlayerController.network(
+    //   courseDetailModel.promoVidUrl,
+    // );
+    // print(courseDetailModel.promoVidUrl);
+    // _initializeVideoPlayerFuture = _controller.initialize();
   }
 
   List<Container> makeListRating(List<RatingList> ratingList) {

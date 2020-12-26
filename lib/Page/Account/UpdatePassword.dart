@@ -1,5 +1,11 @@
 import 'package:Pluralsight/Page/Account/DoneUpdatePassword.dart';
+import 'package:Pluralsight/Page/Account/SignUp.dart';
+import 'package:Pluralsight/models/AccountInf.dart';
+import 'package:Pluralsight/models/HandleAdd2Channel.dart';
+import 'package:Pluralsight/service/UserService.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:provider/provider.dart';
 
 class UpdatePassword extends StatefulWidget {
   @override
@@ -9,8 +15,31 @@ class UpdatePassword extends StatefulWidget {
 class _UpdatePasswordState extends State<UpdatePassword> {
   bool showPassword = false;
   bool showConfPassword = false;
-  final TextEditingController newPasswordController = TextEditingController();
-  final TextEditingController confController = TextEditingController();
+  bool showOldPassword = false;
+  TextEditingController oldPasswordController;
+  TextEditingController newPasswordController;
+  TextEditingController confController;
+  static const int EMPTY_ERROR = -1;
+  static const int CONFIRM_ERROR = -2;
+  static const int LENGTH_ERROR = -3;
+
+  @override
+  void initState() {
+    newPasswordController = TextEditingController();
+    confController = TextEditingController();
+    oldPasswordController = TextEditingController();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    newPasswordController.dispose();
+    confController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +60,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: SingleChildScrollView(
-                  child: Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
@@ -59,6 +88,32 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                 height: 20,
               ),
               TextField(
+                controller: oldPasswordController,
+                cursorColor: Theme.of(context).cursorColor,
+                obscureText: !showOldPassword,
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+                decoration: InputDecoration(
+                    labelText: 'Old Password',
+                    labelStyle: TextStyle(
+                      color: Colors.grey[600],
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        showOldPassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Colors.grey[300],
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          showOldPassword = (!showOldPassword);
+                        });
+                      },
+                    )),
+              ),
+              TextField(
                 controller: newPasswordController,
                 cursorColor: Theme.of(context).cursorColor,
                 obscureText: !showPassword,
@@ -66,7 +121,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                   color: Colors.white,
                 ),
                 decoration: InputDecoration(
-                    labelText: 'Password',
+                    labelText: 'New Password',
                     labelStyle: TextStyle(
                       color: Colors.grey[600],
                     ),
@@ -96,7 +151,9 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                     ),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        showConfPassword ? Icons.visibility : Icons.visibility_off,
+                        showConfPassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                         color: Colors.grey[300],
                       ),
                       onPressed: () {
@@ -106,29 +163,78 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                       },
                     )),
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: SizedBox(
-                      width: double.infinity,
-                      child: RaisedButton(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: SizedBox(
+                    width: double.infinity,
+                    child: Builder(
+                      builder: (ctx) => RaisedButton(
                         color: Colors.blue[400],
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Done()));
+                        onPressed: () async {
+                          switch (checkFormat()) {
+                            case 0:
+                              Response res = await UserService.changePassword(
+                                  token: Provider.of<AccountInf>(context,
+                                          listen: false)
+                                      .token,
+                                  idUser: Provider.of<AccountInf>(context,
+                                          listen: false)
+                                      .userInfo
+                                      .id,
+                                  oldPass: oldPasswordController.text,
+                                  newPass: newPasswordController.text);
+                              print(res.body);
+                              if (res.statusCode == 200) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Done()));
+                              } else if (res.statusCode == 400) {
+                                HandleAdd2Channel.showToast(
+                                    ctx, "Mật khẩu cũ không đúng");
+                              }
+                              break;
+                            case EMPTY_ERROR:
+                              HandleAdd2Channel.showToast(
+                                  ctx, "Không được để rỗng");
+                              break;
+                            case CONFIRM_ERROR:
+                              HandleAdd2Channel.showToast(
+                                  ctx, "Confirm không khớp");
+                              break;
+                            case LENGTH_ERROR:
+                              HandleAdd2Channel.showToast(
+                                  ctx, "Chiều dài password lớn hơn 8");
+                              break;
+                          }
                         },
                         child: Text(
                           'UPADTE',
                           style: TextStyle(color: Colors.white),
                         ),
-                      )),
-                ),
+                      ),
+                    )),
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  int checkFormat() {
+    if (oldPasswordController.text.isEmpty ||
+        newPasswordController.text.isEmpty ||
+        confController.text.isEmpty) {
+      return EMPTY_ERROR;
+    } else if (newPasswordController.text != confController.text) {
+      return CONFIRM_ERROR;
+    } else if (newPasswordController.text.length < 8) {
+      return LENGTH_ERROR;
+    }
+    return 0;
   }
 }

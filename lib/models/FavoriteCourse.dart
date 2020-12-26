@@ -33,10 +33,10 @@ class FavoriteCourse {
         instructorId: json["instructorId"],
         instructorName: json["instructorName"],
         courseSoldNumber: json["courseSoldNumber"],
-        courseContentPoint: json["courseContentPoint"].toDouble(),
+        courseContentPoint: json["courseContentPoint"]==null?null:json["courseContentPoint"].toDouble(),
         courseFormalityPoint: json["courseFormalityPoint"].toDouble(),
         coursePresentationPoint: json["coursePresentationPoint"].toDouble(),
-        courseAveragePoint: json["courseAveragePoint"].toDouble(),
+        courseAveragePoint: json["courseAveragePoint"]==null?null:json["courseAveragePoint"].toDouble(),
     );
 
     Map<String, dynamic> toJson() => {

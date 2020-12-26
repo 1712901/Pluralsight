@@ -137,11 +137,11 @@ class _MoreCourseState extends State<MoreCourse> {
         return;
       }
       Response response = await CourseService.getTopCourse(
-          limit: 8, page: currentPage, type: widget.type);
+          limit: 10, page: currentPage, type: widget.type);
       if (response.statusCode == 200) {
         ResGetTopCourse resGetTopCourse =
             ResGetTopCourse.fromJson(jsonDecode(response.body));
-        if (resGetTopCourse.courses.length < 8) {
+        if (resGetTopCourse.courses.length < 10) {
           isCompleted = true;
         }
         Provider.of<TopCourses>(context, listen: false).addTopCourses(
