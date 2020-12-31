@@ -12,6 +12,7 @@ import 'package:Pluralsight/Core/models/SearchBuilder/TimeOption.dart';
 import 'package:Pluralsight/Core/models/SearchMode.dart';
 import 'package:Pluralsight/Core/service/CategoryService.dart';
 import 'package:Pluralsight/Core/service/CourseService.dart';
+import 'package:Pluralsight/View/ui/Constant.dart';
 import 'package:Pluralsight/View/ui/Search/Widget/AllPage.dart';
 import 'package:Pluralsight/View/ui/Search/Widget/AuthourPage.dart';
 import 'package:Pluralsight/View/ui/Search/Widget/CoursesPage.dart';
@@ -28,9 +29,12 @@ class _SearchPageState extends State<SearchPage>
     with SingleTickerProviderStateMixin {
   //int initPage = 0;
   TabController _tabController;
+  ScrollController scrollController;
+
   String query = "";
   bool searchResult = false;
   bool isloading = false;
+  bool isLoadMore = true;
   bool findkey = false;
   bool islogin = false;
   List<String> recents = ["Android", "C#", "Java"];
@@ -49,7 +53,10 @@ class _SearchPageState extends State<SearchPage>
   TextEditingController _controller;
 
   final List<String> listTile = ['ALL', 'COURSES', 'AUTHOURS'];
+  //Save data search
   List<CourseInfor> courses = [];
+  int offset = 0;
+  //
   List<InstructorSearchV2> instructors = [];
   List<Time> timeOption = [];
   List<Price> priceOption = [];
@@ -58,6 +65,7 @@ class _SearchPageState extends State<SearchPage>
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: listTile.length);
+    scrollController = new ScrollController()..addListener(_scrollListener);
     _controller = TextEditingController();
   }
 
@@ -134,22 +142,33 @@ class _SearchPageState extends State<SearchPage>
   }
 
   Widget tabBarView(List<CourseInfor> list) {
-    return TabBarView(
-      controller: _tabController,
-      children: [
-        AllPage(
-          funCallBack: (index) {
-            _tabController.animateTo(index);
-          },
-          courses: list,
-          authors: instructors,
-        ),
-        CoursesPage(
-          list: list,
-        ),
-        AuthourPage(authors: instructors),
-      ],
-    );
+    bool isEmpty = list.length == 0;
+    return !isEmpty
+        ? TabBarView(
+            controller: _tabController,
+            children: [
+              AllPage(
+                funCallBack: (index) {
+                  _tabController.animateTo(index);
+                },
+                courses: list,
+                authors: instructors,
+              ),
+              CoursesPage(
+                list: list,
+                scrollController: scrollController,
+              ),
+              AuthourPage(authors: instructors),
+            ],
+          )
+        : Container(
+            child: Center(
+              child: Text(
+                "Không tìm thấy kết quả",
+                style: TextStyle(fontSize: 25, color: Colors.white),
+              ),
+            ),
+          );
   }
 
   Widget tabBar() {
@@ -191,42 +210,89 @@ class _SearchPageState extends State<SearchPage>
       isloading = true;
       findkey = false;
     });
+
+    Response res = await search(
+        text, catrgory, time, price, 0, ConstanUI.SEARCH_LIMIT); // loading
+    if (res.statusCode == 200) {
+      if (!islogin) {
+        ResSearch resSearch = ResSearch.fromJson(jsonDecode(res.body));
+        courses = resSearch.payload.courses;
+      } else {
+        ResSearchV2 resSearchV2 = ResSearchV2.fromJson(jsonDecode(res.body));
+        this.courses = resSearchV2.payload.courses.data;
+        this.instructors = resSearchV2.payload.instructors.data;
+      }
+    }
+    setState(() {
+      isloading = false;
+      searchResult = true;
+    });
+  }
+
+  Future<Response> search(String text, List<String> catrgory, List<Time> time,
+      List<Price> price, int offset, int limit) async {
     if (!islogin) {
       // dùng Search
-      Response res = await CourseService.search(
+      return CourseService.search(
           keyword: text,
+          offset: offset,
+          limit: limit,
           opt: Opt(
               sort: Sort(attribute: "price", rule: "ASC"),
               category: catrgory,
               time: time,
               price: price));
-      if (res.statusCode == 200) {
-        ResSearch resSearch = ResSearch.fromJson(jsonDecode(res.body));
-        courses = resSearch.payload.courses;
-         setState(() {
-        isloading = false;
-        searchResult = true;
-      });
-      }
     } else {
       // dùng SearchV2
-      Response res = await CourseService.searchV2(
+      return CourseService.searchV2(
           keyword: text,
+          offset: offset,
+          limit: limit,
           token: Provider.of<AccountInf>(context, listen: false).token,
           opt: Opt(
               sort: Sort(attribute: "price", rule: "ASC"),
               category: catrgory,
               time: time,
               price: price));
-      if (res.statusCode == 200) {
+    }
+  }
+
+  Future<void> searchMore() async {
+    print("Searmore");
+    offset = courses.length + 1;
+    SearchOption searchOption =
+        Provider.of<SearchOption>(context, listen: false);
+    Response res = await search(
+        _controller.text,
+        searchOption.getCategory(),
+        searchOption.getTimes(),
+        searchOption.getPrice(),
+        offset,
+        ConstanUI.SEARCH_LIMIT); // loading
+    if (res.statusCode == 200) {
+      if (!islogin) {
+        ResSearch resSearch = ResSearch.fromJson(jsonDecode(res.body));
+        courses.addAll(resSearch.payload.courses);
+        if (resSearch.payload.courses.length < ConstanUI.SEARCH_LIMIT - 1) {
+          isLoadMore = false;
+        }
+      } else {
         ResSearchV2 resSearchV2 = ResSearchV2.fromJson(jsonDecode(res.body));
-        this.courses = resSearchV2.payload.courses.data;
-        this.instructors = resSearchV2.payload.instructors.data;
+        courses.addAll(resSearchV2.payload.courses.data);
+        if (resSearchV2.payload.courses.data.length < ConstanUI.SEARCH_LIMIT - 1) {
+          isLoadMore = false;
+        }
+        this.instructors.addAll(resSearchV2.payload.instructors.data);
       }
-      setState(() {
-        isloading = false;
-        searchResult = true;
-      });
+    }
+    setState(() {});
+  }
+
+  Future<void> _scrollListener() async {
+    if (scrollController.position.pixels ==
+            scrollController.position.maxScrollExtent &&
+        isLoadMore) {
+      searchMore();
     }
   }
 
