@@ -1,29 +1,24 @@
 import 'dart:convert';
-import 'dart:ffi';
 
-import 'package:Pluralsight/Page/Account/SignIn.dart';
-import 'package:Pluralsight/Page/BrowsePage.dart';
-import 'package:Pluralsight/Page/DowloadPage.dart';
-import 'package:Pluralsight/Page/HomePage.dart';
-import 'package:Pluralsight/Page/SearchPage.dart';
-import 'package:Pluralsight/models/Author.dart';
-import 'package:Pluralsight/models/CourseDetail.dart';
-import 'package:Pluralsight/models/CourseList.dart';
-import 'package:Pluralsight/models/DownloadModel.dart';
-import 'package:Pluralsight/models/FavoriteCourses.dart';
-import 'package:Pluralsight/models/MyChannelList.dart';
-import 'package:Pluralsight/models/Response/ResFavoriteCourses.dart';
-import 'package:Pluralsight/models/SearchBuilder/SearchOption.dart';
-import 'package:Pluralsight/models/User.dart';
-import 'package:Pluralsight/models/AccountInf.dart';
-import 'package:Pluralsight/models/TopCourses.Dart';
-import 'package:Pluralsight/service/UserService.dart';
+import 'package:Pluralsight/Core/models/AccountInf.dart';
+import 'package:Pluralsight/Core/models/DownloadModel.dart';
+import 'package:Pluralsight/Core/models/FavoriteCourses.dart';
+import 'package:Pluralsight/Core/models/Response/ResFavoriteCourses.dart';
+import 'package:Pluralsight/Core/models/SearchBuilder/SearchOption.dart';
+import 'package:Pluralsight/Core/models/User.dart';
+import 'package:Pluralsight/Core/models/TopCourses.Dart';
+import 'package:Pluralsight/View/ui/Account/SignIn.dart';
+import 'package:Pluralsight/View/ui/Browser/BrowserPage.dart';
+import 'package:Pluralsight/View/ui/Download/DowloadPage.dart';
+import 'package:Pluralsight/View/ui/Home/HomePage.dart';
+import 'package:Pluralsight/View/ui/Search/SearchPage.dart';
 import 'package:custom_navigator/custom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
-import 'package:video_player/video_player.dart';
+
+import 'Core/service/UserService.dart';
 
 void main() {
   runApp(
@@ -45,20 +40,8 @@ void main() {
           create: (_) => SearchOption(),
         ),
         ChangeNotifierProvider(
-          create: (_) => CourseListModel(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => MyChannelListModel(),
-        ),
-        ChangeNotifierProvider(
           create: (_) => DownloadModel(),
         ),
-        Provider(
-          create: (_) => CourseDetailListModel(),
-        ),
-        Provider(
-          create: (_) => AuthorsModel(),
-        )
       ],
       child: MaterialApp(
         theme: ThemeData(
