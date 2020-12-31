@@ -4,6 +4,7 @@ import 'package:Pluralsight/Core/models/AccountInf.dart';
 import 'package:Pluralsight/Core/models/HandleAdd2Channel.dart';
 import 'package:Pluralsight/Core/models/Response/ResGetProfile.dart';
 import 'package:Pluralsight/Core/service/UserService.dart';
+import 'package:Pluralsight/View/ui/Account/ResetPasword.dart';
 import 'package:Pluralsight/View/ui/Account/UpdatePassword.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -45,9 +46,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    // AccountInf accountInf = Provider.of<AccountInf>(context, listen: false);
-    // userNameController.text = accountInf.userInfo.name;
-    // emailController.text = accountInf.userInfo.email;
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
@@ -234,8 +232,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     listen: false)
                                                 .token);
                                     if (res.statusCode == 200) {
-                                      HandleAdd2Channel.showToast(
-                                          context, "Check email để kích hoạt tài khoản");
+                                      HandleAdd2Channel.showToast(context,
+                                          "Check email để kích hoạt tài khoản");
                                       final storage =
                                           new FlutterSecureStorage();
                                       await storage.delete(key: 'token');
@@ -264,9 +262,10 @@ class _ProfilePageState extends State<ProfilePage> {
                               child: RaisedButton(
                                 color: Colors.blue[400],
                                 onPressed: () {
-                                  Navigator.of(context, rootNavigator: true).push(
-                                      MaterialPageRoute(
-                                          builder: (context) => UpdatePassword()));
+                                  Navigator.of(context, rootNavigator: true)
+                                      .push(MaterialPageRoute(
+                                          builder: (context) =>
+                                              UpdatePassword()));
                                 },
                                 child: Text(
                                   'Change Password',
@@ -281,10 +280,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         width: double.infinity,
                         child: FlatButton(
                             onPressed: () {
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) => ForgotPassword()));
+                              Navigator.of(context, rootNavigator: true).push(
+                                  MaterialPageRoute(
+                                      builder: (context) => ResetPassword()));
                             },
                             child: Text(
                               'Reset Password',

@@ -100,7 +100,6 @@ class UserService {
           'courseId': courseId,
         }));
   }
-
   static Future<http.Response> getFavoriteCourses({String token}) async {
     return await http.get(
       _urlGetFavoriteCourses,
@@ -110,7 +109,6 @@ class UserService {
       },
     );
   }
-
   static Future<http.Response> getRecommendCourses(
       {String idUser, int limit, int offset}) async {
     return await http.get(

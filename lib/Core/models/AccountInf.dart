@@ -151,4 +151,5 @@ class UserInfo {
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
       );
+      
 }

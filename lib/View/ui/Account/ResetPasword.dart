@@ -1,37 +1,31 @@
 import 'package:Pluralsight/Core/models/AccountInf.dart';
-import 'package:Pluralsight/Core/models/HandleAdd2Channel.dart';
+import 'package:Pluralsight/Core/models/Toast.dart';
 import 'package:Pluralsight/Core/service/UserService.dart';
-import 'package:Pluralsight/View/ui/Account/DoneUpdatePassword.dart';
-import 'package:Pluralsight/View/ui/Constant.dart';
 import 'package:flutter/material.dart';
+import 'package:Pluralsight/View/ui/Constant.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 
-class UpdatePassword extends StatefulWidget {
+class ResetPassword extends StatefulWidget {
   @override
-  _UpdatePasswordState createState() => _UpdatePasswordState();
+  _ResetPasswordState createState() => _ResetPasswordState();
 }
 
-class _UpdatePasswordState extends State<UpdatePassword> {
-  bool showPassword = false;
-  bool showConfPassword = false;
-  bool showOldPassword = false;
-  TextEditingController oldPasswordController;
+class _ResetPasswordState extends State<ResetPassword> {
   TextEditingController newPasswordController;
   TextEditingController confController;
+  bool showPassword = false;
+  bool showConfPassword = false;
 
   @override
   void initState() {
     newPasswordController = TextEditingController();
     confController = TextEditingController();
-    oldPasswordController = TextEditingController();
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     newPasswordController.dispose();
     confController.dispose();
     super.dispose();
@@ -83,32 +77,6 @@ class _UpdatePasswordState extends State<UpdatePassword> {
               ),
               SizedBox(
                 height: 20,
-              ),
-              TextField(
-                controller: oldPasswordController,
-                cursorColor: Theme.of(context).cursorColor,
-                obscureText: !showOldPassword,
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-                decoration: InputDecoration(
-                    labelText: 'Old Password',
-                    labelStyle: TextStyle(
-                      color: Colors.grey[600],
-                    ),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        showOldPassword
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                        color: Colors.grey[300],
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          showOldPassword = (!showOldPassword);
-                        });
-                      },
-                    )),
               ),
               TextField(
                 controller: newPasswordController,
@@ -173,38 +141,32 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                         onPressed: () async {
                           switch (checkFormat()) {
                             case 0:
-                              Response res = await UserService.changePassword(
-                                  token: Provider.of<AccountInf>(context,
-                                          listen: false)
-                                      .token,
+                              Response res = await UserService.resetPassword(
                                   idUser: Provider.of<AccountInf>(context,
                                           listen: false)
                                       .userInfo
                                       .id,
-                                  oldPass: oldPasswordController.text,
-                                  newPass: newPasswordController.text);
-                              print(res.body);
-                              if (res.statusCode == 200) {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Done()));
-                              } else if (res.statusCode == 400) {
-                                HandleAdd2Channel.showToast(
-                                    ctx, "Mật khẩu cũ không đúng");
+                                  password: newPasswordController.text);
+                              if(res.statusCode==200){
+                                Toast.show(
+                                  context: ctx, content: "Mật khẩu đã được thay đổi");
+                              }else{
+                                Toast.show(
+                                  context: ctx, content: "Người dùng không tồn tại");
                               }
                               break;
                             case ConstanUI.EMPTY_ERROR:
-                              HandleAdd2Channel.showToast(
-                                  ctx, "Không được để rỗng");
+                              Toast.show(
+                                  context: ctx, content: "Không được để rỗng");
                               break;
                             case ConstanUI.CONFIRM_ERROR:
-                              HandleAdd2Channel.showToast(
-                                  ctx, "Confirm không khớp");
+                              Toast.show(
+                                  context: ctx, content: "Confirm không khớp");
                               break;
                             case ConstanUI.LENGTH_ERROR:
-                              HandleAdd2Channel.showToast(
-                                  ctx, "Chiều dài password lớn hơn 8");
+                              Toast.show(
+                                  context: ctx,
+                                  content: "Chiều dài password lớn hơn 8");
                               break;
                           }
                         },
@@ -223,9 +185,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
   }
 
   int checkFormat() {
-    if (oldPasswordController.text.isEmpty ||
-        newPasswordController.text.isEmpty ||
-        confController.text.isEmpty) {
+    if (newPasswordController.text.isEmpty || confController.text.isEmpty) {
       return ConstanUI.EMPTY_ERROR;
     } else if (newPasswordController.text != confController.text) {
       return ConstanUI.CONFIRM_ERROR;
