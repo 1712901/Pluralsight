@@ -16,6 +16,7 @@ import 'package:Pluralsight/Core/service/UserService.dart';
 import 'package:Pluralsight/View/utils/Widget/CustomVideoPlayser.dart';
 import 'package:Pluralsight/View/utils/Widget/CustomYoutubePlayer.dart';
 import 'package:Pluralsight/View/utils/page/CommentPage.dart';
+import 'package:Pluralsight/View/utils/page/RelatedCoures.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
     as extend;
 import 'package:flutter/material.dart';
@@ -183,7 +184,10 @@ class _CourseDetailState extends State<CourseDetail>
                                         makeListContent(courseDetailModel),
                                   ),
                                 ),
-                                CommentPage(rating:courseDetailModel.ratings.ratingList,courseId: courseDetailModel.id,),
+                                CommentPage(
+                                  rating: courseDetailModel.ratings.ratingList,
+                                  courseId: courseDetailModel.id,
+                                ),
                               ],
                             )),
                       ),
@@ -513,9 +517,14 @@ class _CourseDetailState extends State<CourseDetail>
           SizedBox(
               width: double.infinity,
               child: RaisedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => RelatedCourse(
+                              listCourse: courseDetailModel.coursesLikeCategory,
+                            )));
+                  },
                   icon: Icon(Icons.view_carousel),
-                  label: Text('View related paths & courses'))),
+                  label: Text('Khóa học liên quan'))),
         ],
       ),
     );

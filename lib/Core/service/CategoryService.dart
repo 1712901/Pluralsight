@@ -15,12 +15,12 @@ class CategoryService {
     );
   }
 
-  static Future<http.Response> getCourseByCategory({String courseId})  {
+  static Future<http.Response> getCourseByCategory({String categoryID})  {
     return  CourseService.search(
         keyword: "",
         limit: null,
         offset: null,
         opt: Opt(
-            sort: Sort(attribute: "price", rule: "ASC"), category: [courseId]));
+            sort: Sort(attribute: "price", rule: "ASC"), category: [categoryID]));
   }
 }

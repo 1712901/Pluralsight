@@ -102,23 +102,4 @@ class _MoreCourseState extends State<MoreCourse> {
       }
     }
   }
-
-  // Future<void> getMorePage() async {
-  //   if (!isloading) {
-  //     setState(() {
-  //       isloading = true;
-  //     });
-  //     Response response = await CourseService.getTopCourse(
-  //         limit: 10, page: currentPage, type: widget.type);
-  //     if (response.statusCode == 200) {
-  //       ResGetTopCourse resGetTopCourse =
-  //           ResGetTopCourse.fromJson(jsonDecode(response.body));
-  //       setState(() {
-  //         if (resGetTopCourse.courses.length == 10) isloading = false;
-  //         list.addAll(resGetTopCourse.courses);
-  //         currentPage++;
-  //       });
-  //     } else {}
-  //   }
-  // }
 }

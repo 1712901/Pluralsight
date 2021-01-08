@@ -70,7 +70,7 @@ class CategoryPage extends StatelessWidget {
             padding: EdgeInsets.all(10.0),
             sliver: FutureBuilder(
                 future: CategoryService.getCourseByCategory(
-                    courseId: category.id),
+                    categoryID: category.id),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     Response res = snapshot.data;
