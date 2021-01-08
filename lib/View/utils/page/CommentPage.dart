@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:Pluralsight/Core/models/AccountInf.dart';
 import 'package:Pluralsight/Core/models/Format.dart';
 import 'package:Pluralsight/Core/models/Response/ResGetDetailCourseNonUser.dart';
@@ -113,9 +115,15 @@ class _CommentPageState extends State<CommentPage> {
                                   Toast.show(
                                       context: context,
                                       content: "Successfully");
-                                } else {
+                                } else if(res.statusCode == 400){
                                   Toast.show(
-                                      context: context, content: "Failed");
+                                      context: context,
+                                      content: "Bạn chưa tham gia khóa học !");
+                                }
+                                else {
+                                  Toast.show(
+                                      context: context,
+                                      content: jsonDecode(res.body)["message"]);
                                 }
                               },
                               child: Text("Post"),
@@ -142,11 +150,11 @@ class _CommentPageState extends State<CommentPage> {
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                            "${widget.rating[index].user.name}"),
+                        Text("${widget.rating[index].user.name}"),
                         //SizedBox(width: 20,),
-                        Text("${Format.getInstantDateFormat().format(widget.rating[index].createdAt)}",
-                              style: TextStyle(fontWeight: FontWeight.w300),
+                        Text(
+                          "${Format.getInstantDateFormat().format(widget.rating[index].createdAt)}",
+                          style: TextStyle(fontWeight: FontWeight.w300),
                         )
                       ],
                     ),

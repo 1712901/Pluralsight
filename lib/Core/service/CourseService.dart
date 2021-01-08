@@ -23,6 +23,7 @@ class CourseService {
   static String _urlDeleteHistory = API_HOST + "/course/delete-search-history";
   static String _urlGetDetail = API_HOST + "/course/get-course-detail";
   static String _urlPostComment = API_HOST + "/course/rating-course";
+  static String _urlGetProcess = API_HOST + "/course/process-course";
 
   static Future<http.Response> getTopSell({int limit, int page}) async {
     try {
@@ -105,7 +106,7 @@ class CourseService {
     print("$_urlGetDetail/$courseID/$userID");
     return await http.get("$_urlGetDetail/$courseID/$userID");
   }
-    static Future<http.Response> postCommnent(
+  static Future<http.Response> postCommnent(
       {String token,String courseID, String content, double formalityPoint,double contentPoint,double presentationPoint}) async {
     return await http.post(_urlPostComment,
         headers: {
@@ -121,5 +122,9 @@ class CourseService {
             "contentPoint":contentPoint
           }
         ));
+  }
+  static Future<http.Response> getProcess({String token,String courseId}) async {
+    return await http
+        .get('$_urlGetProcess/$courseId', headers: {'Authorization': 'Bearer ' + token});
   }
 }

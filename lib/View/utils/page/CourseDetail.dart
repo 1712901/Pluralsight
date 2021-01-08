@@ -354,6 +354,43 @@ class _CourseDetailState extends State<CourseDetail>
           SizedBox(
             height: 10,
           ),
+          isLogin
+              ? FutureBuilder(
+                  future: CourseService.getProcess(
+                      courseId: courseDetailModel.id,
+                      token: Provider.of<AccountInf>(context).token),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      Response res = snapshot.data;
+                      if (res.statusCode == 200) {
+                        int process = (jsonDecode(res.body)["payload"]);
+                        if (process == null) process = 0;
+                        return Row(
+                          children: [
+                            Text(
+                              "Tiến độ",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(' ( $process% )'),
+                            SizedBox(
+                              width: 50,
+                            ),
+                            Flexible(
+                                child: LinearProgressIndicator(
+                              backgroundColor: Colors.grey,
+                              value: process == null
+                                  ? 0
+                                  : process.toDouble() / 100,
+                            )),
+                          ],
+                        );
+                      }
+                      return Container();
+                    } else {
+                      return Container();
+                    }
+                  })
+              : Container(),
           Divider(
             color: Colors.grey,
           ),
