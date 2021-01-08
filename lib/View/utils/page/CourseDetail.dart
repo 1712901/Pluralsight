@@ -15,6 +15,7 @@ import 'package:Pluralsight/Core/service/Payment.dart';
 import 'package:Pluralsight/Core/service/UserService.dart';
 import 'package:Pluralsight/View/utils/Widget/CustomVideoPlayser.dart';
 import 'package:Pluralsight/View/utils/Widget/CustomYoutubePlayer.dart';
+import 'package:Pluralsight/View/utils/page/CommentPage.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
     as extend;
 import 'package:flutter/material.dart';
@@ -93,34 +94,6 @@ class _CourseDetailState extends State<CourseDetail>
                                   size: 40,
                                 ),
                               ),
-                              // Consumer<LoadURL>(
-                              //   builder: (context, provider, _) {
-                              //     return Container(
-                              //       child:
-                              //           Center(child: Text('URL :${provider.url}')),
-                              //     );
-                              //   },
-                              // ),
-                              // AspectRatio(
-                              //   aspectRatio: 16 / 9,
-                              //   child: !_isLoadYoutube
-                              //       ? BetterPlayer(
-                              //           controller: _betterPlayerController)
-                              //       : YoutubePlayerBuilder(
-                              //           player: YoutubePlayer(
-                              //             controller: _youtubePlayerController,
-                              //             // bottomActions: [
-                              //             //   CurrentPosition(),
-                              //             //   ProgressBar(isExpanded: true),
-                              //             // ],
-                              //             // onReady: () {
-                              //             //   _isPlayerReady = true;
-                              //             //   print(_isPlayerReady);
-                              //             // },
-                              //           ),
-                              //           builder: (context, player) => player,
-                              //         ),
-                              // ),
                               AspectRatio(
                                   aspectRatio: 16 / 9,
                                   child: Consumer<LoadURL>(
@@ -210,16 +183,7 @@ class _CourseDetailState extends State<CourseDetail>
                                         makeListContent(courseDetailModel),
                                   ),
                                 ),
-                                SingleChildScrollView(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    child: Column(
-                                      children: makeListRating(
-                                          courseDetailModel.ratings.ratingList),
-                                    ),
-                                  ),
-                                ),
+                                CommentPage(rating:courseDetailModel.ratings.ratingList,courseId: courseDetailModel.id,),
                               ],
                             )),
                       ),
