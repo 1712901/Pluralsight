@@ -27,6 +27,8 @@ class UserService {
   static String _urlChangePassword = _API_HOST + "/user/change-password";
   static String _urlResetPassword = _API_HOST + "/user/reset-password";
 
+  static String _urlCheckOwnCourse = _API_HOST + "/user/check-own-course";
+
   static Future<http.Response> registerAccount(
       {String username, String email, String phone, String password}) async {
     try {
@@ -168,6 +170,16 @@ class UserService {
           'id': idUser,
           'password':password,
         })
+    );
+  }
+
+    static Future<http.Response> checkOwnCourse({String token,String courseId}) async {
+    return await http.get(
+      '$_urlCheckOwnCourse/$courseId',
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+      },
     );
   }
 }

@@ -24,7 +24,6 @@ class AccountInf extends ChangeNotifier {
     this.token = accountInf.token;
     notifyListeners();
   }
-
   void setUserInfor(UserInfo userInfo) {
     this.userInfo = userInfo;
   }

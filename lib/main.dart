@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:Pluralsight/Core/models/AccountInf.dart';
 import 'package:Pluralsight/Core/models/DownloadModel.dart';
 import 'package:Pluralsight/Core/models/FavoriteCourses.dart';
+import 'package:Pluralsight/Core/models/LoadURL.dart';
 import 'package:Pluralsight/Core/models/Response/ResFavoriteCourses.dart';
 import 'package:Pluralsight/Core/models/SearchBuilder/SearchOption.dart';
 import 'package:Pluralsight/Core/models/User.dart';
@@ -42,6 +43,7 @@ void main() {
         ChangeNotifierProvider(
           create: (_) => DownloadModel(),
         ),
+        ChangeNotifierProvider(create: (_) => LoadURL()),
       ],
       child: MaterialApp(
         theme: ThemeData(
@@ -77,9 +79,8 @@ class _HomeState extends State<Home> {
             ResFavoriteCourses.fromJson(jsonDecode(res.body));
         Provider.of<FavoriteCourses>(context, listen: false).setFavoriteCourses(
             favoriteCourses: resFavoriteCourses.favoriteCourse);
-      }else{
-        Provider.of<AccountInf>(context, listen: false)
-          .setToken(token: null);
+      } else {
+        Provider.of<AccountInf>(context, listen: false).setToken(token: null);
       }
     }
   }
@@ -118,8 +119,8 @@ class _HomeState extends State<Home> {
       backgroundColor: Colors.black87,
       body: CustomNavigator(
         home: ChangeNotifierProvider(
-          create: (context)=>SearchOption(),
-          child: optionSlected[_selectedIndex]),
+            create: (context) => SearchOption(),
+            child: optionSlected[_selectedIndex]),
         navigatorKey: navigatorKey,
         pageRoute: PageRoutes.cupertinoPageRoute,
       ),

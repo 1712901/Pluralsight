@@ -9,9 +9,11 @@ class SearchOption extends ChangeNotifier {
   List<Time> getTimes() {
     return this._times;
   }
+
   List<Price> getPrice() {
     return this._price;
   }
+
   List<String> getCategory() {
     return this._category;
   }

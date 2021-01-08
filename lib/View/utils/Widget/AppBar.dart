@@ -1,11 +1,13 @@
 import 'package:Pluralsight/Core/models/AccountInf.dart';
+import 'package:Pluralsight/Core/models/SearchBuilder/SearchOption.dart';
 import 'package:Pluralsight/View/ui/Account/SignIn.dart';
 import 'package:Pluralsight/View/ui/Account/Profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 Widget myAppbar({title, BuildContext context}) {
-  bool isLogin = Provider.of<AccountInf>(context, listen: true).isAuthorization();
+  bool isLogin =
+      Provider.of<AccountInf>(context, listen: true).isAuthorization();
   return AppBar(
     backgroundColor: Colors.grey[800],
     title: Text(title),
@@ -26,7 +28,7 @@ Widget myAppbar({title, BuildContext context}) {
         ),
       ),
       PopupMenuButton(
-        captureInheritedThemes:false,
+          captureInheritedThemes: false,
           color: Colors.grey[800],
           onSelected: (value) {
             switch (value) {

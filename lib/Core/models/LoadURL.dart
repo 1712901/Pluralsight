@@ -7,4 +7,9 @@ class LoadURL extends ChangeNotifier {
     this.url = url;
     notifyListeners();
   }
+
+  bool isYotuber() {
+    if (url.contains("youtube.com")) return true;
+    return false;
+  }
 }

@@ -51,6 +51,7 @@ class _SearchPageState extends State<SearchPage>
   ];
   List<String> showData;
   TextEditingController _controller;
+  SearchOption searchOption = null;
 
   final List<String> listTile = ['ALL', 'COURSES', 'AUTHOURS'];
   //Save data search
@@ -60,6 +61,7 @@ class _SearchPageState extends State<SearchPage>
   List<InstructorSearchV2> instructors = [];
   List<Time> timeOption = [];
   List<Price> priceOption = [];
+  List<String> categoryOption = [];
 
   @override
   void initState() {
@@ -204,13 +206,22 @@ class _SearchPageState extends State<SearchPage>
     }
   }
 
+  void setOption({List<String> catrgory, List<Time> time, List<Price> price}) {
+    priceOption.clear();
+    timeOption.clear();
+    categoryOption.clear();
+    if(price!=null) priceOption.addAll(price);
+    if(time!=null) timeOption.addAll(time);
+    if(catrgory!=null) categoryOption.addAll(catrgory);
+  }
+
   Future<void> onSubmitted(String text,
       {List<String> catrgory, List<Time> time, List<Price> price}) async {
     setState(() {
       isloading = true;
       findkey = false;
     });
-
+    setOption(catrgory: catrgory,time: time,price: price);
     Response res = await search(
         text, catrgory, time, price, 0, ConstanUI.SEARCH_LIMIT); // loading
     if (res.statusCode == 200) {
@@ -231,6 +242,7 @@ class _SearchPageState extends State<SearchPage>
 
   Future<Response> search(String text, List<String> catrgory, List<Time> time,
       List<Price> price, int offset, int limit) async {
+    isLoadMore = true;
     if (!islogin) {
       // dùng Search
       return CourseService.search(
@@ -257,16 +269,16 @@ class _SearchPageState extends State<SearchPage>
     }
   }
 
-  Future<void> searchMore() async {
+  Future<void> searchMore(SearchOption searchOption) async {
     print("Searmore");
     offset = courses.length + 1;
-    SearchOption searchOption =
-        Provider.of<SearchOption>(context, listen: false);
+    // SearchOption searchOption =
+    //     Provider.of<SearchOption>(context, listen: false);
     Response res = await search(
         _controller.text,
-        searchOption.getCategory(),
-        searchOption.getTimes(),
-        searchOption.getPrice(),
+        this.categoryOption,
+        this.timeOption,
+        this.priceOption,
         offset,
         ConstanUI.SEARCH_LIMIT); // loading
     if (res.statusCode == 200) {
@@ -279,7 +291,8 @@ class _SearchPageState extends State<SearchPage>
       } else {
         ResSearchV2 resSearchV2 = ResSearchV2.fromJson(jsonDecode(res.body));
         courses.addAll(resSearchV2.payload.courses.data);
-        if (resSearchV2.payload.courses.data.length < ConstanUI.SEARCH_LIMIT - 1) {
+        if (resSearchV2.payload.courses.data.length <
+            ConstanUI.SEARCH_LIMIT - 1) {
           isLoadMore = false;
         }
         this.instructors.addAll(resSearchV2.payload.instructors.data);
@@ -292,7 +305,7 @@ class _SearchPageState extends State<SearchPage>
     if (scrollController.position.pixels ==
             scrollController.position.maxScrollExtent &&
         isLoadMore) {
-      searchMore();
+      await searchMore(this.searchOption);
     }
   }
 
@@ -375,7 +388,7 @@ class _SearchPageState extends State<SearchPage>
   Future _showAlert(BuildContext context) {
     return showDialog(
       context: context,
-      builder: (contextDialog) => AlertDialog(
+      builder: (context) => AlertDialog(
         scrollable: true,
         contentPadding: EdgeInsets.symmetric(vertical: 10),
         content: Consumer<SearchOption>(
@@ -513,23 +526,23 @@ class _SearchPageState extends State<SearchPage>
           FlatButton(
               onPressed: () {
                 List<String> category =
-                    Provider.of<SearchOption>(contextDialog, listen: false)
+                    Provider.of<SearchOption>(context, listen: false)
                         .getCategory();
                 List<Time> time =
-                    Provider.of<SearchOption>(contextDialog, listen: false)
+                    Provider.of<SearchOption>(context, listen: false)
                         .getTimes();
                 List<Price> price =
-                    Provider.of<SearchOption>(contextDialog, listen: false)
+                    Provider.of<SearchOption>(context, listen: false)
                         .getPrice();
                 searchResult = false;
                 onSubmitted(_controller.text,
                     price: price, catrgory: category, time: time);
-                Navigator.of(contextDialog).pop(false);
+                Navigator.of(context).pop(false);
               },
               child: Text("OK")),
           FlatButton(
               onPressed: () {
-                Navigator.of(contextDialog).pop(false);
+                Navigator.of(context).pop(false);
               },
               child: Text("Cancel")),
         ],

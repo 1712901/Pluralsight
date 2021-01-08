@@ -63,6 +63,8 @@ class CourseService {
 
   static Future<http.Response> search(
       {String keyword, Opt opt, int limit, int offset}) async {
+    print(Search(keyword: keyword, opt: opt, limit: limit, offset: offset)
+        .toJson());
     return await http.post(_urlSearch,
         headers: {'Content-type': 'application/json'},
         body: jsonEncode(
@@ -90,12 +92,16 @@ class CourseService {
     return await http
         .get(_urlHistory, headers: {'Authorization': 'Bearer ' + token});
   }
-  static Future<http.Response> deleteHistory({String token,String historyID}) async {
-    return await http
-        .delete("$_urlDeleteHistory/$historyID", headers: {'Authorization': 'Bearer ' + token});
+
+  static Future<http.Response> deleteHistory(
+      {String token, String historyID}) async {
+    return await http.delete("$_urlDeleteHistory/$historyID",
+        headers: {'Authorization': 'Bearer ' + token});
   }
-  static Future<http.Response> getDetailNonUser({String courseID}) async {
-    return await http
-        .get("$_urlGetDetail/$courseID/null");
+
+  static Future<http.Response> getDetail(
+      {String courseID, String userID}) async {
+    print("$_urlGetDetail/$courseID/$userID");
+    return await http.get("$_urlGetDetail/$courseID/$userID");
   }
 }

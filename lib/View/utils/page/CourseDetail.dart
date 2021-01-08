@@ -4,10 +4,17 @@ import 'package:Pluralsight/Core/models/AccountInf.dart';
 import 'package:Pluralsight/Core/models/FavoriteCourses.dart';
 import 'package:Pluralsight/Core/models/Format.dart';
 import 'package:Pluralsight/Core/models/HandleAdd2Channel.dart';
+import 'package:Pluralsight/Core/models/LoadURL.dart';
 import 'package:Pluralsight/Core/models/Response/ResGetDetailCourseNonUser.dart';
 import 'package:Pluralsight/Core/models/Response/ResGetTopSell.dart';
+import 'package:Pluralsight/Core/models/Response/ResGetVideoLesson.dart';
+import 'package:Pluralsight/Core/models/Toast.dart';
 import 'package:Pluralsight/Core/service/CourseService.dart';
+import 'package:Pluralsight/Core/service/LessonService.dart';
+import 'package:Pluralsight/Core/service/Payment.dart';
 import 'package:Pluralsight/Core/service/UserService.dart';
+import 'package:Pluralsight/View/utils/Widget/CustomVideoPlayser.dart';
+import 'package:Pluralsight/View/utils/Widget/CustomYoutubePlayer.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
     as extend;
 import 'package:flutter/material.dart';
@@ -15,8 +22,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:chewie/chewie.dart';
-import 'package:video_player/video_player.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class CourseDetail extends StatefulWidget {
   final CourseInfor course;
@@ -30,17 +36,17 @@ class _CourseDetailState extends State<CourseDetail>
     with TickerProviderStateMixin {
   TabController primaryTC;
   bool maxLine = true;
+  bool ownerCourse = false;
   final CourseInfor course;
   bool isLogin;
   bool isLike;
-  ChewieController chewieController;
-  VideoPlayerController videoPlayerController;
   CourseDetailModel courseDetailModel;
 
   _CourseDetailState(this.course);
   // video_player
-  VideoPlayerController _controller;
-  Future<void> _initializeVideoPlayerFuture;
+  YoutubePlayerController _youtubePlayerController;
+  bool isNextYoutube = false;
+  bool isNextVideo = false;
 
   @override
   void initState() {
@@ -51,51 +57,15 @@ class _CourseDetailState extends State<CourseDetail>
     super.initState();
   }
 
-  Future<void> initializePlayer({String url}) async {
-    videoPlayerController = VideoPlayerController.network(
-      url,
-    );
-    // videoPlayerController = VideoPlayerController.network(
-    //     'https://storage.googleapis.com/itedu-bucket/Courses/49c92ee0-58fe-47a7-b111-8e9e273b0910/promo/0e3dc369-ffca-4541-ba74-391c07eb8a45.mov');
-    // final video = File('assets/audio/889bbc08-64e1-4dbc-8865-d40c0d00359a.mov');
-    // videoPlayerController=VideoPlayerController.file(video);
-    await videoPlayerController.initialize();
-    chewieController = ChewieController(
-      videoPlayerController: videoPlayerController,
-      autoPlay: false,
-      looping: true,
-      // Try playing around with some of these other options:
-
-      // showControls: false,
-      // materialProgressColors: ChewieProgressColors(
-      //   playedColor: Colors.red,
-      //   handleColor: Colors.blue,
-      //   backgroundColor: Colors.grey,
-      //   bufferedColor: Colors.lightGreen,
-      // ),
-      // placeholder: Container(
-      //   color: Colors.grey,
-      // ),
-      aspectRatio: 16 / 9,
-      autoInitialize: true,
-    );
-    setState(() {});
-  }
-
   @override
   void dispose() {
-    // TODO: implement dispose
-    if (videoPlayerController != null) videoPlayerController.dispose();
-    if (chewieController != null) chewieController.dispose();
-    //_controller.dispose();
+    //if (_betterPlayerController != null) _betterPlayerController.dispose();
+    if (_youtubePlayerController != null) _youtubePlayerController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // final CourseDetailModel courseDetail =
-    //     Provider.of<CourseDetailListModel>(context, listen: false)
-    //         .getCourseDetail(5);
     isLogin = Provider.of<AccountInf>(context, listen: false).isAuthorization();
     isLike =
         Provider.of<FavoriteCourses>(context).isFavorite(courseId: course.id);
@@ -112,10 +82,17 @@ class _CourseDetailState extends State<CourseDetail>
                         aspectRatio: 16 / 9,
                         child: Container(
                           width: double.infinity,
-                          color: Colors.orange,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 0),
                             child: Stack(children: [
+                              Container(
+                                width: double.infinity,
+                                height: double.infinity,
+                                child: Icon(
+                                  Icons.play_arrow,
+                                  size: 40,
+                                ),
+                              ),
                               // Consumer<LoadURL>(
                               //   builder: (context, provider, _) {
                               //     return Container(
@@ -124,47 +101,40 @@ class _CourseDetailState extends State<CourseDetail>
                               //     );
                               //   },
                               // ),
-                              Center(
-                                child: chewieController != null &&
-                                        chewieController.videoPlayerController
-                                            .value.initialized
-                                    ? Chewie(
-                                        controller: chewieController,
-                                      )
-                                    //? VideoPlayer(videoPlayerController)
-                                    : Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          CircularProgressIndicator(),
-                                          SizedBox(height: 20),
-                                          Text('Loading'),
-                                        ],
-                                      ),
-                              ),
-                              // FutureBuilder(
-                              //   future: _initializeVideoPlayerFuture,
-                              //   builder: (context, snapshot) {
-                              //     if (snapshot.connectionState ==
-                              //         ConnectionState.done) {
-                              //       // If the VideoPlayerController has finished initialization, use
-                              //       // the data it provides to limit the aspect ratio of the video.
-                              //       return AspectRatio(
-                              //         aspectRatio:
-                              //             _controller.value.aspectRatio,
-                              //         // Use the VideoPlayer widget to display the video.
-                              //         child: VideoPlayer(_controller),
-                              //       );
-                              //     } else {
-                              //       // If the VideoPlayerController is still initializing, show a
-                              //       // loading spinner.
-                              //       return Center(
-                              //           child: CircularProgressIndicator());
-                              //     }
-                              //   },
+                              // AspectRatio(
+                              //   aspectRatio: 16 / 9,
+                              //   child: !_isLoadYoutube
+                              //       ? BetterPlayer(
+                              //           controller: _betterPlayerController)
+                              //       : YoutubePlayerBuilder(
+                              //           player: YoutubePlayer(
+                              //             controller: _youtubePlayerController,
+                              //             // bottomActions: [
+                              //             //   CurrentPosition(),
+                              //             //   ProgressBar(isExpanded: true),
+                              //             // ],
+                              //             // onReady: () {
+                              //             //   _isPlayerReady = true;
+                              //             //   print(_isPlayerReady);
+                              //             // },
+                              //           ),
+                              //           builder: (context, player) => player,
+                              //         ),
                               // ),
+                              AspectRatio(
+                                  aspectRatio: 16 / 9,
+                                  child: Consumer<LoadURL>(
+                                      builder: (context, provider, _) {
+                                    if (provider.isYotuber()) {
+                                      return CustomYoutuberPlayer(
+                                          next: isNextYoutube,
+                                          url: provider.url);
+                                    }
+                                    return CustomVideoPlayer(
+                                      url: provider.url,
+                                      next: isNextVideo,
+                                    );
+                                  })),
                               Align(
                                 alignment: Alignment.topCenter,
                                 child: Row(
@@ -299,11 +269,7 @@ class _CourseDetailState extends State<CourseDetail>
     return list;
   }
 
-  Widget headerSilverAppBar(
-      {bool maxline, CourseDetailModel courseDetail}) {
-    // final List<AuthorModel> authors =
-    //     Provider.of<AuthorsModel>(context, listen: false)
-    //         .getAllAuthor(course.ID);
+  Widget headerSilverAppBar({bool maxline, CourseDetailModel courseDetail}) {
     return Container(
       padding: EdgeInsets.only(top: 5.0, left: 15.0, right: 15.0),
       color: Colors.grey[800],
@@ -318,7 +284,6 @@ class _CourseDetailState extends State<CourseDetail>
           SizedBox(
             height: 5,
           ),
-
           SizedBox(
             height: 5,
           ),
@@ -371,7 +336,9 @@ class _CourseDetailState extends State<CourseDetail>
                             Response res = await UserService.likeCourse(
                                 token: token, courseId: course.id);
                             if (res.statusCode == 200) {
-                              provider.likeCourse(courseInfor: courseDetailModel.convertToCourseInfor());
+                              provider.likeCourse(
+                                  courseInfor:
+                                      courseDetailModel.convertToCourseInfor());
                             } else if (res.statusCode == 401) {
                               Provider.of<AccountInf>(context, listen: false)
                                   .setToken(token: null);
@@ -383,24 +350,15 @@ class _CourseDetailState extends State<CourseDetail>
               makeItemButton(
                   icon: Icon(Icons.arrow_circle_down),
                   title: 'Download',
-                  opTap: () {
-                    // print("Download");
-                    // if (Provider.of<User>(context, listen: false)
-                    //     .isAuthorization) {
-                    //   Provider.of<DownloadModel>(context, listen: false)
-                    //       .downloadCourse(course);
-                    //   HandleAdd2Channel.showToast(context, "Downloading");
-                    //   return;
-                    // }
-                    // HandleAdd2Channel.showToast(context, "Dowload failed");
-                  }),
+                  opTap: () {}),
             ],
           ),
           Wrap(
             direction: Axis.horizontal,
             children: [
               Text(
-                Format.getInstantDateFormat().format(courseDetailModel.updatedAt),
+                Format.getInstantDateFormat()
+                    .format(courseDetailModel.updatedAt),
                 style: TextStyle(color: Colors.grey),
               ),
               SizedBox(
@@ -500,12 +458,94 @@ class _CourseDetailState extends State<CourseDetail>
           Wrap(
             children: [],
           ),
-          SizedBox(
-              width: double.infinity,
-              child: RaisedButton.icon(
-                  onPressed: () {},
-                  icon: Icon(Icons.done_all),
-                  label: Text('Take a learning check'))),
+          Provider.of<AccountInf>(context, listen: false).isAuthorization()
+              ? SizedBox(
+                  width: double.infinity,
+                  child: FutureBuilder(
+                    future: UserService.checkOwnCourse(
+                        token: Provider.of<AccountInf>(context, listen: false)
+                            .token,
+                        courseId: courseDetailModel.id),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        Response res = snapshot.data;
+                        if (res.statusCode == 200) {
+                          ownerCourse = jsonDecode(res.body)["payload"]
+                              ["isUserOwnCourse"];
+                          return RaisedButton.icon(
+                              onPressed: () async {
+                                if (!ownerCourse) {
+                                  // đăng ký khóa học
+                                  AccountInf accountInf =
+                                      Provider.of<AccountInf>(context,
+                                          listen: false);
+                                  Response res =
+                                      await PaymentService.paymentFreeCourse(
+                                          token: accountInf.token,
+                                          courseId: courseDetailModel.id);
+                                  print(res.body);
+                                  if (res.statusCode == 200) {
+                                    setState(() {});
+                                  } else {}
+                                } else {
+                                  //Đã đăng ký
+                                  print("Tiếp thục học");
+                                }
+                              },
+                              icon: Icon(Icons.done_all),
+                              color: Colors.blue,
+                              label: ownerCourse
+                                  ? Text('Tiếp tục học')
+                                  : courseDetailModel.price == 0
+                                      ? Text("Tham gia")
+                                      : Text('Mua'));
+                        }
+                      } else {
+                        return Container();
+                      }
+                    },
+                  ))
+              : SizedBox(
+                  width: double.infinity,
+                  child: RaisedButton.icon(
+                      onPressed: () {
+                        Toast.show(context: context, content: "Chưa đăng nhập");
+                      },
+                      icon: Icon(Icons.done_all),
+                      color: Colors.blue,
+                      label: courseDetailModel.price == 0
+                          ? Text('Tham gia')
+                          : Text('Mua')),
+                ),
+          // SizedBox(
+          //     width: double.infinity,
+          //     child: RaisedButton.icon(
+          //         onPressed: () async {
+          //           // BetterPlayerDataSource dataSource = BetterPlayerDataSource(
+          //           //     BetterPlayerDataSourceType.network,
+          //           //     "https://storage.googleapis.com/itedu-bucket/Courses/b3b4bb79-3252-4cfe-88c4-3a4f17588b18/promo/889bbc08-64e1-4dbc-8865-d40c0d00359a.mov");
+          //           // _betterPlayerController.setupDataSource(dataSource);
+          //           AccountInf accountInf =
+          //               Provider.of<AccountInf>(context, listen: false);
+          //           if (accountInf.isAuthorization()) {
+          //             Response res = await PaymentService.paymentFreeCourse(
+          //                 token: accountInf.token,
+          //                 courseId: courseDetailModel.id);
+          //             print(res.body);
+          //             if (res.statusCode == 200) {
+          //               print("OK");
+          //             } else {
+          //               print("failed");
+          //             }
+          //           } else {
+          //             Toast.show(context: context, content: "Chưa đăng nhập");
+          //           }
+          //         },
+          //         icon: Icon(Icons.done_all),
+          //         color: Colors.blue,
+          //         label: courseDetailModel.price == 0
+          //             ? Text('Tham gia')
+          //             : Text('Mua'))),
           SizedBox(
               width: double.infinity,
               child: RaisedButton.icon(
@@ -568,8 +608,53 @@ class _CourseDetailState extends State<CourseDetail>
                       .map((lesson) =>
                           Builder(builder: (BuildContext newContext) {
                             return ListTile(
-                              onTap: () {
-                                //newContext.read<LoadURL>().setUrl(lesson.);
+                              onTap: () async {
+                                // //newContext.read<LoadURL>().setUrl(lesson.);
+                                // print(lesson.videoUrl);
+                                // setState(() {
+                                //   _isLoadYoutube = true;
+                                // });
+                                // _youtubePlayerController =
+                                //     YoutubePlayerController(
+                                //         initialVideoId:
+                                //             YoutubePlayer.convertUrlToId(
+                                //                 lesson.videoUrl),
+                                //         flags: YoutubePlayerFlags(
+                                //           autoPlay: false,
+                                //           mute: true,
+                                //         ));
+                                // //setState(() {});
+                                if (Provider.of<AccountInf>(context,
+                                            listen: false)
+                                        .isAuthorization() &&
+                                    this.ownerCourse) {
+                                  Response res =
+                                      await LessonService.getURLLesson(
+                                          token: Provider.of<AccountInf>(
+                                                  context,
+                                                  listen: false)
+                                              .token,
+                                          courseID: lesson.courseId,
+                                          lessonId: lesson.id);
+                                  print(res.body);
+                                  if (res.statusCode == 200) {
+                                    ResGetVideoLesson resGetVideoLesson =
+                                        resGetVideoLessonFromJson(res.body);
+                                    print(
+                                        resGetVideoLesson.videoLesson.videoUrl);
+                                    if (resGetVideoLesson
+                                            .videoLesson.videoUrl ==
+                                        null) return;
+                                    this.isNextYoutube = true;
+                                    this.isNextVideo = true;
+                                    Provider.of<LoadURL>(context, listen: false)
+                                        .setUrl(resGetVideoLesson
+                                            .videoLesson.videoUrl);
+                                    print(Provider.of<LoadURL>(context,
+                                            listen: false)
+                                        .isYotuber());
+                                  }
+                                }
                               },
                               leading: Padding(
                                 padding:
@@ -601,21 +686,26 @@ class _CourseDetailState extends State<CourseDetail>
   }
 
   Future<void> getDetailCourse({String courseID}) async {
-    Response res = await CourseService.getDetailNonUser(courseID: courseID);
-    print(res.body);
+    AccountInf accountInf = Provider.of<AccountInf>(context, listen: false);
+    Response res;
+    if (!accountInf.isAuthorization()) {
+      print("No Login");
+      res = await CourseService.getDetail(courseID: courseID);
+    } else {
+      print("Login");
+      res = await CourseService.getDetail(
+          courseID: courseID, userID: accountInf.userInfo.id);
+    }
     if (res.statusCode == 200) {
       ResGetDetailCourseNonUser resGetDetailCourseNonUser =
           ResGetDetailCourseNonUser.fromJson(jsonDecode(res.body));
       courseDetailModel = resGetDetailCourseNonUser.courseDetail;
-      initializePlayer(url: courseDetailModel.promoVidUrl);
+      Provider.of<LoadURL>(context, listen: false)
+          .setUrl(courseDetailModel.promoVidUrl);
+      print(courseDetailModel.promoVidUrl);
+      //await initializePlayer(url: courseDetailModel.promoVidUrl);
       setState(() {});
     }
-
-    // _controller = VideoPlayerController.network(
-    //   courseDetailModel.promoVidUrl,
-    // );
-    // print(courseDetailModel.promoVidUrl);
-    // _initializeVideoPlayerFuture = _controller.initialize();
   }
 
   List<Container> makeListRating(List<RatingList> ratingList) {
@@ -670,3 +760,8 @@ class _CourseDetailState extends State<CourseDetail>
         .toList();
   }
 }
+
+// BetterPlayerDataSource dataSource = BetterPlayerDataSource(
+//     BetterPlayerDataSourceType.network,
+//     "https://storage.googleapis.com/itedu-bucket/Courses/b3b4bb79-3252-4cfe-88c4-3a4f17588b18/promo/889bbc08-64e1-4dbc-8865-d40c0d00359a.mov");
+// _betterPlayerController.setupDataSource(dataSource);
