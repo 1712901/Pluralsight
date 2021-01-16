@@ -28,6 +28,7 @@ class _MoreCourseState extends State<MoreCourse> {
     controller = new ScrollController()..addListener(_scrollListener);
     //getMorePage();
     loadMoreData();
+    super.initState();
   }
 
   @override

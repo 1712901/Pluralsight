@@ -8,6 +8,8 @@ import 'package:Pluralsight/Core/models/Response/ResFavoriteCourses.dart';
 import 'package:Pluralsight/Core/models/SearchBuilder/SearchOption.dart';
 import 'package:Pluralsight/Core/models/User.dart';
 import 'package:Pluralsight/Core/models/TopCourses.Dart';
+import 'package:Pluralsight/Core/models/MyProvider/DownloadProgress.dart';
+import 'package:Pluralsight/TestDatabase.dart';
 import 'package:Pluralsight/View/ui/Account/SignIn.dart';
 import 'package:Pluralsight/View/ui/Browser/BrowserPage.dart';
 import 'package:Pluralsight/View/ui/Download/DowloadPage.dart';
@@ -44,6 +46,7 @@ void main() {
           create: (_) => DownloadModel(),
         ),
         ChangeNotifierProvider(create: (_) => LoadURL()),
+        ChangeNotifierProvider(create: (_) => DownLoadProgress()),
       ],
       child: MaterialApp(
         theme: ThemeData(
@@ -53,6 +56,7 @@ void main() {
             backgroundColor: Colors.black87,
             buttonColor: Colors.grey),
         home: Home(),
+        //home: TestDatabase(),
       ),
     ),
   );
@@ -118,9 +122,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       backgroundColor: Colors.black87,
       body: CustomNavigator(
-        home: ChangeNotifierProvider(
-            create: (context) => SearchOption(),
-            child: optionSlected[_selectedIndex]),
+        home: optionSlected[_selectedIndex],
         navigatorKey: navigatorKey,
         pageRoute: PageRoutes.cupertinoPageRoute,
       ),

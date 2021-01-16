@@ -24,6 +24,7 @@ class CourseService {
   static String _urlGetDetail = API_HOST + "/course/get-course-detail";
   static String _urlPostComment = API_HOST + "/course/rating-course";
   static String _urlGetProcess = API_HOST + "/course/process-course";
+  static String _urlGetCourseInfo = API_HOST + "/course/get-course-info";
 
   static Future<http.Response> getTopSell({int limit, int page}) async {
     try {
@@ -126,5 +127,9 @@ class CourseService {
   static Future<http.Response> getProcess({String token,String courseId}) async {
     return await http
         .get('$_urlGetProcess/$courseId', headers: {'Authorization': 'Bearer ' + token});
+  }
+  static Future<http.Response> getCourseInfo({String token,String courseID}) async {
+    return await http
+        .get('$_urlGetCourseInfo?id=$courseID', headers: {'Authorization': 'Bearer ' + token});
   }
 }

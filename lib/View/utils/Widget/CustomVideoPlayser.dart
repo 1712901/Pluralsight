@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
@@ -5,8 +7,9 @@ import 'package:video_player/video_player.dart';
 class CustomVideoPlayer extends StatefulWidget {
   final String url;
   final next;
+  final isLocal;
 
-  const CustomVideoPlayer({Key key, @required this.url, @required this.next})
+  const CustomVideoPlayer({Key key, @required this.url, @required this.next,@required this.isLocal})
       : super(key: key);
   @override
   _CustomVideoPlayerState createState() => _CustomVideoPlayerState();
@@ -56,14 +59,22 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
 
   Future<void> initializePlayer({@required String url}) async {
     if (widget.next) {
-      _videoPlayerController.dispose();
-
-      _videoPlayerController = VideoPlayerController.network(url);
-      await _videoPlayerController.initialize();
-    }else{
-       _videoPlayerController = VideoPlayerController.network(url);
-      await _videoPlayerController.initialize();
+      print("dispose");
+      await _videoPlayerController.dispose();
     }
+
+    if(widget.isLocal) {
+      try {
+        _videoPlayerController = VideoPlayerController.file(File(url));
+      }catch(exp){
+        _videoPlayerController = VideoPlayerController.network(url);
+      }
+    }else{
+      _videoPlayerController = VideoPlayerController.network(url);
+      print("initialize");
+    }
+    await _videoPlayerController.initialize();
+
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController,
       //autoInitialize: true,

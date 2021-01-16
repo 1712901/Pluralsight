@@ -326,7 +326,8 @@ class _SearchPageState extends State<SearchPage>
                     itemBuilder: (context, index) {
                       return ListTile(
                         onTap: () async {
-                          await onSubmitted(list[index].content);
+                          SearchOption searchOption=Provider.of<SearchOption>(context,listen: false);
+                          await onSubmitted(list[index].content,catrgory: searchOption.getCategory(),time: searchOption.getTimes(),price: searchOption.getPrice());
                           _controller.text = list[index].content;
                         },
                         leading: Icon(
@@ -353,6 +354,8 @@ class _SearchPageState extends State<SearchPage>
                         ),
                       );
                     });
+              }else{
+                return Container();
               }
             } else {
               return Container();

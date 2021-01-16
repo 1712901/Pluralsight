@@ -1,4 +1,5 @@
 import 'package:Pluralsight/Core/models/AccountInf.dart';
+import 'package:Pluralsight/Core/models/DownLoad/ManagerData.dart';
 import 'package:Pluralsight/Core/models/DownloadModel.dart';
 import 'package:Pluralsight/Core/models/FavoriteCourses.dart';
 import 'package:Pluralsight/Core/models/Format.dart';
@@ -14,9 +15,9 @@ import 'package:provider/provider.dart';
 
 class CourseListTitle extends StatelessWidget {
   final CourseInfor course;
-  final int indexChannel;
+  final bool isLoaded;
 
-  const CourseListTitle({Key key, this.course, this.indexChannel = -1})
+  const CourseListTitle({Key key, this.course, this.isLoaded = false})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -152,20 +153,10 @@ class CourseListTitle extends StatelessWidget {
                       //HandleAdd2Channel.openDialog(context, course.ID);
                       break;
                     case 2:
-                      // if (isLogin) {
-                      //   // Đã login
-                      //   if (!isDownload) {
-                      //     //Chưa download
-                      //     provider.downloadCourse(course);
-                      //     HandleAdd2Channel.showToast(context, "Downloading");
-                      //   } else if (isDownload) {
-                      //     //Remove download
-                      //     provider.removeCourse(course);
-                      //     HandleAdd2Channel.showToast(context, "Deleted");
-                      //   }
-                      // } else {
-                      //   HandleAdd2Channel.showToast(context, "Delete Failed");
-                      // }
+                      ManagerData managerData=new ManagerData();
+                      await managerData.openDatabase();
+                      await managerData.deleteCourse(courseID: course.id,userID: Provider.of<AccountInf>(context,listen: false).userInfo.id);
+
                       break;
                     case 3:
                       // Provider.of<MyChannelListModel>(context, listen: false)
@@ -184,16 +175,7 @@ class CourseListTitle extends StatelessWidget {
                               ? 'Un like'
                               : 'Like',
                         )),
-                    PopupMenuItem(
-                        value: 1,
-                        child: Consumer<DownloadModel>(
-                          builder: (context, provider, _) {
-                            return Text(
-                                //isDownload ? 'Remove Download' : 'Download',
-                                "Download");
-                          },
-                        )),
-                    indexChannel >= 0
+                    isLoaded
                         ? PopupMenuItem(
                             value: 2,
                             child: Text(
