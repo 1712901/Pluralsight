@@ -1,5 +1,6 @@
 import 'package:Pluralsight/Core/models/Response/ResSearchV2.dart';
 import 'package:Pluralsight/View/utils/page/AuthorDetail.dart';
+import 'package:Pluralsight/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 Widget authorListTitle(BuildContext context, InstructorSearchV2 author) {
@@ -24,7 +25,7 @@ Widget authorListTitle(BuildContext context, InstructorSearchV2 author) {
         maxLines: 2,
       ),
       subtitle: Text(
-        '${author.numcourses} courses',
+        '${author.numcourses} ${S.current.courses}',
         style: TextStyle(color: Colors.grey),
       ),
       leading: ClipOval(

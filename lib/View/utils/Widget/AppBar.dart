@@ -2,6 +2,7 @@ import 'package:Pluralsight/Core/models/AccountInf.dart';
 import 'package:Pluralsight/Core/models/SearchBuilder/SearchOption.dart';
 import 'package:Pluralsight/View/ui/Account/SignIn.dart';
 import 'package:Pluralsight/View/ui/Account/Profile.dart';
+import 'package:Pluralsight/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -55,25 +56,25 @@ Widget myAppbar({title, BuildContext context}) {
               PopupMenuItem(
                   value: 0,
                   child: Text(
-                    'Setting',
+                      S.current.Setting,
                     style: TextStyle(color: Colors.white),
                   )),
               PopupMenuItem(
                   value: 1,
                   child: Text(
-                    'Send feedBack',
+                    S.current.SendFeedBack,
                     style: TextStyle(color: Colors.white),
                   )),
               PopupMenuItem(
                   value: 2,
                   child: Text(
-                    'Contact support',
+                    S.current.ContactSupport,
                     style: TextStyle(color: Colors.white),
                   )),
               PopupMenuItem(
                   value: 3,
                   child: Text(
-                    isLogin ? 'Profile' : 'Login',
+                    isLogin ? S.current.Profile : S.current.Login,
                     style: TextStyle(color: Colors.white),
                   )),
             ];

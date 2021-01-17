@@ -6,6 +6,7 @@ import 'package:Pluralsight/Core/models/Response/ResGetProfile.dart';
 import 'package:Pluralsight/Core/service/UserService.dart';
 import 'package:Pluralsight/View/ui/Account/ResetPasword.dart';
 import 'package:Pluralsight/View/ui/Account/UpdatePassword.dart';
+import 'package:Pluralsight/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
@@ -112,7 +113,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         builder: (context) => SignIn()));
                               },
                               child: Text(
-                                'SIGN IN',
+                                S.current.SignIn,
                                 style: TextStyle(color: Colors.white),
                               ),
                             ),
@@ -151,7 +152,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                             isDense: true,
-                            labelText: 'Name',
+                            labelText: S.current.Name,
                             labelStyle: TextStyle(color: Colors.grey[600])),
                       ),
                       TextField(
@@ -160,7 +161,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         style: TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                             isDense: true,
-                            labelText: 'Phone number',
+                            labelText: S.current.Phone,
                             labelStyle: TextStyle(color: Colors.grey[600])),
                       ),
                       TextField(
@@ -233,7 +234,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 .token);
                                     if (res.statusCode == 200) {
                                       HandleAdd2Channel.showToast(context,
-                                          "Check email để kích hoạt tài khoản");
+                                          S.current.CheckEmail);
                                       final storage =
                                           new FlutterSecureStorage();
                                       await storage.delete(key: 'token');
@@ -242,12 +243,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                           .logout();
                                     } else if (res.statusCode == 400) {
                                       HandleAdd2Channel.showToast(
-                                          context, "Email đã tồn tại");
+                                          context, S.current.EmailAlreadyExists);
                                     }
                                   }
                                 },
                                 child: Text(
-                                  'Change Email',
+                                  S.current.ChangeEmail,
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ),
@@ -268,7 +269,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                               UpdatePassword()));
                                 },
                                 child: Text(
-                                  'Change Password',
+                                  S.current.ChangePassword,
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ),
@@ -285,7 +286,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       builder: (context) => ResetPassword()));
                             },
                             child: Text(
-                              'Reset Password',
+                              S.current.ResetPassword,
                               style: TextStyle(color: Colors.blue),
                             )),
                       ),
@@ -301,7 +302,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               Navigator.pop(context);
                             },
                             child: Text(
-                              'Log out',
+                              S.current.LogOut,
                               style: TextStyle(color: Colors.blue),
                             )),
                       ),

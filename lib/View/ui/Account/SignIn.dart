@@ -5,6 +5,7 @@ import 'package:Pluralsight/Core/models/Toast.dart';
 import 'package:Pluralsight/Core/service/UserService.dart';
 import 'package:Pluralsight/View/ui/Account/ForgotPassword.dart';
 import 'package:Pluralsight/View/ui/Account/SignUp.dart';
+import 'package:Pluralsight/generated/l10n.dart';
 import 'package:Pluralsight/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -39,7 +40,7 @@ class _SignInState extends State<SignIn> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Sign In',
+                S.current.SignIn,
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 30,
@@ -67,7 +68,7 @@ class _SignInState extends State<SignIn> {
                   color: Colors.white,
                 ),
                 decoration: InputDecoration(
-                    labelText: 'Password',
+                    labelText: S.current.Password,
                     labelStyle: TextStyle(
                       color: Colors.grey[600],
                     ),
@@ -132,7 +133,7 @@ class _SignInState extends State<SignIn> {
                           }
                         },
                         child: Text(
-                          'SIGN IN',
+                          S.current.SignIn,
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
@@ -148,7 +149,7 @@ class _SignInState extends State<SignIn> {
                               builder: (context) => ForgotPassword()));
                     },
                     child: Text(
-                      'FORGOT PASSWORD ?',
+                      S.current.FORGET_PASSWORD,
                       style: TextStyle(color: Colors.blue),
                     )),
               ),
@@ -161,7 +162,7 @@ class _SignInState extends State<SignIn> {
                     },
                     borderSide: BorderSide(color: Colors.blue),
                     child: Text(
-                      'SIGN UP FREE',
+                      S.current.SIGN_UP_FREE,
                       style: TextStyle(color: Colors.blue),
                     )),
               ),

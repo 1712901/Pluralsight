@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:Pluralsight/Core/models/Toast.dart';
 import 'package:Pluralsight/Core/service/UserService.dart';
+import 'package:Pluralsight/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPassword extends StatelessWidget {
@@ -38,7 +39,7 @@ class ForgotPassword extends StatelessWidget {
                 height: 20,
               ),
               Text(
-                'FORGET PASSWORD',
+                S.current.FORGET_PASSWORD,
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 25,
@@ -49,7 +50,7 @@ class ForgotPassword extends StatelessWidget {
                 height: 10,
               ),
               Text(
-                'Provide your account\'s email for which you want to reset your password !',
+                S.current.ProviderEmail,
                 style: TextStyle(
                   color: Colors.grey,
                 ),
@@ -95,7 +96,7 @@ class ForgotPassword extends StatelessWidget {
                           }
                         },
                         child: Text(
-                          'Send',
+                          S.current.Send,
                           style: TextStyle(color: Colors.white),
                         ),
                       ),

@@ -20,6 +20,7 @@ import 'package:Pluralsight/View/utils/Widget/CustomVideoPlayser.dart';
 import 'package:Pluralsight/View/utils/Widget/CustomYoutubePlayer.dart';
 import 'package:Pluralsight/View/utils/page/CommentPage.dart';
 import 'package:Pluralsight/View/utils/page/RelatedCoures.dart';
+import 'package:Pluralsight/generated/l10n.dart';
 import 'package:dio/dio.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
     as extend;
@@ -307,7 +308,7 @@ class _CourseDetailState extends State<CourseDetail>
                     color: Colors.white,
                     padding: EdgeInsets.all(5),
                     child: courseDetail.price == 0
-                        ? Text("Miễn Phí",
+                        ? Text(S.current.Free,
                             style: TextStyle(
                                 color: Colors.red,
                                 fontSize: 18,
@@ -332,11 +333,10 @@ class _CourseDetailState extends State<CourseDetail>
                           : Icon(
                               Icons.star_outline,
                             ),
-                      title: isLike && isLogin ? 'Unlike' : "Like",
+                      title: isLike && isLogin ? S.current.Unlike : S.current.Like,
                       opTap: () async {
                         if (!isLogin) {
-                          HandleAdd2Channel.showToast(
-                              context, "Chưa đăng nhập");
+                          Toast.show(content: S.current.NotLogin,context: context);
                         } else {
                           String token =
                               Provider.of<AccountInf>(context, listen: false)
@@ -351,7 +351,7 @@ class _CourseDetailState extends State<CourseDetail>
                             } else if (res.statusCode == 401) {
                               Provider.of<AccountInf>(context, listen: false)
                                   .setToken(token: null);
-                              print('Chưa Đăng Nhập');
+                              print(S.current.NotLogin);
                             }
                           }
                         }
@@ -371,14 +371,14 @@ class _CourseDetailState extends State<CourseDetail>
                         ),
                     ),
                   ),
-                  title: 'Download',
+                  title: S.current.Download,
                   opTap: () async {
                     AccountInf account =
                         Provider.of<AccountInf>(context, listen: false);
                     if (account.isAuthorization()) {
                       this.downLoad(lessonID: "intro",userID: account.userInfo.id,courseId: courseDetailModel.id,url: courseDetailModel.promoVidUrl);
                     } else {
-                      Toast.show(content: "Chưa đăng nhập",context: context);
+                      Toast.show(content: S.current.NotLogin,context: context);
                     }
                   }),
             ],
@@ -430,7 +430,7 @@ class _CourseDetailState extends State<CourseDetail>
                         return Row(
                           children: [
                             Text(
-                              "Tiến độ",
+                              S.current.Progress,
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             Text(' ( $process% )'),
@@ -457,7 +457,7 @@ class _CourseDetailState extends State<CourseDetail>
             color: Colors.grey,
           ),
           Text(
-            "Yêu cầu",
+            S.current.Requirement,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           courseDetailModel.requirement != null
@@ -469,9 +469,9 @@ class _CourseDetailState extends State<CourseDetail>
                         .toList(),
                   ),
                 )
-              : Text("Không có yêu cầu"),
+              : Text(S.current.NonRequirement),
           Text(
-            "Bạn sẽ học được",
+            S.current.Learn,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           courseDetailModel.requirement != null
@@ -556,16 +556,16 @@ class _CourseDetailState extends State<CourseDetail>
                                   } else {}
                                 } else {
                                   //Đã đăng ký
-                                  print("Tiếp thục học");
+                                  print(S.current.Learning);
                                 }
                               },
                               icon: Icon(Icons.done_all),
                               color: Colors.blue,
                               label: ownerCourse
-                                  ? Text('Tiếp tục học')
+                                  ? Text(S.current.Learning)
                                   : courseDetailModel.price == 0
-                                      ? Text("Tham gia")
-                                      : Text('Mua'));
+                                      ? Text(S.current.Enroll)
+                                      : Text(S.current.Pay));
                         } else {
                           return Container();
                         }
@@ -578,13 +578,13 @@ class _CourseDetailState extends State<CourseDetail>
                   width: double.infinity,
                   child: RaisedButton.icon(
                       onPressed: () {
-                        Toast.show(context: context, content: "Chưa đăng nhập");
+                        Toast.show(context: context, content: S.current.NotLogin);
                       },
                       icon: Icon(Icons.done_all),
                       color: Colors.blue,
                       label: courseDetailModel.price == 0
-                          ? Text('Tham gia')
-                          : Text('Mua')),
+                          ? Text(S.current.Enroll)
+                          : Text(S.current.Pay)),
                 ),
           SizedBox(
               width: double.infinity,
@@ -596,7 +596,7 @@ class _CourseDetailState extends State<CourseDetail>
                             )));
                   },
                   icon: Icon(Icons.view_carousel),
-                  label: Text('Khóa học liên quan'))),
+                  label: Text(S.current.RelatedCourse))),
         ],
       ),
     );
@@ -642,7 +642,7 @@ class _CourseDetailState extends State<CourseDetail>
                           )),
                           PopupMenuItem(
                               child: Text(
-                            'Remove Download',
+                            S.current.Remove,
                             style: TextStyle(color: Colors.white),
                           )),
                         ];
@@ -815,7 +815,7 @@ class _CourseDetailState extends State<CourseDetail>
   Future<void> downLoad({String userID,String lessonID,String courseId,String url}) async {
     print("Link Download $url");
     if(await isDownloaded(courseID: courseId,userID: userID,lessonID: lessonID)){
-      Toast.show(context: context,content: "Đã download");
+      Toast.show(context: context,content: S.current.Downloaded);
       return;
     }
     if(checkUrl(url)) {
@@ -825,7 +825,7 @@ class _CourseDetailState extends State<CourseDetail>
       String path = await dioDownload.createPath(url: url,nameVideo: lessonID,courseID: courseId);
       print(path);
       if(path==null) {
-        Toast.show(content: "Không thể tải khóa học",context:context );
+        Toast.show(content: S.current.CanNotDownload,context:context );
         return;
       }
       Provider.of<DownLoadProgress>(context,listen: false).startDownload(lessonId: lessonID,courseID: courseId,userID: userID);
@@ -845,7 +845,7 @@ class _CourseDetailState extends State<CourseDetail>
         print(err.toString());
       });
     }else{
-      Toast.show(content: "Url null",context:context );
+      Toast.show(content: S.current.NullUrl,context:context );
     }
   }
   bool checkUrl(String url){

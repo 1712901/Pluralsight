@@ -1,5 +1,6 @@
 import 'package:Pluralsight/Core/models/Response/ResGetTopSell.dart';
 import 'package:Pluralsight/View/utils/Widget/CourseListTile.dart';
+import 'package:Pluralsight/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 class CoursesPage extends StatelessWidget {
@@ -17,7 +18,7 @@ class CoursesPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: Text(
-              '${list.length} Results',
+              '${list.length} ${S.current.Results}',
               style: TextStyle(color: Colors.grey),
             ),
           ),

@@ -8,6 +8,7 @@ import 'package:Pluralsight/Core/service/CourseService.dart';
 import 'package:Pluralsight/View/utils/Widget/AppBar.dart';
 import 'package:Pluralsight/View/utils/Widget/RowCourse.dart';
 import 'package:Pluralsight/View/utils/Widget/RowFavorite.dart';
+import 'package:Pluralsight/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
@@ -43,11 +44,11 @@ class HomePage extends StatelessWidget {
                         height: 50,
                       ),
                       Text(
-                        'Welcome to Pluraslight!',
+                        S.current.TitleIntro,
                         style: TextStyle(color: Colors.grey[400]),
                       ),
                       Text(
-                          'With Pluralsight, you can build and apply skills in top technologies. You have free access to skill IQ, Role IQ,a limited library of courses and a weekly rotation of new courses.',
+                          S.current.Intro,
                           style: TextStyle(
                             color: Colors.white,
                           )),
@@ -67,7 +68,7 @@ class HomePage extends StatelessWidget {
                       ResGetTopCourse resGetTopSell =
                           ResGetTopCourse.fromJson(jsonDecode(response.body));
                       return RowCourse(
-                        title: 'Top sell',
+                        title: S.current.TopSell,
                         courses: resGetTopSell.courses,
                         type: CourseService.TOP_SELL,
                       );
@@ -88,7 +89,7 @@ class HomePage extends StatelessWidget {
                       ResGetTopCourse resGetTopSell =
                           ResGetTopCourse.fromJson(jsonDecode(response.body));
                       return RowCourse(
-                        title: 'Top new',
+                        title: S.current.TopNew,
                         courses: resGetTopSell.courses,
                         type: CourseService.TOP_NEW,
                       );
@@ -109,7 +110,7 @@ class HomePage extends StatelessWidget {
                       ResGetTopCourse resGetTopSell =
                           ResGetTopCourse.fromJson(jsonDecode(response.body));
                       return RowCourse(
-                        title: 'Top Rating',
+                        title: S.current.TopRating,
                         courses: resGetTopSell.courses,
                         type: CourseService.TOP_RATE,
                       );
@@ -126,7 +127,7 @@ class HomePage extends StatelessWidget {
                 return Provider.of<AccountInf>(ctx).isAuthorization() &&
                         list != null
                     ? RowFavoriteCourses(
-                        title: 'My Favorite',
+                        title: S.current.MyFavorite,
                         favoriteCourses: list)
                     : Container();
               })

@@ -6,6 +6,7 @@ import 'package:Pluralsight/Core/models/Response/ResGetDetailCourseNonUser.dart'
 import 'package:Pluralsight/Core/models/Toast.dart';
 import 'package:Pluralsight/Core/service/CourseService.dart';
 import 'package:Pluralsight/View/utils/page/Constant.dart';
+import 'package:Pluralsight/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart';
@@ -53,7 +54,7 @@ class _CommentPageState extends State<CommentPage> {
                         child: Column(
                           children: [
                             Text(
-                              "Create Comment",
+                              S.current.CreateComment,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 18),
                             ),
@@ -61,19 +62,19 @@ class _CommentPageState extends State<CommentPage> {
                               height: 10,
                             ),
                             makeRowRating(
-                                content: "Content Point",
+                                content: S.current.ContentPoint,
                                 callback: (value) {
                                   contentPoint = value;
                                   print(contentPoint);
                                 }),
                             makeRowRating(
-                                content: "Formality Point",
+                                content: S.current.FormalityPoint,
                                 callback: (value) {
                                   formalityPoint = value;
                                   print(formalityPoint);
                                 }),
                             makeRowRating(
-                                content: "Presentation Point",
+                                content: S.current.PresentationPoint,
                                 callback: (value) {
                                   presentationPoint = value;
                                   print(presentationPoint);
@@ -87,7 +88,7 @@ class _CommentPageState extends State<CommentPage> {
                                 maxLines: 3,
                                 controller: contentController,
                                 decoration: new InputDecoration(
-                                    hintText: "Comment ....",
+                                    hintText: S.current.HintComment,
                                     border: new OutlineInputBorder(
                                       borderRadius: const BorderRadius.all(
                                         const Radius.circular(10.0),
@@ -98,7 +99,7 @@ class _CommentPageState extends State<CommentPage> {
                                 if (contentController.text.trim().isEmpty) {
                                   Toast.show(
                                       context: context,
-                                      content: "Chưa nhập nội dung");
+                                      content: S.current.NonEnrol);
                                   return;
                                 }
                                 print(
@@ -114,11 +115,11 @@ class _CommentPageState extends State<CommentPage> {
                                 if (res.statusCode == 200) {
                                   Toast.show(
                                       context: context,
-                                      content: "Successfully");
+                                      content: S.current.Successfully);
                                 } else if(res.statusCode == 400){
                                   Toast.show(
                                       context: context,
-                                      content: "Bạn chưa tham gia khóa học !");
+                                      content: S.current.NonEnrol);
                                 }
                                 else {
                                   Toast.show(
@@ -126,7 +127,7 @@ class _CommentPageState extends State<CommentPage> {
                                       content: jsonDecode(res.body)["message"]);
                                 }
                               },
-                              child: Text("Post"),
+                              child: Text(S.current.Post),
                             )
                           ],
                         ),

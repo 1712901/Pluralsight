@@ -5,6 +5,7 @@ import 'package:Pluralsight/Core/models/Format.dart';
 import 'package:Pluralsight/Core/models/Response/ResGetTopSell.dart';
 import 'package:Pluralsight/Core/service/UserService.dart';
 import 'package:Pluralsight/View/utils/page/CourseDetail.dart';
+import 'package:Pluralsight/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -76,7 +77,7 @@ class FavoriteListTitle extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                  course.price == 0
-                     ? Text("Miễn Phí",
+                     ? Text(S.current.Free,
                          style: TextStyle(
                              color: Colors.white,
                              fontSize: 15,
@@ -153,8 +154,8 @@ class FavoriteListTitle extends StatelessWidget {
                         value: 0,
                         child: Text(
                           provider.isFavorite(courseId: course.id)
-                              ? 'Un like'
-                              : 'Like',
+                              ? S.current.Unlike
+                              : S.current.Like,
                         )),
                     PopupMenuItem(
                         value: 1,
@@ -162,14 +163,14 @@ class FavoriteListTitle extends StatelessWidget {
                           builder: (context, provider, _) {
                             return Text(
                                 //isDownload ? 'Remove Download' : 'Download',
-                                "Download");
+                                S.current.Download);
                           },
                         )),
                     indexChannel >= 0
                         ? PopupMenuItem(
                             value: 2,
                             child: Text(
-                              'Remove',
+                              S.current.Remove,
                             ))
                         : PopupMenuItem(
                             child: Container(),

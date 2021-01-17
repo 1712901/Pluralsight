@@ -1,8 +1,10 @@
 import 'package:Pluralsight/Core/models/AccountInf.dart';
 import 'package:Pluralsight/Core/models/HandleAdd2Channel.dart';
+import 'package:Pluralsight/Core/models/Toast.dart';
 import 'package:Pluralsight/Core/service/UserService.dart';
 import 'package:Pluralsight/View/ui/Account/DoneUpdatePassword.dart';
 import 'package:Pluralsight/View/ui/Constant.dart';
+import 'package:Pluralsight/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
@@ -75,7 +77,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                 height: 20,
               ),
               Text(
-                'Your idential has been verified!\nSet your new password',
+                S.current.InfoUpdatePassword,
                 style: TextStyle(
                   color: Colors.grey,
                 ),
@@ -92,7 +94,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                   color: Colors.white,
                 ),
                 decoration: InputDecoration(
-                    labelText: 'Old Password',
+                    labelText: S.current.OldPassword,
                     labelStyle: TextStyle(
                       color: Colors.grey[600],
                     ),
@@ -118,7 +120,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                   color: Colors.white,
                 ),
                 decoration: InputDecoration(
-                    labelText: 'New Password',
+                    labelText: S.current.NewPassword,
                     labelStyle: TextStyle(
                       color: Colors.grey[600],
                     ),
@@ -142,7 +144,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                   color: Colors.white,
                 ),
                 decoration: InputDecoration(
-                    labelText: 'Confirm Password',
+                    labelText: S.current.ConfirmPassword,
                     labelStyle: TextStyle(
                       color: Colors.grey[600],
                     ),
@@ -190,26 +192,23 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                                     MaterialPageRoute(
                                         builder: (context) => Done()));
                               } else if (res.statusCode == 400) {
-                                HandleAdd2Channel.showToast(
-                                    ctx, "Mật khẩu cũ không đúng");
+                                Toast.show(context: ctx,content: S.current.PasswordIncorrect);
                               }
                               break;
                             case ConstanUI.EMPTY_ERROR:
-                              HandleAdd2Channel.showToast(
-                                  ctx, "Không được để rỗng");
+                              Toast.show(context:ctx,content: S.current.EmptyContent);
                               break;
                             case ConstanUI.CONFIRM_ERROR:
-                              HandleAdd2Channel.showToast(
-                                  ctx, "Confirm không khớp");
+                              Toast.show(context:ctx,content: S.current.PasswordLength);
+                              Toast.show(context:ctx,content: S.current.ConfirmNotMatch);
                               break;
                             case ConstanUI.LENGTH_ERROR:
-                              HandleAdd2Channel.showToast(
-                                  ctx, "Chiều dài password lớn hơn 8");
+                              Toast.show(context:ctx,content: S.current.ConfirmNotMatch);
                               break;
                           }
                         },
                         child: Text(
-                          'UPADTE',
+                          S.current.Update,
                           style: TextStyle(color: Colors.white),
                         ),
                       ),

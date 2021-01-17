@@ -9,6 +9,7 @@ import 'package:Pluralsight/Core/models/Response/ResGetTopSell.dart';
 import 'package:Pluralsight/Core/service/CourseService.dart';
 import 'package:Pluralsight/View/utils/Widget/AppBar.dart';
 import 'package:Pluralsight/View/utils/Widget/CourseListTile.dart';
+import 'package:Pluralsight/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +30,7 @@ class _DownLoadsPageState extends State<DownLoadsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black87,
-      appBar: myAppbar(title: "Downloads",context: context),
+      appBar: myAppbar(title: S.current.Download,context: context),
       body: coursesInfor!=null?Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child:Column(
@@ -41,7 +42,7 @@ class _DownLoadsPageState extends State<DownLoadsPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      ' MB)',
+                      '',
                       style: TextStyle(color: Colors.white),
                     ),
                     FlatButton(
@@ -49,7 +50,7 @@ class _DownLoadsPageState extends State<DownLoadsPage> {
                           Provider.of<DownloadModel>(context,listen: false).removeAll();
                         },
                         child: Text(
-                          'REMOVE ALL',
+                          S.current.REMOVE_ALL,
                           style: TextStyle(color: Colors.blue),
                         ))
                   ],

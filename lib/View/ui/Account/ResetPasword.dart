@@ -1,6 +1,7 @@
 import 'package:Pluralsight/Core/models/AccountInf.dart';
 import 'package:Pluralsight/Core/models/Toast.dart';
 import 'package:Pluralsight/Core/service/UserService.dart';
+import 'package:Pluralsight/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:Pluralsight/View/ui/Constant.dart';
 import 'package:http/http.dart';
@@ -69,7 +70,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                 height: 20,
               ),
               Text(
-                'Your idential has been verified!\nSet your new password',
+                S.current.SetNewPassword,
                 style: TextStyle(
                   color: Colors.grey,
                 ),
@@ -86,7 +87,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                   color: Colors.white,
                 ),
                 decoration: InputDecoration(
-                    labelText: 'New Password',
+                    labelText: S.current.NewPassword,
                     labelStyle: TextStyle(
                       color: Colors.grey[600],
                     ),
@@ -110,7 +111,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                   color: Colors.white,
                 ),
                 decoration: InputDecoration(
-                    labelText: 'Confirm Password',
+                    labelText: S.current.ConfirmPassword,
                     labelStyle: TextStyle(
                       color: Colors.grey[600],
                     ),
@@ -149,24 +150,24 @@ class _ResetPasswordState extends State<ResetPassword> {
                                   password: newPasswordController.text);
                               if(res.statusCode==200){
                                 Toast.show(
-                                  context: ctx, content: "Mật khẩu đã được thay đổi");
+                                  context: ctx, content: S.current.PasswordHasBeenUpdated);
                               }else{
                                 Toast.show(
-                                  context: ctx, content: "Người dùng không tồn tại");
+                                  context: ctx, content: S.current.AccountDoesNotExist);
                               }
                               break;
                             case ConstanUI.EMPTY_ERROR:
                               Toast.show(
-                                  context: ctx, content: "Không được để rỗng");
+                                  context: ctx, content: S.current.EmptyContent);
                               break;
                             case ConstanUI.CONFIRM_ERROR:
                               Toast.show(
-                                  context: ctx, content: "Confirm không khớp");
+                                  context: ctx, content: S.current.ConfirmNotMatch);
                               break;
                             case ConstanUI.LENGTH_ERROR:
                               Toast.show(
                                   context: ctx,
-                                  content: "Chiều dài password lớn hơn 8");
+                                  content: S.current.PasswordLength);
                               break;
                           }
                         },

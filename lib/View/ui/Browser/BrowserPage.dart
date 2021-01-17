@@ -2,12 +2,14 @@ import 'dart:convert';
 
 import 'package:Pluralsight/Core/models/AccountInf.dart';
 import 'package:Pluralsight/Core/models/Response/ResGetAllCategory.dart';
+import 'package:Pluralsight/Core/models/Toast.dart';
 import 'package:Pluralsight/Core/service/CategoryService.dart';
 import 'package:Pluralsight/Core/service/CourseService.dart';
 import 'package:Pluralsight/View/ui/Browser/BrMoreCourse.dart';
 import 'package:Pluralsight/View/ui/Browser/CategoryPage.dart';
 import 'package:Pluralsight/View/ui/Browser/RowAuthorsView.dart';
 import 'package:Pluralsight/View/utils/Widget/AppBar.dart';
+import 'package:Pluralsight/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
@@ -54,7 +56,7 @@ class BrowsePase extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => BrMoreCourse(
-                                title: 'NEW RELEASES',
+                                title: S.current.NEW_RELEASES,
                                 type: CourseService.TOP_NEW,
                               )));
                 },
@@ -92,13 +94,14 @@ class BrowsePase extends StatelessWidget {
                   if (!Provider.of<AccountInf>(context, listen: false)
                       .isAuthorization()) {
                     print("Chưa đăng nhập");
+                    Toast.show(context: context,content: S.current.NotLogin);
                     return;
                   }
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => BrMoreCourse(
-                                title: 'RECOMMENDED FOR YOU',
+                                title: S.current.RECOMMENDED_FOR_YOU,
                                 type: -1,
                               )));
                 },
@@ -211,7 +214,7 @@ class BrowsePase extends StatelessWidget {
                 height: 10,
               ),
               RowAuthorsView(
-                  title: 'Instructors',
+                  title: S.current.Instructors,
                 ),
             ],
           ),

@@ -2,6 +2,7 @@ import 'package:Pluralsight/Core/models/FavoriteCourse.dart';
 import 'package:Pluralsight/View/utils/Widget/Courses.dart';
 import 'package:Pluralsight/View/utils/Widget/Favorites.dart';
 import 'package:Pluralsight/View/utils/page/MoreFavotite.dart';
+import 'package:Pluralsight/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 class RowFavoriteCourses extends StatelessWidget {
@@ -34,7 +35,7 @@ class RowFavoriteCourses extends StatelessWidget {
                                     title: title,
                                   )));
                     },
-                    icon: Text('see all'),
+                    icon: Text(S.current.SeeAll),
                     label: Icon(
                       Icons.navigate_next,
                       color: Colors.grey,

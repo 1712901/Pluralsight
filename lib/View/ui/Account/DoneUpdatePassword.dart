@@ -1,3 +1,4 @@
+import 'package:Pluralsight/generated/l10n.dart';
 import 'package:Pluralsight/main.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,7 @@ class Done extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'PASSWORD\nUPDATE',
+              S.current.PasswordUpdate,
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 25,
@@ -31,7 +32,7 @@ class Done extends StatelessWidget {
               height: 5,
             ),
             Text(
-              'Your password has been uppdate',
+              S.current.UpdatePassSuccess,
               style: TextStyle(
                 color: Colors.white,
               ),
@@ -46,7 +47,7 @@ class Done extends StatelessWidget {
                                       MaterialPageRoute(
                                           builder: (context) => Home()));
               },
-              child: Text('HOME'),
+              child: Text(S.current.Home),
               color: Colors.blue[400],
             )
           ],

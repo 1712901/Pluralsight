@@ -1,5 +1,6 @@
 import 'package:Pluralsight/Core/models/Response/ResGetTopSell.dart';
 import 'package:Pluralsight/View/utils/Widget/CourseListTile.dart';
+import 'package:Pluralsight/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 class RelatedCourse extends StatefulWidget {
@@ -17,7 +18,7 @@ class _RelatedCourseState extends State<RelatedCourse> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title: Text("Khóa học cùng chủ đề"),
+        title: Text(S.current.RelatedCourse),
         leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {

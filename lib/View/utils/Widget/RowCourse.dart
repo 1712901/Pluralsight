@@ -1,6 +1,7 @@
 import 'package:Pluralsight/Core/models/Response/ResGetTopSell.dart';
 import 'package:Pluralsight/View/utils/Widget/Courses.dart';
 import 'package:Pluralsight/View/utils/page/MoreCourse.dart';
+import 'package:Pluralsight/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 class RowCourse extends StatelessWidget {
@@ -34,7 +35,7 @@ class RowCourse extends StatelessWidget {
                               type: type,
                             )));
               },
-              icon: Text('see all'),
+              icon: Text(S.current.SeeAll),
               label: Icon(
                 Icons.navigate_next,
                 color: Colors.grey,

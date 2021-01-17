@@ -1,5 +1,6 @@
 import 'package:Pluralsight/Core/models/Response/ResSearchV2.dart';
 import 'package:Pluralsight/View/utils/Widget/AuthorListTitle.dart';
+import 'package:Pluralsight/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 class AuthourPage extends StatelessWidget {
@@ -14,7 +15,7 @@ class AuthourPage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            '${authors.length} Results',
+            '${authors.length} ${S.current.Results}',
             style: TextStyle(color: Colors.grey),
           ),
         ),

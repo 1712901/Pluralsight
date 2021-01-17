@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:Pluralsight/Core/models/Response/ResInstructorDeatil.dart';
 import 'package:Pluralsight/Core/service/IntructorService.dart';
 import 'package:Pluralsight/View/utils/Widget/CourseListTile.dart';
+import 'package:Pluralsight/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart';
@@ -24,7 +25,7 @@ class _AuthorDetailState extends State<AuthorDetail> {
       backgroundColor: Colors.black87,
       appBar: AppBar(
         backgroundColor: Colors.grey[800],
-        title: Text('Instructor'),
+        title: Text(S.current.Instructor),
       ),
       body: FutureBuilder(
           future: InstructorService.getInstructorDetail(
@@ -139,7 +140,7 @@ class _AuthorDetailState extends State<AuthorDetail> {
                         ),
                         Row(
                           children: [
-                            Text("Major :",
+                            Text("${S.current.Major} :",
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                             SizedBox(
                               width: 10,
@@ -161,7 +162,7 @@ class _AuthorDetailState extends State<AuthorDetail> {
                           height: 10,
                         ),
                         Text(
-                          'Courses (${instructorDetail.courses.length})',
+                          '${S.current.courses} (${instructorDetail.courses.length})',
                           style: TextStyle(color: Colors.white),
                         ),
                         ListView.builder(
@@ -179,6 +180,12 @@ class _AuthorDetailState extends State<AuthorDetail> {
                             })
                       ],
                     ),
+                  ),
+                );
+              }else{
+                return Container(
+                  child: Center(
+                    child: Icon(Icons.error_outline,size: 30,),
                   ),
                 );
               }

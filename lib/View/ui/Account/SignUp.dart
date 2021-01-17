@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:Pluralsight/Core/service/UserService.dart';
+import 'package:Pluralsight/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 const urlRegis = "http://api.dev.letstudy.org/user/register";
@@ -79,7 +80,7 @@ class _SignUpState extends State<SignUp> {
                   height: 10,
                 ),
                 Text(
-                  'Please signup to continue',
+                  S.current.PleaseSignupToContinue,
                   style: TextStyle(color: Colors.grey),
                 ),
                 SizedBox(
@@ -90,14 +91,14 @@ class _SignUpState extends State<SignUp> {
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                       isDense: true,
-                      labelText: 'Name',
+                      labelText: S.current.Name,
                       labelStyle: TextStyle(color: Colors.grey[600])),
                 ),
                 TextFormField(
                   controller: emailController,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value) =>
-                      emailInvalid(value) ? null : "Email không hợp lệ ",
+                      emailInvalid(value) ? null : S.current.InvalidEmail,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                       isDense: true,
@@ -108,11 +109,11 @@ class _SignUpState extends State<SignUp> {
                   controller: phoneController,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value) =>
-                      phoneInvalid(value) ? null : "Số điện thoại không hợp lệ",
+                      phoneInvalid(value) ? null : S.current.InvalidPhoneNumber,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                       isDense: true,
-                      labelText: 'Phone',
+                      labelText: S.current.Phone,
                       labelStyle: TextStyle(color: Colors.grey[600])),
                 ),
                 TextFormField(
@@ -120,12 +121,12 @@ class _SignUpState extends State<SignUp> {
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value) => passwordInvalid(value)
                       ? null
-                      : "Không chứa ký tự đặt biệt, chiều dài lớn hơn 8",
+                      : S.current.SpecialCharacters,
                   obscureText: true,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                       isDense: true,
-                      labelText: 'Pasword',
+                      labelText: S.current.Password,
                       labelStyle: TextStyle(color: Colors.grey[600])),
                 ),
                 TextFormField(
@@ -134,7 +135,7 @@ class _SignUpState extends State<SignUp> {
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
                       isDense: true,
-                      labelText: 'Confirm Password',
+                      labelText: S.current.ConfirmPassword,
                       labelStyle: TextStyle(color: Colors.grey[600])),
                 ),
                 SizedBox(
@@ -153,27 +154,27 @@ class _SignUpState extends State<SignUp> {
 
                         switch (status) {
                           case EMPTY_STRING_ERROR:
-                            showToast(ctx, 'Cần nhập đầy đủ các trường !');
+                            showToast(ctx, S.current.EmptyContent);
                             break;
                           case CONFIRM_ERROR:
-                            showToast(ctx, 'Mật khẩu không khớp');
+                            showToast(ctx, S.current.ConfirmPassword);
                             break;
                           case FORMAT_ERROR:
-                            showToast(ctx, 'Sai định dạng');
+                            showToast(ctx, S.current.WrongFormat);
                             break;
                           default:
                             if (status == 400) {
-                              showToast(ctx, 'Tài khoản đã được đăng ký rồi !');
+                              showToast(ctx, S.current.AccountAlreadyRegistered);
                             } else if (status == 500) {
-                              showToast(ctx, 'Hiện tại không thể đăng ký !');
+                              showToast(ctx, '!');
                             } else {
                               //await sendMail(emailController.text, ctx);
-                              showToast(ctx, 'Đã gửi mail kích hoạt tài khoản');
+                              showToast(ctx, S.current.CurrentlyUnableToRegister);
                             }
                         }
                       },
                       child: Text(
-                        'Sign up',
+                        S.current.SignUp,
                         style: TextStyle(color: Colors.white),
                       ),
                       color: Colors.blue[400],
@@ -186,7 +187,7 @@ class _SignUpState extends State<SignUp> {
                         Navigator.pop(context);
                       },
                       child: Text(
-                        'Already have account? Login',
+                        S.current.AlreadyHaveAccount,
                         style: TextStyle(color: Colors.blue),
                       )),
                 ),
@@ -227,7 +228,7 @@ class _SignUpState extends State<SignUp> {
     if (response.statusCode == 400) {
       showToast(context, response.body);
     } else {
-      showToast(context, "Đã gửi mail kích hoạt tài khoản");
+      showToast(context, S.current.SendMail);
     }
   }
 

@@ -2,6 +2,7 @@ import 'package:Pluralsight/Core/models/Response/ResGetTopSell.dart';
 import 'package:Pluralsight/Core/models/Response/ResSearchV2.dart';
 import 'package:Pluralsight/View/utils/Widget/AuthorListTitle.dart';
 import 'package:Pluralsight/View/utils/Widget/CourseListTile.dart';
+import 'package:Pluralsight/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 class AllPage extends StatefulWidget {
@@ -39,7 +40,7 @@ class _AllPageState extends State<AllPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Courses',
+                      S.current.courses,
                       style: TextStyle(color: Colors.white),
                     ),
                     FlatButton.icon(
@@ -47,7 +48,7 @@ class _AllPageState extends State<AllPage> {
                         funCallBack(1);
                       },
                       icon: Text(
-                        'See all',
+                        S.current.SeeAll,
                       ),
                       label: Icon(Icons.navigate_next),
                       textColor: Colors.grey,
@@ -71,7 +72,7 @@ class _AllPageState extends State<AllPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Authors',
+                      S.current.Author,
                       style: TextStyle(color: Colors.white),
                     ),
                     FlatButton.icon(
@@ -79,7 +80,7 @@ class _AllPageState extends State<AllPage> {
                         funCallBack(2);
                       },
                       icon: Text(
-                        'See all',
+                        S.current.SeeAll,
                       ),
                       label: Icon(Icons.navigate_next),
                       textColor: Colors.grey,

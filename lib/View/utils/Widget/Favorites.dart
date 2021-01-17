@@ -7,6 +7,7 @@ import 'package:Pluralsight/Core/models/Format.dart';
 import 'package:Pluralsight/Core/models/Response/ResGetTopSell.dart';
 import 'package:Pluralsight/Core/service/UserService.dart';
 import 'package:Pluralsight/View/utils/page/CourseDetail.dart';
+import 'package:Pluralsight/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart';
@@ -163,7 +164,7 @@ class _FavoritesState extends State<Favorites> {
                                       color: Colors.white,
                                       padding: EdgeInsets.all(5),
                                       child: fav.coursePrice == 0
-                                          ? Text("Miễn Phí",
+                                          ? Text(S.current.Free,
                                               style: TextStyle(
                                                   color: Colors.red,
                                                   fontSize: 18,

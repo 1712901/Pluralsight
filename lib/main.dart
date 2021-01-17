@@ -15,8 +15,10 @@ import 'package:Pluralsight/View/ui/Browser/BrowserPage.dart';
 import 'package:Pluralsight/View/ui/Download/DowloadPage.dart';
 import 'package:Pluralsight/View/ui/Home/HomePage.dart';
 import 'package:Pluralsight/View/ui/Search/SearchPage.dart';
+import 'package:Pluralsight/generated/l10n.dart';
 import 'package:custom_navigator/custom_navigation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
@@ -54,7 +56,17 @@ void main() {
             primaryColor: Colors.grey[800],
             accentColor: Colors.cyan[600],
             backgroundColor: Colors.black87,
-            buttonColor: Colors.grey),
+            buttonColor: Colors.grey,
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+            primarySwatch: Colors.blue,
+        ),
+        localizationsDelegates: [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
         home: Home(),
         //home: TestDatabase(),
       ),
@@ -110,7 +122,7 @@ class _HomeState extends State<Home> {
 
   List<Widget> optionSlected = [
     HomePage(
-      title: 'Home',
+      title: S.current.Home,
     ),
     DownLoadsPage(),
     BrowsePase(),

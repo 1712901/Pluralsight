@@ -86,7 +86,7 @@ class CategoryPage extends StatelessWidget {
                             childCount: courses.length));
                   } else {
                     return SliverFillRemaining(
-                                          child: Center(
+                      child: Center(
                         child: CircularProgressIndicator(),
                       ),
                     );

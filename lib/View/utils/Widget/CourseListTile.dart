@@ -6,6 +6,7 @@ import 'package:Pluralsight/Core/models/Format.dart';
 import 'package:Pluralsight/Core/models/Response/ResGetTopSell.dart';
 import 'package:Pluralsight/Core/service/UserService.dart';
 import 'package:Pluralsight/View/utils/page/CourseDetail.dart';
+import 'package:Pluralsight/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -105,7 +106,7 @@ class CourseListTitle extends StatelessWidget {
                   direction: Axis.horizontal,
                 ),
                  course.price == 0
-                     ? Text("Miễn Phí",
+                     ? Text(S.current.Free,
                          style: TextStyle(
                              color: Colors.white,
                              fontSize: 15,
@@ -172,14 +173,14 @@ class CourseListTitle extends StatelessWidget {
                         value: 0,
                         child: Text(
                           provider.isFavorite(courseId: course.id)
-                              ? 'Un like'
-                              : 'Like',
+                              ? S.current.Unlike
+                              : S.current.Like,
                         )),
                     isLoaded
                         ? PopupMenuItem(
                             value: 2,
                             child: Text(
-                              'Remove',
+                              S.current.Remove,
                             ))
                         : PopupMenuItem(
                             child: Container(),
