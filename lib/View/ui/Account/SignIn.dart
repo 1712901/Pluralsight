@@ -23,7 +23,7 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[800],
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -41,21 +41,18 @@ class _SignInState extends State<SignIn> {
             children: [
               Text(
                 S.current.SignIn,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold),
+                style: Theme.of(context).textTheme.headline3,
               ),
               SizedBox(
                 height: 20,
               ),
               TextField(
                 controller: userNameController,
-                style: TextStyle(color: Colors.white),
+                style: Theme.of(context).textTheme.subtitle1,
                 decoration: InputDecoration(
                     isDense: true,
                     labelText: 'Email',
-                    labelStyle: TextStyle(color: Colors.grey[600])),
+                    labelStyle: Theme.of(context).textTheme.bodyText2),
               ),
               SizedBox(
                 height: 10,
@@ -64,18 +61,14 @@ class _SignInState extends State<SignIn> {
                 controller: passwordController,
                 cursorColor: Theme.of(context).cursorColor,
                 obscureText: !showPassword,
-                style: TextStyle(
-                  color: Colors.white,
-                ),
+                style: Theme.of(context).textTheme.subtitle1,
                 decoration: InputDecoration(
                     labelText: S.current.Password,
-                    labelStyle: TextStyle(
-                      color: Colors.grey[600],
-                    ),
+                    labelStyle: Theme.of(context).textTheme.bodyText2,
                     suffixIcon: IconButton(
                       icon: Icon(
                         showPassword ? Icons.visibility : Icons.visibility_off,
-                        color: Colors.grey[300],
+                        color: Theme.of(context).iconTheme.color,
                       ),
                       onPressed: () {
                         setState(() {
@@ -93,7 +86,7 @@ class _SignInState extends State<SignIn> {
                     width: double.infinity,
                     child: Builder(
                       builder: (newContext) => RaisedButton(
-                        color: Colors.blue[400],
+                        color: Theme.of(context).primaryColor,
                         onPressed: () async {
                           String email = userNameController.text;
                           String password = passwordController.text;
@@ -134,7 +127,7 @@ class _SignInState extends State<SignIn> {
                         },
                         child: Text(
                           S.current.SignIn,
-                          style: TextStyle(color: Colors.white),
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
                     )),
@@ -150,7 +143,7 @@ class _SignInState extends State<SignIn> {
                     },
                     child: Text(
                       S.current.FORGET_PASSWORD,
-                      style: TextStyle(color: Colors.blue),
+                      style: Theme.of(context).textTheme.button,
                     )),
               ),
               SizedBox(
@@ -160,10 +153,10 @@ class _SignInState extends State<SignIn> {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => SignUp()));
                     },
-                    borderSide: BorderSide(color: Colors.blue),
+                    borderSide: BorderSide(color: Theme.of(context).primaryColor),
                     child: Text(
                       S.current.SIGN_UP_FREE,
-                      style: TextStyle(color: Colors.blue),
+                      style: Theme.of(context).textTheme.button,
                     )),
               ),
             ],

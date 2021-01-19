@@ -5,16 +5,18 @@ import 'package:Pluralsight/Core/models/DownloadModel.dart';
 import 'package:Pluralsight/Core/models/FavoriteCourses.dart';
 import 'package:Pluralsight/Core/models/LoadURL.dart';
 import 'package:Pluralsight/Core/models/Response/ResFavoriteCourses.dart';
+import 'package:Pluralsight/Core/models/Response/ResGetProfile.dart';
 import 'package:Pluralsight/Core/models/SearchBuilder/SearchOption.dart';
 import 'package:Pluralsight/Core/models/User.dart';
 import 'package:Pluralsight/Core/models/TopCourses.Dart';
 import 'package:Pluralsight/Core/models/MyProvider/DownloadProgress.dart';
-import 'package:Pluralsight/TestDatabase.dart';
+import 'package:Pluralsight/Theme/AppTheme.dart';
 import 'package:Pluralsight/View/ui/Account/SignIn.dart';
 import 'package:Pluralsight/View/ui/Browser/BrowserPage.dart';
 import 'package:Pluralsight/View/ui/Download/DowloadPage.dart';
 import 'package:Pluralsight/View/ui/Home/HomePage.dart';
 import 'package:Pluralsight/View/ui/Search/SearchPage.dart';
+import 'package:Pluralsight/View/ui/Account/Profile.Dart';
 import 'package:Pluralsight/generated/l10n.dart';
 import 'package:custom_navigator/custom_navigation.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +25,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 
+import 'Core/models/MyProvider/ThemeModeApp.dart';
 import 'Core/service/UserService.dart';
+import 'View/ui/Account/DoneUpdatePassword.dart';
+import 'View/ui/Account/ForgotPassword.dart';
+import 'View/ui/Account/SignUp.dart';
+import 'View/ui/Account/UpdatePassword.dart';
 
 void main() {
   runApp(
@@ -49,26 +56,27 @@ void main() {
         ),
         ChangeNotifierProvider(create: (_) => LoadURL()),
         ChangeNotifierProvider(create: (_) => DownLoadProgress()),
+        ChangeNotifierProvider(create: (_) => ThemeModeApp()),
       ],
-      child: MaterialApp(
-        theme: ThemeData(
-            brightness: Brightness.dark,
-            primaryColor: Colors.grey[800],
-            accentColor: Colors.cyan[600],
-            backgroundColor: Colors.black87,
-            buttonColor: Colors.grey,
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-            primarySwatch: Colors.blue,
-        ),
-        localizationsDelegates: [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: S.delegate.supportedLocales,
-        home: Home(),
-        //home: TestDatabase(),
+      child: Consumer<ThemeModeApp>(
+        builder: (context,provider,_) {
+
+          return MaterialApp(
+            theme: AppTheme.lightThem,
+            darkTheme: AppTheme.dartTheme,
+            themeMode: provider.isDarkModeOn? ThemeMode.dark:ThemeMode.light,
+            localizationsDelegates: [
+              S.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: S.delegate.supportedLocales,
+            home: Home(),
+            //home: UpdatePassword(),
+          );
+
+        }
       ),
     ),
   );
@@ -86,6 +94,8 @@ class _HomeState extends State<Home> {
   Future<void> loadInforAccount() async {
     final storage = new FlutterSecureStorage();
     String valueToken = await storage.read(key: "token");
+    bool onDartMode= (await storage.read(key: "Them")).toLowerCase()=="true";
+    Provider.of<ThemeModeApp>(context,listen: false).updateTheme(onDartMode);
     if (valueToken != null) {
       Provider.of<AccountInf>(context, listen: false)
           .setToken(token: valueToken);
@@ -96,6 +106,13 @@ class _HomeState extends State<Home> {
         Provider.of<FavoriteCourses>(context, listen: false).setFavoriteCourses(
             favoriteCourses: resFavoriteCourses.favoriteCourse);
       } else {
+        Provider.of<AccountInf>(context, listen: false).setToken(token: null);
+      }
+      res=await UserService.getProfile(token: valueToken);
+      if(res.statusCode==200){
+        ResGetProfile resGetProfile=ResGetProfile.fromJson(jsonDecode(res.body));
+        Provider.of<AccountInf>(context, listen: false).setUserInfor(resGetProfile.userInfo);
+      }else{
         Provider.of<AccountInf>(context, listen: false).setToken(token: null);
       }
     }
@@ -139,7 +156,7 @@ class _HomeState extends State<Home> {
         pageRoute: PageRoutes.cupertinoPageRoute,
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.grey[800],
+        backgroundColor: Theme.of(context).appBarTheme.color,
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
@@ -165,8 +182,8 @@ class _HomeState extends State<Home> {
               label: 'Search'),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue[300],
-        unselectedItemColor: Colors.white,
+        selectedItemColor: Theme.of(context).primaryColor,
+        unselectedItemColor: Theme.of(context).disabledColor,
         onTap: onItemTapped,
       ),
     );

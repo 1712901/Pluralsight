@@ -63,14 +63,14 @@ class FavoriteListTitle extends StatelessWidget {
         ),
         title: Text(
           course.title,
-          style: TextStyle(color: Colors.white),
+          style: Theme.of(context).textTheme.subtitle1,
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               "${course.instructorUserName!=null?course.instructorUserName:course.status.toLowerCase()}",
-              style: TextStyle(color: Colors.grey),
+              style: Theme.of(context).textTheme.subtitle2,
               maxLines: 1,
             ),
             Row(
@@ -78,15 +78,9 @@ class FavoriteListTitle extends StatelessWidget {
               children: [
                  course.price == 0
                      ? Text(S.current.Free,
-                         style: TextStyle(
-                             color: Colors.white,
-                             fontSize: 15,
-                             fontWeight: FontWeight.bold))
+                         style:Theme.of(context).textTheme.subtitle1)
                      : Text(NumberFormat.currency(locale: "vi")
-                         .format(course.price==null?0:course.price), style: TextStyle(
-                             color: Colors.white,
-                             fontSize: 15,
-                             fontWeight: FontWeight.bold))
+                         .format(course.price==null?0:course.price), style: Theme.of(context).textTheme.subtitle1)
               ],
             )
           ],

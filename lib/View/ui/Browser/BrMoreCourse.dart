@@ -46,14 +46,13 @@ class _BrMoreCourseState extends State<BrMoreCourse> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black87,
       body: SafeArea(
         child: CustomScrollView(
           controller: controller,
           slivers: [
             SliverAppBar(
-              backgroundColor: Colors.grey[800],
-              title: Text(widget.title),
+              backgroundColor: Theme.of(context).backgroundColor,
+              title: Text(widget.title,style: Theme.of(context).appBarTheme.textTheme.headline4,),
               expandedHeight: 200,
               pinned: true,
               leading: IconButton(

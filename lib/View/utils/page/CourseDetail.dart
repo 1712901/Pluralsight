@@ -2,11 +2,9 @@ import 'dart:convert';
 
 import 'package:Pluralsight/Core/models/AccountInf.dart';
 import 'package:Pluralsight/Core/models/DownLoad/DioDownload.dart';
-import 'package:Pluralsight/Core/models/DownLoad/Entity/Course.dart';
 import 'package:Pluralsight/Core/models/DownLoad/ManagerData.dart';
 import 'package:Pluralsight/Core/models/FavoriteCourses.dart';
 import 'package:Pluralsight/Core/models/Format.dart';
-import 'package:Pluralsight/Core/models/HandleAdd2Channel.dart';
 import 'package:Pluralsight/Core/models/LoadURL.dart';
 import 'package:Pluralsight/Core/models/Response/ResGetDetailCourseNonUser.dart';
 import 'package:Pluralsight/Core/models/Response/ResGetTopSell.dart';
@@ -21,21 +19,16 @@ import 'package:Pluralsight/View/utils/Widget/CustomYoutubePlayer.dart';
 import 'package:Pluralsight/View/utils/page/CommentPage.dart';
 import 'package:Pluralsight/View/utils/page/RelatedCoures.dart';
 import 'package:Pluralsight/generated/l10n.dart';
-import 'package:dio/dio.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
     as extend;
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:http/http.dart';
 import 'package:intl/intl.dart';
-import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:Pluralsight/Core/models/MyProvider/DownloadProgress.dart';
-import 'package:http/http.dart';
 
 class CourseDetail extends StatefulWidget {
   final CourseInfor course;
@@ -113,7 +106,6 @@ class _CourseDetailState extends State<CourseDetail>
 
     return SafeArea(
       child: Scaffold(
-          backgroundColor: Colors.black87,
           body: courseDetailModel != null
               ? DefaultTabController(
                   length: 2,
@@ -203,11 +195,11 @@ class _CourseDetailState extends State<CourseDetail>
                                   automaticallyImplyLeading: false,
                                   pinned: true,
                                   toolbarHeight: 0,
-                                  backgroundColor: Colors.grey[800],
+                                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                                   bottom: TabBar(
                                     controller: primaryTC,
-                                    labelColor: Colors.blue,
-                                    unselectedLabelColor: Colors.white,
+                                    labelColor: Theme.of(context).primaryColor,
+                                    unselectedLabelColor: Theme.of(context).disabledColor,
                                     tabs: [
                                       Tab(text: "CONTENTS"),
                                       Tab(text: "COMMENTS"),
@@ -257,7 +249,7 @@ class _CourseDetailState extends State<CourseDetail>
                   child: Container(
                     height: 35,
                     width: 35,
-                    color: Colors.grey,
+                    color: Theme.of(context).primaryIconTheme.color,
                     child: AspectRatio(
                       aspectRatio: 1 / 1,
                         child: icon,
@@ -265,7 +257,7 @@ class _CourseDetailState extends State<CourseDetail>
               )),
               Text(
                 title,
-                style: TextStyle(color: Colors.grey),
+                style: TextStyle(color: Theme.of(context).iconTheme.color),
               ),
             ],
           ),
@@ -282,14 +274,14 @@ class _CourseDetailState extends State<CourseDetail>
   Widget headerSilverAppBar({bool maxline, CourseDetailModel courseDetail}) {
     return Container(
       padding: EdgeInsets.only(top: 5.0, left: 15.0, right: 15.0),
-      color: Colors.grey[800],
+      color: Theme.of(context).backgroundColor,
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             courseDetail.title,
-            style: TextStyle(color: Colors.white, fontSize: 20),
+            style: Theme.of(context).textTheme.headline6,
           ),
           SizedBox(
             height: 5,
@@ -362,12 +354,11 @@ class _CourseDetailState extends State<CourseDetail>
                     builder:(context,provider,_)=> CircularPercentIndicator(
                         radius: 30,
                         percent: provider.percent,
-                        progressColor: Colors.blue,
-                        backgroundColor: Colors.grey[800],
+                        progressColor: Theme.of(context).primaryColor,
                         center: new Icon(
                           Icons.file_download,
                           size: 15,
-                          color: Colors.blue,
+                          color: Theme.of(context).primaryColor,
                         ),
                     ),
                   ),
@@ -389,14 +380,14 @@ class _CourseDetailState extends State<CourseDetail>
               Text(
                 Format.getInstantDateFormat()
                     .format(courseDetailModel.updatedAt),
-                style: TextStyle(color: Colors.grey),
+                style: Theme.of(context).textTheme.subtitle1,
               ),
               SizedBox(
                 width: 20,
               ),
               Text(
                 "${courseDetailModel.totalHours} h",
-                style: TextStyle(color: Colors.grey),
+                style: Theme.of(context).textTheme.subtitle1,
               ),
               SizedBox(
                 width: 20,
@@ -458,28 +449,28 @@ class _CourseDetailState extends State<CourseDetail>
           ),
           Text(
             S.current.Requirement,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.subtitle1,
           ),
           courseDetailModel.requirement != null
               ? Padding(
                   padding: const EdgeInsets.only(left: 20.0),
                   child: Wrap(
                     children: courseDetailModel.requirement
-                        .map((requir) => Text("- $requir"))
+                        .map((requir) => Text("- $requir",style: Theme.of(context).textTheme.subtitle2,))
                         .toList(),
                   ),
                 )
               : Text(S.current.NonRequirement),
           Text(
             S.current.Learn,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.subtitle1,
           ),
           courseDetailModel.requirement != null
               ? Padding(
                   padding: const EdgeInsets.only(left: 20.0),
                   child: Wrap(
                     children: courseDetailModel.learnWhat
-                        .map((lw) => Text("- $lw"))
+                        .map((lw) => Text("- $lw",style: Theme.of(context).textTheme.subtitle2,))
                         .toList(),
                   ),
                 )
@@ -495,7 +486,7 @@ class _CourseDetailState extends State<CourseDetail>
                   child: Container(
                     child: Text(
                       "${courseDetailModel.description}",
-                      style: TextStyle(color: Colors.white),
+                      style: Theme.of(context).textTheme.subtitle1,
                       maxLines: maxline ? 2 : null,
                       //overflow: TextOverflow.ellipsis,
                     ),
@@ -505,16 +496,16 @@ class _CourseDetailState extends State<CourseDetail>
                   flex: 1,
                   child: InkWell(
                     onTap: () {
-                      setState(() {
+                      /*setState(() {
                         maxLine = (!maxLine);
-                      });
+                      });*/
                     },
                     child: Container(
                       height: double.infinity,
-                      color: Theme.of(context).buttonColor,
+                      color: Theme.of(context).iconTheme.color,
                       child: Icon(
                         Icons.expand_more,
-                        color: Colors.black,
+                        color: Theme.of(context).primaryIconTheme.color,
                       ),
                     ),
                   ),
@@ -580,11 +571,11 @@ class _CourseDetailState extends State<CourseDetail>
                       onPressed: () {
                         Toast.show(context: context, content: S.current.NotLogin);
                       },
-                      icon: Icon(Icons.done_all),
-                      color: Colors.blue,
+                      icon: Icon(Icons.done_all,color: Theme.of(context).iconTheme.color,),
+                      color: Theme.of(context).primaryColor,
                       label: courseDetailModel.price == 0
-                          ? Text(S.current.Enroll)
-                          : Text(S.current.Pay)),
+                          ? Text(S.current.Enroll,style: Theme.of(context).textTheme.subtitle1,)
+                          : Text(S.current.Pay,style: Theme.of(context).textTheme.subtitle1,)),
                 ),
           SizedBox(
               width: double.infinity,
@@ -595,8 +586,8 @@ class _CourseDetailState extends State<CourseDetail>
                               listCourse: courseDetailModel.coursesLikeCategory,
                             )));
                   },
-                  icon: Icon(Icons.view_carousel),
-                  label: Text(S.current.RelatedCourse))),
+                  icon: Icon(Icons.view_carousel,color: Theme.of(context).primaryIconTheme.color,),
+                  label: Text(S.current.RelatedCourse,style: TextStyle(color: Theme.of(context).primaryIconTheme.color),))),
         ],
       ),
     );
@@ -609,12 +600,11 @@ class _CourseDetailState extends State<CourseDetail>
                 ListTile(
                   title: Text(
                     section.name,
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.headline6,
                   ),
                   subtitle: Text(
                     Format.printDuration(section.sumHours),
-                    style: TextStyle(color: Colors.white),
+                    style: Theme.of(context).textTheme.subtitle1,
                   ),
                   leading: Container(
                     height: 50,
@@ -625,25 +615,25 @@ class _CourseDetailState extends State<CourseDetail>
                       offset: Offset(0, 35),
                       icon: Icon(
                         Icons.more_vert,
-                        color: Colors.white,
+                        color: Theme.of(context).iconTheme.color,
                       ),
-                      color: Colors.grey[800],
+                      color: Theme.of(context).popupMenuTheme.color,
                       itemBuilder: (BuildContext context) {
                         return <PopupMenuEntry<int>>[
                           PopupMenuItem(
                               child: Text(
                             'Bookmark',
-                            style: TextStyle(color: Colors.white),
+                            style: Theme.of(context).textTheme.subtitle1,
                           )),
                           PopupMenuItem(
                               child: Text(
                             'Add to channel',
-                            style: TextStyle(color: Colors.white),
+                            style: Theme.of(context).textTheme.subtitle1,
                           )),
                           PopupMenuItem(
                               child: Text(
                             S.current.Remove,
-                            style: TextStyle(color: Colors.white),
+                            style: Theme.of(context).textTheme.subtitle1,
                           )),
                         ];
                       }),
@@ -678,16 +668,14 @@ class _CourseDetailState extends State<CourseDetail>
                                       left: 20.0, top: 8.0),
                                   child: Icon(
                                     Icons.check_circle,
-                                    color: Colors.grey,
+                                    color: Theme.of(context).iconTheme.color,
                                     size: 10,
                                   ),
                                 ),
                                 title: Text(
                                   "Lesson${lesson.numberOrder} : ${lesson.name}",
                                   maxLines: 2,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w400),
+                                  style: Theme.of(context).textTheme.subtitle1,
                                 ),
                                 trailing: FlatButton.icon(
                                     onPressed: () async {
@@ -710,9 +698,9 @@ class _CourseDetailState extends State<CourseDetail>
                                     },
                                     icon: Text(
                                       Format.printDuration(lesson.hours),
-                                      style: TextStyle(color: Colors.white),
+                                      style: Theme.of(context).textTheme.subtitle1,
                                     ),
-                                    label: Icon(Icons.arrow_circle_down)));
+                                    label: Icon(Icons.arrow_circle_down,color: Theme.of(context).iconTheme.color,)));
                           }))
                       .toList(),
                 )

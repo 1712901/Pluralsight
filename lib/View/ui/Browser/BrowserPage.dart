@@ -42,7 +42,6 @@ class BrowsePase extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black87,
       appBar: myAppbar(title: 'Browse', context: context),
       body: SingleChildScrollView(
         child: Padding(
@@ -80,10 +79,7 @@ class BrowsePase extends StatelessWidget {
                     ])),
                     child: Text(
                       'NEW \nRELEASES',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold),
+                      style: Theme.of(context).textTheme.headline4,
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -94,7 +90,7 @@ class BrowsePase extends StatelessWidget {
                   if (!Provider.of<AccountInf>(context, listen: false)
                       .isAuthorization()) {
                     print("Chưa đăng nhập");
-                    Toast.show(context: context,content: S.current.NotLogin);
+                    Toast.show(context: context, content: S.current.NotLogin);
                     return;
                   }
                   Navigator.push(
@@ -124,10 +120,7 @@ class BrowsePase extends StatelessWidget {
                     ])),
                     child: Text(
                       'RECOMMENDED \nFOR YOU',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold),
+                      style: Theme.of(context).textTheme.headline4,
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -161,9 +154,11 @@ class BrowsePase extends StatelessWidget {
                                               Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
-                                                      builder: (context) => CategoryPage(
+                                                      builder: (context) =>
+                                                          CategoryPage(
                                                             category: item,
-                                                            image: 'assets/images/DownloadPage/category${index % 4 + 1}.jpg',
+                                                            image:
+                                                                'assets/images/DownloadPage/category${index % 4 + 1}.jpg',
                                                           )));
                                             },
                                             child: Container(
@@ -182,10 +177,9 @@ class BrowsePase extends StatelessWidget {
                                                 child: Align(
                                                     child: Text(
                                                   '${item.name}',
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1,
                                                   textAlign: TextAlign.center,
                                                 )),
                                               ),
@@ -214,8 +208,8 @@ class BrowsePase extends StatelessWidget {
                 height: 10,
               ),
               RowAuthorsView(
-                  title: S.current.Instructors,
-                ),
+                title: S.current.Instructors,
+              ),
             ],
           ),
         ),
@@ -223,4 +217,3 @@ class BrowsePase extends StatelessWidget {
     );
   }
 }
-

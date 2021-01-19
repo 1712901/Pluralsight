@@ -52,12 +52,14 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(
+              Icons.arrow_back,
+          ),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: Text('Profile'),
+        title: Text('Profile',style:Theme.of(context).appBarTheme.textTheme.headline4),
         actions: [
           IconButton(
               icon: Icon(isEdit ? Icons.check : Icons.edit),
@@ -106,7 +108,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           width: double.infinity,
                           child: Builder(
                             builder: (newContext) => RaisedButton(
-                              color: Colors.blue[400],
+                              color: Theme.of(context).primaryColor,
                               onPressed: () {
                                 Navigator.of(context, rootNavigator: true).push(
                                     MaterialPageRoute(
@@ -114,7 +116,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               },
                               child: Text(
                                 S.current.SignIn,
-                                style: TextStyle(color: Colors.white),
+                                style: Theme.of(context).textTheme.subtitle1,
                               ),
                             ),
                           )),
@@ -149,29 +151,29 @@ class _ProfilePageState extends State<ProfilePage> {
                       TextField(
                         enabled: isEdit,
                         controller: userNameController,
-                        style: TextStyle(color: Colors.white),
+                        style: Theme.of(context).textTheme.subtitle1,
                         decoration: InputDecoration(
                             isDense: true,
                             labelText: S.current.Name,
-                            labelStyle: TextStyle(color: Colors.grey[600])),
+                            labelStyle: Theme.of(context).textTheme.subtitle2),
                       ),
                       TextField(
                         enabled: isEdit,
                         controller: phoneNumberController,
-                        style: TextStyle(color: Colors.white),
+                        style: Theme.of(context).textTheme.subtitle1,
                         decoration: InputDecoration(
                             isDense: true,
                             labelText: S.current.Phone,
-                            labelStyle: TextStyle(color: Colors.grey[600])),
+                            labelStyle: Theme.of(context).textTheme.subtitle2),
                       ),
                       TextField(
                         enabled: isEditEmail,
-                        style: TextStyle(color: Colors.white),
+                        style: Theme.of(context).textTheme.subtitle1,
                         controller: emailController,
                         decoration: InputDecoration(
                             isDense: true,
                             labelText: 'Email',
-                            labelStyle: TextStyle(color: Colors.grey[600])),
+                            labelStyle: Theme.of(context).textTheme.subtitle2),
                       ),
                       SizedBox(
                         height: 30,
@@ -182,12 +184,13 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: SizedBox(
                               width: double.infinity,
                               child: RaisedButton(
-                                color: Colors.blue[400],
+                                color: Theme.of(context).primaryColor,
                                 onPressed: () async {
                                   bool action = await showDialog(
                                       context: context,
                                       builder: (contextDialog) {
                                         return AlertDialog(
+                                          backgroundColor: Theme.of(contextDialog).backgroundColor,
                                           insetPadding: EdgeInsets.symmetric(
                                               horizontal: 5, vertical: 5),
                                           title: Text('New Email'),
@@ -198,6 +201,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                             decoration: InputDecoration(
                                               hintText: 'Email',
                                             ),
+
                                           ),
                                           actions: [
                                             FlatButton(
@@ -249,7 +253,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 },
                                 child: Text(
                                   S.current.ChangeEmail,
-                                  style: TextStyle(color: Colors.white),
+                                  style: Theme.of(context).textTheme.bodyText1,
                                 ),
                               ),
                             ),
@@ -261,7 +265,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: SizedBox(
                               width: double.infinity,
                               child: RaisedButton(
-                                color: Colors.blue[400],
+                                color: Theme.of(context).primaryColor,
                                 onPressed: () {
                                   Navigator.of(context, rootNavigator: true)
                                       .push(MaterialPageRoute(
@@ -270,7 +274,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 },
                                 child: Text(
                                   S.current.ChangePassword,
-                                  style: TextStyle(color: Colors.white),
+                                  style: Theme.of(context).textTheme.bodyText1,
                                 ),
                               ),
                             ),
@@ -287,13 +291,13 @@ class _ProfilePageState extends State<ProfilePage> {
                             },
                             child: Text(
                               S.current.ResetPassword,
-                              style: TextStyle(color: Colors.blue),
+                              style: TextStyle(color: Theme.of(context).accentColor),
                             )),
                       ),
                       SizedBox(
                         width: double.infinity,
                         child: OutlineButton(
-                            borderSide: BorderSide(color: Colors.blue),
+                            borderSide: BorderSide(color: Theme.of(context).accentColor),
                             onPressed: () async {
                               final storage = new FlutterSecureStorage();
                               await storage.delete(key: 'token');
@@ -303,7 +307,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             },
                             child: Text(
                               S.current.LogOut,
-                              style: TextStyle(color: Colors.blue),
+                              style: TextStyle(color: Theme.of(context).accentColor),
                             )),
                       ),
                     ],

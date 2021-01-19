@@ -36,23 +36,25 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: FutureBuilder(
-        future: initializePlayer(url: widget.url),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            print("Done");
-            if (_chewieController != null)
-              return Chewie(controller: _chewieController);
-            print("No");
-            return Container();
-          } else {
-            print("No");
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
+    return Scaffold(
+      body: Center(
+        child: FutureBuilder(
+          future: initializePlayer(url: widget.url),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              print("Done");
+              if (_chewieController != null)
+                return Chewie(controller: _chewieController);
+              print("No");
+              return Container();
+            } else {
+              print("No");
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
       ),
     );
   }

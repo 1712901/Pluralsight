@@ -44,7 +44,7 @@ class _FavoritesState extends State<Favorites> {
     return Container(
       margin: EdgeInsets.only(right: 5),
       width: 220,
-      color: Colors.grey[800],
+      color: Theme.of(context).cardTheme.color,
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -139,9 +139,7 @@ class _FavoritesState extends State<Favorites> {
                             child: Text(
                               fav.courseTitle,
                               maxLines: 2,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                              style: Theme.of(context).textTheme.headline6,
                             ),
                           ),
                         ),
@@ -155,9 +153,7 @@ class _FavoritesState extends State<Favorites> {
                             children: [
                               Text(
                                 fav.instructorName,
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                ),
+                                style: Theme.of(context).textTheme.subtitle1,
                               ),
                               fav.coursePrice != null
                                   ? Container(

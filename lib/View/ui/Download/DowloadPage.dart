@@ -29,7 +29,6 @@ class _DownLoadsPageState extends State<DownLoadsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black87,
       appBar: myAppbar(title: S.current.Download,context: context),
       body: coursesInfor!=null?Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -51,7 +50,7 @@ class _DownLoadsPageState extends State<DownLoadsPage> {
                         },
                         child: Text(
                           S.current.REMOVE_ALL,
-                          style: TextStyle(color: Colors.blue),
+                          style: TextStyle(color: Theme.of(context).accentColor),
                         ))
                   ],
                 ),

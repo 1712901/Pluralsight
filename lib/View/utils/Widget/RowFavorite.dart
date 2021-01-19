@@ -21,10 +21,7 @@ class RowFavoriteCourses extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: TextStyle(
-                        color: Colors.white,
-                        //fontSize: 20,
-                        fontWeight: FontWeight.w400),
+                    style: Theme.of(context).textTheme.headline6,
                   ),
                   FlatButton.icon(
                     onPressed: () {
@@ -35,12 +32,11 @@ class RowFavoriteCourses extends StatelessWidget {
                                     title: title,
                                   )));
                     },
-                    icon: Text(S.current.SeeAll),
+                    icon: Text(S.current.SeeAll,style: Theme.of(context).textTheme.subtitle1,),
                     label: Icon(
                       Icons.navigate_next,
-                      color: Colors.grey,
+                      color: Theme.of(context).iconTheme.color,
                     ),
-                    textColor: Colors.grey,
                   )
                 ],
               ),

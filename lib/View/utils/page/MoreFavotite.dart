@@ -15,10 +15,8 @@ class _MoreFavoriteState extends State<MoreFavorite> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black87,
         appBar: AppBar(
-          backgroundColor: Colors.grey[800],
-          title: Text(widget.title),
+          title: Text(widget.title,style: Theme.of(context).appBarTheme.textTheme.headline4,),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {

@@ -48,13 +48,12 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     final node = FocusScope.of(context);
     return Scaffold(
-      backgroundColor: Colors.grey[800],
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: IconButton(
           icon: Icon(
             Icons.keyboard_backspace,
-            color: Colors.grey[400],
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -71,50 +70,47 @@ class _SignUpState extends State<SignUp> {
               children: [
                 Text(
                   'Sign Up',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.headline3,
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 Text(
                   S.current.PleaseSignupToContinue,
-                  style: TextStyle(color: Colors.grey),
+                  style: Theme.of(context).textTheme.subtitle2,
                 ),
                 SizedBox(
                   height: 20,
                 ),
                 TextFormField(
                   controller: userNameController,
-                  style: TextStyle(color: Colors.white),
+                  style: Theme.of(context).textTheme.subtitle1,
                   decoration: InputDecoration(
                       isDense: true,
                       labelText: S.current.Name,
-                      labelStyle: TextStyle(color: Colors.grey[600])),
+                      labelStyle: Theme.of(context).textTheme.subtitle2),
                 ),
                 TextFormField(
                   controller: emailController,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value) =>
                       emailInvalid(value) ? null : S.current.InvalidEmail,
-                  style: TextStyle(color: Colors.white),
+                  style: Theme.of(context).textTheme.subtitle1,
                   decoration: InputDecoration(
                       isDense: true,
                       labelText: 'Email',
-                      labelStyle: TextStyle(color: Colors.grey[600])),
+                      labelStyle: Theme.of(context).textTheme.subtitle2),
                 ),
                 TextFormField(
                   controller: phoneController,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (value) =>
                       phoneInvalid(value) ? null : S.current.InvalidPhoneNumber,
-                  style: TextStyle(color: Colors.white),
+                  style: Theme.of(context).textTheme.subtitle1,
                   decoration: InputDecoration(
                       isDense: true,
                       labelText: S.current.Phone,
-                      labelStyle: TextStyle(color: Colors.grey[600])),
+                      labelStyle:Theme.of(context).textTheme.subtitle2),
                 ),
                 TextFormField(
                   controller: passwordController,
@@ -123,20 +119,20 @@ class _SignUpState extends State<SignUp> {
                       ? null
                       : S.current.SpecialCharacters,
                   obscureText: true,
-                  style: TextStyle(color: Colors.white),
+                  style: Theme.of(context).textTheme.subtitle1,
                   decoration: InputDecoration(
                       isDense: true,
                       labelText: S.current.Password,
-                      labelStyle: TextStyle(color: Colors.grey[600])),
+                      labelStyle: Theme.of(context).textTheme.subtitle2),
                 ),
                 TextFormField(
                   controller: confController,
                   obscureText: true,
-                  style: TextStyle(color: Colors.white),
+                  style: Theme.of(context).textTheme.subtitle1,
                   decoration: InputDecoration(
                       isDense: true,
                       labelText: S.current.ConfirmPassword,
-                      labelStyle: TextStyle(color: Colors.grey[600])),
+                      labelStyle: Theme.of(context).textTheme.subtitle2),
                 ),
                 SizedBox(
                   height: 40,
@@ -175,20 +171,20 @@ class _SignUpState extends State<SignUp> {
                       },
                       child: Text(
                         S.current.SignUp,
-                        style: TextStyle(color: Colors.white),
+                        style: Theme.of(context).textTheme.bodyText1,
                       ),
-                      color: Colors.blue[400],
+                      color: Theme.of(context).accentColor,
                     )),
                 SizedBox(
                   width: double.infinity,
                   child: OutlineButton(
-                      borderSide: BorderSide(color: Colors.blue),
+                      borderSide: BorderSide(color: Theme.of(context).accentColor),
                       onPressed: () {
                         Navigator.pop(context);
                       },
                       child: Text(
                         S.current.AlreadyHaveAccount,
-                        style: TextStyle(color: Colors.blue),
+                        style: TextStyle(color: Theme.of(context).accentColor),
                       )),
                 ),
               ],

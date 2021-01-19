@@ -6,7 +6,6 @@ class Done extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[800],
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
@@ -15,10 +14,7 @@ class Done extends StatelessWidget {
           children: [
             Text(
               S.current.PasswordUpdate,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.headline4,
               textAlign: TextAlign.center,
             ),
             SizedBox(
@@ -33,9 +29,7 @@ class Done extends StatelessWidget {
             ),
             Text(
               S.current.UpdatePassSuccess,
-              style: TextStyle(
-                color: Colors.white,
-              ),
+              style: Theme.of(context).textTheme.subtitle1,
               textAlign: TextAlign.center,
             ),
             SizedBox(
@@ -47,8 +41,8 @@ class Done extends StatelessWidget {
                                       MaterialPageRoute(
                                           builder: (context) => Home()));
               },
-              child: Text(S.current.Home),
-              color: Colors.blue[400],
+              child: Text(S.current.Home,style: Theme.of(context).textTheme.bodyText1,),
+              color: Theme.of(context).primaryColor,
             )
           ],
         ),

@@ -16,9 +16,8 @@ class _RelatedCourseState extends State<RelatedCourse> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title: Text(S.current.RelatedCourse),
+        title: Text(S.current.RelatedCourse,style: Theme.of(context).appBarTheme.textTheme.headline4,),
         leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {

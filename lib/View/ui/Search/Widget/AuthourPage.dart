@@ -16,7 +16,7 @@ class AuthourPage extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Text(
             '${authors.length} ${S.current.Results}',
-            style: TextStyle(color: Colors.grey),
+            style: Theme.of(context).textTheme.subtitle2,
           ),
         ),
         Flexible(

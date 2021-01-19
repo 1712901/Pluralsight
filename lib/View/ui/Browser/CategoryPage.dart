@@ -31,13 +31,13 @@ class CategoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black87,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: CustomScrollView(
         physics: BouncingScrollPhysics(),
         slivers: [
           SliverAppBar(
-            backgroundColor: Colors.grey[800],
-            title: Text(category.name),
+            backgroundColor: Theme.of(context).backgroundColor,
+            title: Text(category.name,style: Theme.of(context).appBarTheme.textTheme.headline4,),
             expandedHeight: 200,
             pinned: true,
             leading: IconButton(

@@ -43,7 +43,7 @@ class _CoursesState extends State<Courses> {
     return Container(
       margin: EdgeInsets.only(right: 5),
       width: 220,
-      color: Colors.grey[800],
+      color: Theme.of(context).cardTheme.color,
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -139,9 +139,7 @@ class _CoursesState extends State<Courses> {
                             child: Text(
                               course.title,
                               maxLines: 2,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                              style:Theme.of(context).textTheme.bodyText1,
                             ),
                           ),
                         ),
@@ -150,9 +148,7 @@ class _CoursesState extends State<Courses> {
                         ),
                         Text(
                           course.instructorUserName,
-                          style: TextStyle(
-                            color: Colors.grey,
-                          ),
+                          style:Theme.of(context).textTheme.subtitle2,
                         ),
                         Container(
                           //width: 200,
@@ -161,13 +157,13 @@ class _CoursesState extends State<Courses> {
                             children: [
                               Text(
                                 "${course.updatedAt!=null?Format.getInstantDateFormat().format(course.updatedAt):""}",
-                                style: TextStyle(color: Colors.grey),
+                                style: Theme.of(context).textTheme.subtitle2,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                               ),
                               Text(
                                 "${course.totalHours!=null?Format.printDuration(course.totalHours):""}",
-                                style: TextStyle(color: Colors.grey),
+                                style: Theme.of(context).textTheme.subtitle2,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                               ),

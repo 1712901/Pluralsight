@@ -21,7 +21,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black54,
+      //backgroundColor: Colors.black54,
       appBar: myAppbar(title: title, context: context),
       body: SingleChildScrollView(
         child: Padding(
@@ -45,13 +45,12 @@ class HomePage extends StatelessWidget {
                       ),
                       Text(
                         S.current.TitleIntro,
-                        style: TextStyle(color: Colors.grey[400]),
+                        style: Theme.of(context).textTheme.headline6,
                       ),
                       Text(
                           S.current.Intro,
-                          style: TextStyle(
-                            color: Colors.white,
-                          )),
+                          style: Theme.of(context).textTheme.subtitle1,
+                      ),
                     ],
                   ),
                 ),

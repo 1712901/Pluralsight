@@ -27,6 +27,8 @@ class LoadURL extends ChangeNotifier {
   }
 
   bool isYotuber() {
+    if(this.url==null)
+      return false;
     if (url.contains("youtube.com")) return true;
     return false;
   }

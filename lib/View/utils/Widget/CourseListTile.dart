@@ -64,14 +64,14 @@ class CourseListTitle extends StatelessWidget {
         ),
         title: Text(
           course.title,
-          style: TextStyle(color: Colors.white),
+          style: Theme.of(context).textTheme.subtitle1,
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               "${course.instructorUserName!=null?course.instructorUserName:course.status.toLowerCase()}",
-              style: TextStyle(color: Colors.grey),
+              style: Theme.of(context).textTheme.subtitle2,
               maxLines: 1,
             ),
             Row(
@@ -79,13 +79,13 @@ class CourseListTitle extends StatelessWidget {
               children: [
                 Text(
                   Format.getInstantDateFormat().format(course.updatedAt),
-                  style: TextStyle(color: Colors.grey),
+                  style: Theme.of(context).textTheme.subtitle2,
                   overflow: TextOverflow.visible,
                   maxLines: 1,
                 ),
                 Text(
                   Format.printDuration(course.totalHours),
-                  style: TextStyle(color: Colors.grey),
+                  style: Theme.of(context).textTheme.subtitle2,
                   overflow: TextOverflow.visible,
                   maxLines: 1,
                 ),
@@ -107,15 +107,9 @@ class CourseListTitle extends StatelessWidget {
                 ),
                  course.price == 0
                      ? Text(S.current.Free,
-                         style: TextStyle(
-                             color: Colors.white,
-                             fontSize: 15,
-                             fontWeight: FontWeight.bold))
+                         style: Theme.of(context).textTheme.subtitle1)
                      : Text(NumberFormat.currency(locale: "vi")
-                         .format(course.price==null?0:course.price), style: TextStyle(
-                             color: Colors.white,
-                             fontSize: 15,
-                             fontWeight: FontWeight.bold))
+                         .format(course.price==null?0:course.price), style: Theme.of(context).textTheme.subtitle1)
               ],
             )
           ],
@@ -166,7 +160,7 @@ class CourseListTitle extends StatelessWidget {
                     default:
                   }
                 },
-                color: Colors.grey[800],
+                color: Theme.of(context).popupMenuTheme.color,
                 itemBuilder: (BuildContext context) {
                   return <PopupMenuEntry<int>>[
                     PopupMenuItem(
@@ -174,13 +168,13 @@ class CourseListTitle extends StatelessWidget {
                         child: Text(
                           provider.isFavorite(courseId: course.id)
                               ? S.current.Unlike
-                              : S.current.Like,
+                              : S.current.Like,style: Theme.of(context).textTheme.subtitle1,
                         )),
                     isLoaded
                         ? PopupMenuItem(
                             value: 2,
                             child: Text(
-                              S.current.Remove,
+                              S.current.Remove,style: Theme.of(context).textTheme.subtitle1,
                             ))
                         : PopupMenuItem(
                             child: Container(),

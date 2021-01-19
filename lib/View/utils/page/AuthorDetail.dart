@@ -22,10 +22,8 @@ class _AuthorDetailState extends State<AuthorDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black87,
       appBar: AppBar(
-        backgroundColor: Colors.grey[800],
-        title: Text(S.current.Instructor),
+        title: Text(S.current.Instructor,style: Theme.of(context).appBarTheme.textTheme.headline4,),
       ),
       body: FutureBuilder(
           future: InstructorService.getInstructorDetail(
@@ -71,15 +69,12 @@ class _AuthorDetailState extends State<AuthorDetail> {
                             Text(
                               instructorDetail.name,
                               textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20),
+                              style: Theme.of(context).textTheme.headline4,
                             ),
                             Text(
                               'Pluralsight Author',
                               textAlign: TextAlign.center,
-                              style: TextStyle(color: Colors.white),
+                              style: Theme.of(context).textTheme.subtitle1,
                             ),
                             RatingBarIndicator(
                               rating: instructorDetail.ratedNumber * 1.0,
@@ -103,7 +98,7 @@ class _AuthorDetailState extends State<AuthorDetail> {
                                 child: Container(
                                   child: Text(
                                     instructorDetail.intro,
-                                    style: TextStyle(color: Colors.white),
+                                    style: Theme.of(context).textTheme.subtitle1,
                                     maxLines: maxline ? 2 : null,
                                     //overflow: TextOverflow.ellipsis,
                                   ),
@@ -120,7 +115,7 @@ class _AuthorDetailState extends State<AuthorDetail> {
                                   },
                                   child: Container(
                                     height: double.infinity,
-                                    color: Colors.grey,
+                                    color: Theme.of(context).iconTheme.color,
                                     child: Icon(
                                       Icons.expand_more,
                                       color: Colors.black,
@@ -131,39 +126,34 @@ class _AuthorDetailState extends State<AuthorDetail> {
                             ],
                           ),
                         ):Container(),
-                        FlatButton.icon(
-                          padding: EdgeInsets.zero,
-                          onPressed: () {},
-                          icon: Icon(Icons.mail),
-                          label: Text(instructorDetail.email),
-                          textColor: Colors.white,
-                        ),
                         Row(
                           children: [
                             Text("${S.current.Major} :",
-                                style: TextStyle(fontWeight: FontWeight.bold)),
+                                style: Theme.of(context).textTheme.subtitle1),
                             SizedBox(
                               width: 10,
                             ),
-                            Text(instructorDetail.major!=null?instructorDetail.major:""),
-                            instructorDetail.phone!=null?Flexible(
-                              fit: FlexFit.tight,
-                              child: FlatButton.icon(
-                                padding: EdgeInsets.zero,
-                                onPressed: () {},
-                                icon: Icon(Icons.phone),
-                                label: Text(instructorDetail.phone),
-                                textColor: Colors.white,
-                              ),
-                            ):Container(),
+                            Text(instructorDetail.major!=null?instructorDetail.major:"",style: Theme.of(context).textTheme.subtitle1,),
                           ],
+                        ),
+                        instructorDetail.phone!=null?FlatButton.icon(
+                          padding: EdgeInsets.zero,
+                          onPressed: () {},
+                          icon: Icon(Icons.phone,color: Theme.of(context).iconTheme.color,),
+                          label: Text(instructorDetail.phone.toString(),style:Theme.of(context).textTheme.subtitle1),
+                        ):Container(),
+                        FlatButton.icon(
+                          padding: EdgeInsets.zero,
+                          onPressed: () {},
+                          icon: Icon(Icons.mail,color: Theme.of(context).iconTheme.color,),
+                          label: Text(instructorDetail.email,style: Theme.of(context).textTheme.subtitle1,),
                         ),
                         SizedBox(
                           height: 10,
                         ),
                         Text(
                           '${S.current.courses} (${instructorDetail.courses.length})',
-                          style: TextStyle(color: Colors.white),
+                          style: Theme.of(context).textTheme.headline6,
                         ),
                         ListView.builder(
                             physics: NeverScrollableScrollPhysics(),

@@ -41,7 +41,7 @@ class _AllPageState extends State<AllPage> {
                   children: [
                     Text(
                       S.current.courses,
-                      style: TextStyle(color: Colors.white),
+                      style: Theme.of(context).textTheme.headline6,
                     ),
                     FlatButton.icon(
                       onPressed: () {
@@ -49,9 +49,10 @@ class _AllPageState extends State<AllPage> {
                       },
                       icon: Text(
                         S.current.SeeAll,
+                        style:Theme.of(context).textTheme.subtitle1,
                       ),
                       label: Icon(Icons.navigate_next),
-                      textColor: Colors.grey,
+                      textColor: Theme.of(context).iconTheme.color,
                       //onPressed: funCallBack(1),
                     )
                   ],
@@ -73,7 +74,7 @@ class _AllPageState extends State<AllPage> {
                   children: [
                     Text(
                       S.current.Author,
-                      style: TextStyle(color: Colors.white),
+                      style: Theme.of(context).textTheme.headline6,
                     ),
                     FlatButton.icon(
                       onPressed: () {
@@ -81,9 +82,10 @@ class _AllPageState extends State<AllPage> {
                       },
                       icon: Text(
                         S.current.SeeAll,
+                        style: Theme.of(context).textTheme.subtitle1,
                       ),
                       label: Icon(Icons.navigate_next),
-                      textColor: Colors.grey,
+                      textColor: Theme.of(context).iconTheme.color,
                     )
                   ],
                 ),

@@ -42,13 +42,11 @@ class _UpdatePasswordState extends State<UpdatePassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[800],
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: IconButton(
           icon: Icon(
             Icons.keyboard_backspace,
-            color: Colors.grey[400],
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -67,10 +65,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
               ),
               Text(
                 'NEW CREDANTIALS',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold),
+                style: Theme.of(context).textTheme.headline4,
                 textAlign: TextAlign.center,
               ),
               SizedBox(
@@ -78,9 +73,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
               ),
               Text(
                 S.current.InfoUpdatePassword,
-                style: TextStyle(
-                  color: Colors.grey,
-                ),
+                style: Theme.of(context).textTheme.subtitle2,
                 textAlign: TextAlign.center,
               ),
               SizedBox(
@@ -90,14 +83,10 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                 controller: oldPasswordController,
                 cursorColor: Theme.of(context).cursorColor,
                 obscureText: !showOldPassword,
-                style: TextStyle(
-                  color: Colors.white,
-                ),
+                style: Theme.of(context).textTheme.subtitle1,
                 decoration: InputDecoration(
                     labelText: S.current.OldPassword,
-                    labelStyle: TextStyle(
-                      color: Colors.grey[600],
-                    ),
+                    labelStyle:Theme.of(context).textTheme.subtitle2,
                     suffixIcon: IconButton(
                       icon: Icon(
                         showOldPassword
@@ -116,14 +105,10 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                 controller: newPasswordController,
                 cursorColor: Theme.of(context).cursorColor,
                 obscureText: !showPassword,
-                style: TextStyle(
-                  color: Colors.white,
-                ),
+                style: Theme.of(context).textTheme.subtitle1,
                 decoration: InputDecoration(
                     labelText: S.current.NewPassword,
-                    labelStyle: TextStyle(
-                      color: Colors.grey[600],
-                    ),
+                    labelStyle: Theme.of(context).textTheme.subtitle2,
                     suffixIcon: IconButton(
                       icon: Icon(
                         showPassword ? Icons.visibility : Icons.visibility_off,
@@ -140,14 +125,10 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                 controller: confController,
                 cursorColor: Theme.of(context).cursorColor,
                 obscureText: !showPassword,
-                style: TextStyle(
-                  color: Colors.white,
-                ),
+                style:Theme.of(context).textTheme.subtitle1,
                 decoration: InputDecoration(
                     labelText: S.current.ConfirmPassword,
-                    labelStyle: TextStyle(
-                      color: Colors.grey[600],
-                    ),
+                    labelStyle: Theme.of(context).textTheme.subtitle2,
                     suffixIcon: IconButton(
                       icon: Icon(
                         showConfPassword
@@ -171,7 +152,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                     width: double.infinity,
                     child: Builder(
                       builder: (ctx) => RaisedButton(
-                        color: Colors.blue[400],
+                        color: Theme.of(context).primaryColor,
                         onPressed: () async {
                           switch (checkFormat()) {
                             case 0:
@@ -209,7 +190,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                         },
                         child: Text(
                           S.current.Update,
-                          style: TextStyle(color: Colors.white),
+                          style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ),
                     )),

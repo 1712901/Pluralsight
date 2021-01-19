@@ -18,15 +18,12 @@ Widget authorListTitle(BuildContext context, InstructorSearchV2 author) {
       contentPadding: EdgeInsets.symmetric(horizontal: 0),
       title: Text(
         author.name,
-        style: TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.w400,
-        ),
+        style: Theme.of(context).textTheme.subtitle1,
         maxLines: 2,
       ),
       subtitle: Text(
         '${author.numcourses} ${S.current.courses}',
-        style: TextStyle(color: Colors.grey),
+        style: Theme.of(context).textTheme.subtitle2,
       ),
       leading: ClipOval(
         child: AspectRatio(

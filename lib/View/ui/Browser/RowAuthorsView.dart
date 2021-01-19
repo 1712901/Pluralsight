@@ -17,7 +17,7 @@ class RowAuthorsView extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyle(color: Colors.white),
+          style: Theme.of(context).textTheme.headline6,
         ),
         SizedBox(
           height: 10,
@@ -74,7 +74,7 @@ class RowAuthorsView extends StatelessWidget {
                             Container(
                                 child: Text(
                               intructors[index].userName,
-                              style: TextStyle(color: Colors.white),
+                              style: Theme.of(context).textTheme.subtitle1,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
                               textAlign: TextAlign.center,

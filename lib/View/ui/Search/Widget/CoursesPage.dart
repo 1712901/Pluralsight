@@ -19,7 +19,7 @@ class CoursesPage extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
             child: Text(
               '${list.length} ${S.current.Results}',
-              style: TextStyle(color: Colors.grey),
+              style: Theme.of(context).textTheme.subtitle2,
             ),
           ),
           Flexible(

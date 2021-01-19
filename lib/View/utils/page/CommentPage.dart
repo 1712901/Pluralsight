@@ -55,8 +55,7 @@ class _CommentPageState extends State<CommentPage> {
                           children: [
                             Text(
                               S.current.CreateComment,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18),
+                              style: Theme.of(context).textTheme.headline6,
                             ),
                             SizedBox(
                               height: 10,
@@ -102,8 +101,6 @@ class _CommentPageState extends State<CommentPage> {
                                       content: S.current.NonEnrol);
                                   return;
                                 }
-                                print(
-                                    '$contentPoint $presentationPoint $formalityPoint ${contentController.text}');
                                 Response res = await CourseService.postCommnent(
                                     courseID: widget.courseId,
                                     token: accountInf.token,
@@ -111,7 +108,6 @@ class _CommentPageState extends State<CommentPage> {
                                     contentPoint: contentPoint,
                                     formalityPoint: formalityPoint,
                                     presentationPoint: presentationPoint);
-                                print(res.body);
                                 if (res.statusCode == 200) {
                                   Toast.show(
                                       context: context,
@@ -127,7 +123,7 @@ class _CommentPageState extends State<CommentPage> {
                                       content: jsonDecode(res.body)["message"]);
                                 }
                               },
-                              child: Text(S.current.Post),
+                              child: Text(S.current.Post,style: TextStyle(color: Theme.of(context).primaryIconTheme.color),),
                             )
                           ],
                         ),
@@ -151,11 +147,11 @@ class _CommentPageState extends State<CommentPage> {
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("${widget.rating[index].user.name}"),
+                        Text("${widget.rating[index].user.name}",style: Theme.of(context).textTheme.subtitle1,),
                         //SizedBox(width: 20,),
                         Text(
                           "${Format.getInstantDateFormat().format(widget.rating[index].createdAt)}",
-                          style: TextStyle(fontWeight: FontWeight.w300),
+                          style:Theme.of(context).textTheme.subtitle2,
                         )
                       ],
                     ),
@@ -199,35 +195,36 @@ class _CommentPageState extends State<CommentPage> {
           ],
         ));
   }
+
+  makeRowRating({@required String content, @required Function(double) callback}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(content,style: Theme.of(context).textTheme.subtitle1,),
+        RatingBar(
+          itemSize: 20,
+          initialRating: ConstantPage.INITIALRATING,
+          direction: Axis.horizontal,
+          allowHalfRating: true,
+          itemCount: 5,
+          ratingWidget: RatingWidget(
+            full: Icon(
+              Icons.star,
+              color: Colors.yellow,
+            ),
+            half: Icon(
+              Icons.star_half,
+              color: Colors.yellow,
+            ),
+            empty: Icon(
+              Icons.star_border,
+            ),
+          ),
+          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+          onRatingUpdate: callback,
+        )
+      ],
+    );
+  }
 }
 
-makeRowRating({@required String content, @required Function(double) callback}) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Text(content),
-      RatingBar(
-        itemSize: 20,
-        initialRating: ConstantPage.INITIALRATING,
-        direction: Axis.horizontal,
-        allowHalfRating: true,
-        itemCount: 5,
-        ratingWidget: RatingWidget(
-          full: Icon(
-            Icons.star,
-            color: Colors.yellow,
-          ),
-          half: Icon(
-            Icons.star_half,
-            color: Colors.yellow,
-          ),
-          empty: Icon(
-            Icons.star_border,
-          ),
-        ),
-        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-        onRatingUpdate: callback,
-      )
-    ],
-  );
-}

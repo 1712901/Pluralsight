@@ -84,24 +84,21 @@ class _SearchPageState extends State<SearchPage>
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        backgroundColor: Colors.black87,
         appBar: AppBar(
-          backgroundColor: Colors.grey[800],
           elevation: 0,
           title: TextField(
             autofocus: findkey,
             controller: _controller,
             textAlignVertical: TextAlignVertical.center,
             decoration: InputDecoration(
-              prefixIcon: Icon(Icons.search_rounded, color: Colors.grey),
+              prefixIcon: Icon(Icons.search_rounded, color: Theme.of(context).iconTheme.color),
               hintText: 'Search...',
-              hintStyle:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.w400),
+              hintStyle:Theme.of(context).textTheme.subtitle2,
               fillColor: Colors.white,
               suffixIcon: IconButton(
                 icon: Icon(
                   Icons.clear,
-                  color: Colors.grey,
+                  color:Theme.of(context).iconTheme.color,
                 ),
                 onPressed: () {
                   _controller.clear();
@@ -120,7 +117,7 @@ class _SearchPageState extends State<SearchPage>
                 borderSide: BorderSide(color: Colors.black87),
               ),
             ),
-            style: TextStyle(color: Colors.white),
+            style: Theme.of(context).textTheme.subtitle1,
             onChanged: onChangeText,
             onSubmitted: onSubmitted,
           ),
@@ -132,7 +129,7 @@ class _SearchPageState extends State<SearchPage>
             _showAlert(context);
           },
           child: Icon(Icons.filter_list_outlined),
-          backgroundColor: Colors.grey[800],
+          backgroundColor: Theme.of(context).backgroundColor,
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
       ),
@@ -167,7 +164,7 @@ class _SearchPageState extends State<SearchPage>
             child: Center(
               child: Text(
                 "Không tìm thấy kết quả",
-                style: TextStyle(fontSize: 25, color: Colors.white),
+                style: Theme.of(context).textTheme.headline5,
               ),
             ),
           );
@@ -180,12 +177,12 @@ class _SearchPageState extends State<SearchPage>
         indicator: BoxDecoration(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-            color: Colors.black),
+            color: Theme.of(context).scaffoldBackgroundColor),
         labelPadding: EdgeInsets.all(10),
         tabs: [
-          Text('ALL'),
-          Text('COURSES'),
-          Text('AUTHORS'),
+          Text('ALL',style: Theme.of(context).textTheme.bodyText1,),
+          Text('COURSES',style: Theme.of(context).textTheme.bodyText1),
+          Text('AUTHORS',style: Theme.of(context).textTheme.bodyText1),
         ]);
   }
 
@@ -332,16 +329,16 @@ class _SearchPageState extends State<SearchPage>
                         },
                         leading: Icon(
                           Icons.history,
-                          color: Colors.white,
+                          color: Theme.of(context).iconTheme.color,
                         ),
                         title: Text(
                           list[index].content,
-                          style: TextStyle(color: Colors.white),
+                          style: Theme.of(context).textTheme.subtitle1,
                         ),
                         trailing: IconButton(
                           icon: Icon(
                             Icons.close,
-                            color: Colors.grey,
+                            color: Theme.of(context).iconTheme.color,
                           ),
                           onPressed: () async {
                             await CourseService.deleteHistory(
