@@ -104,12 +104,12 @@ class CourseDetailModel {
         soldNumber: json["soldNumber"],
         ratedNumber: json["ratedNumber"],
         videoNumber: json["videoNumber"],
-        totalHours: json["totalHours"].toDouble(),
-        formalityPoint: json["formalityPoint"].toDouble(),
+        totalHours: json["totalHours"]==null?null:json["totalHours"].toDouble(),
+        formalityPoint: json["formalityPoint"]==null?null:json["formalityPoint"].toDouble(),
         contentPoint: json["contentPoint"] == null
             ? null
             : json["contentPoint"].toDouble(),
-        presentationPoint: json["presentationPoint"].toDouble(),
+        presentationPoint: json["presentationPoint"]==null?null:json["presentationPoint"].toDouble(),
         imageUrl: json["imageUrl"],
         promoVidUrl: json["promoVidUrl"],
         status: json["status"],

@@ -58,26 +58,23 @@ void main() {
         ChangeNotifierProvider(create: (_) => DownLoadProgress()),
         ChangeNotifierProvider(create: (_) => ThemeModeApp()),
       ],
-      child: Consumer<ThemeModeApp>(
-        builder: (context,provider,_) {
-
-          return MaterialApp(
-            theme: AppTheme.lightThem,
-            darkTheme: AppTheme.dartTheme,
-            themeMode: provider.isDarkModeOn? ThemeMode.dark:ThemeMode.light,
-            localizationsDelegates: [
-              S.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: S.delegate.supportedLocales,
-            home: Home(),
-            //home: UpdatePassword(),
-          );
-
-        }
-      ),
+      child: Consumer<ThemeModeApp>(builder: (context, provider, _) {
+        return MaterialApp(
+          theme: AppTheme.lightThem,
+          darkTheme: AppTheme.dartTheme,
+          themeMode: provider.isDarkModeOn ? ThemeMode.dark : ThemeMode.light,
+          localizationsDelegates: [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: S.delegate.supportedLocales,
+          debugShowCheckedModeBanner: false,
+          home: Home(),
+          //home: UpdatePassword(),
+        );
+      }),
     ),
   );
 }
@@ -94,8 +91,8 @@ class _HomeState extends State<Home> {
   Future<void> loadInforAccount() async {
     final storage = new FlutterSecureStorage();
     String valueToken = await storage.read(key: "token");
-    bool onDartMode= (await storage.read(key: "Them")).toLowerCase()=="true";
-    Provider.of<ThemeModeApp>(context,listen: false).updateTheme(onDartMode);
+    bool onDartMode = (await storage.read(key: "Them")).toLowerCase() == "true";
+    Provider.of<ThemeModeApp>(context, listen: false).updateTheme(onDartMode);
     if (valueToken != null) {
       Provider.of<AccountInf>(context, listen: false)
           .setToken(token: valueToken);
@@ -108,11 +105,13 @@ class _HomeState extends State<Home> {
       } else {
         Provider.of<AccountInf>(context, listen: false).setToken(token: null);
       }
-      res=await UserService.getProfile(token: valueToken);
-      if(res.statusCode==200){
-        ResGetProfile resGetProfile=ResGetProfile.fromJson(jsonDecode(res.body));
-        Provider.of<AccountInf>(context, listen: false).setUserInfor(resGetProfile.userInfo);
-      }else{
+      res = await UserService.getProfile(token: valueToken);
+      if (res.statusCode == 200) {
+        ResGetProfile resGetProfile =
+            ResGetProfile.fromJson(jsonDecode(res.body));
+        Provider.of<AccountInf>(context, listen: false)
+            .setUserInfor(resGetProfile.userInfo);
+      } else {
         Provider.of<AccountInf>(context, listen: false).setToken(token: null);
       }
     }

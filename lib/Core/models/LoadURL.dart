@@ -5,8 +5,10 @@ import 'package:flutter/cupertino.dart';
 class LoadURL extends ChangeNotifier {
   String url;
   bool loadLocal;
+  double seek;
   LoadURL({this.url});
-  Future<void> setUrl(String url,{String lessonID="intro",String courseId,String userId}) async {
+  Future<void> setUrl(String url,{String lessonID="intro",String courseId,String userId,double seek=0}) async {
+    this.seek=seek;
     String pathLocal;
     if (userId == null) {
       loadLocal = false;
@@ -30,6 +32,14 @@ class LoadURL extends ChangeNotifier {
     if(this.url==null)
       return false;
     if (url.contains("youtube.com")) return true;
+    return false;
+  }
+  bool isMp4(){
+    if(this.url==null)
+      return false;
+    String name=url.split(new RegExp(r"(\/|\?)")).firstWhere((element) => element.endsWith(".mp4"),orElse: ()=>null);
+    if(name!=null)
+      return true;
     return false;
   }
   Future<String> _getUrlLocalStore({String courseID,String userID,String lessonID}) async {

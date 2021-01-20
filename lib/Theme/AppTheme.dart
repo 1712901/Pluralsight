@@ -64,7 +64,7 @@ class AppTheme {
       bodyText2: TextStyle(color: Colors.black26),
       subtitle1: TextStyle(color: Colors.black),
       subtitle2: TextStyle(color: Colors.black),
-      button: TextStyle(color: Color.fromRGBO(225, 230, 235, 1)),
+      button: TextStyle(color: Colors.blue),
     ),
     cardTheme: CardTheme(color: Color.fromRGBO(225, 230, 235, 1)),
     iconTheme: IconThemeData(color: Colors.black87),

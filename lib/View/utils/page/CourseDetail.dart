@@ -14,6 +14,7 @@ import 'package:Pluralsight/Core/service/CourseService.dart';
 import 'package:Pluralsight/Core/service/LessonService.dart';
 import 'package:Pluralsight/Core/service/Payment.dart';
 import 'package:Pluralsight/Core/service/UserService.dart';
+import 'package:Pluralsight/View/utils/Widget/CustomVideoPlayer2.dart';
 import 'package:Pluralsight/View/utils/Widget/CustomVideoPlayser.dart';
 import 'package:Pluralsight/View/utils/Widget/CustomYoutubePlayer.dart';
 import 'package:Pluralsight/View/utils/page/CommentPage.dart';
@@ -27,6 +28,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:Pluralsight/Core/models/MyProvider/DownloadProgress.dart';
 
@@ -133,12 +135,23 @@ class _CourseDetailState extends State<CourseDetail>
                                         if (provider.isYotuber()) {
                                           return CustomYoutuberPlayer(
                                               next: isNextYoutube,
-                                              url: provider.url);
-                                        } else {
+                                              url: provider.url,
+                                            seek: provider.seek,
+                                          );
+                                        } else if(provider.isMp4()){
                                           return CustomVideoPlayer(
                                             url: provider.url,
                                             next: isNextVideo,
                                             isLocal: provider.loadLocal,
+                                            seek: provider.seek,
+                                          );
+                                          //return CustomVideoPlayer2(url:provider.url,next: isNextVideo);
+                                        }else{
+                                          return CustomVideoPlayer(
+                                            url: provider.url,
+                                            next: isNextVideo,
+                                            isLocal: provider.loadLocal,
+                                            seek: provider.seek,
                                           );
                                         }
                                       })),
@@ -165,15 +178,7 @@ class _CourseDetailState extends State<CourseDetail>
                                           color: Colors.white,
                                         ),
                                         onPressed: () async {
-                                          // if (Platform.isAndroid) {
-                                          //   final AndroidIntent intent =
-                                          //       AndroidIntent(
-                                          //     action: 'action_send',
-                                          //     //data: Uri.encodeFull('https://flutter.io'),
-                                          //     //package: 'com.android.chrome'
-                                          //   );
-                                          //   intent.launch();
-                                          // }
+                                          Share.share("http://dev.letstudy.org/course-detail/${courseDetailModel.id}");
                                         })
                                   ],
                                 ),
@@ -324,6 +329,7 @@ class _CourseDetailState extends State<CourseDetail>
                             )
                           : Icon(
                               Icons.star_outline,
+                              color: Colors.grey,
                             ),
                       title: isLike && isLogin ? S.current.Unlike : S.current.Like,
                       opTap: () async {
@@ -422,9 +428,9 @@ class _CourseDetailState extends State<CourseDetail>
                           children: [
                             Text(
                               S.current.Progress,
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: Theme.of(context).textTheme.subtitle1,
                             ),
-                            Text(' ( $process% )'),
+                            Text(' ( $process% )',style: Theme.of(context).textTheme.subtitle1,),
                             SizedBox(
                               width: 50,
                             ),
@@ -572,7 +578,6 @@ class _CourseDetailState extends State<CourseDetail>
                         Toast.show(context: context, content: S.current.NotLogin);
                       },
                       icon: Icon(Icons.done_all,color: Theme.of(context).iconTheme.color,),
-                      color: Theme.of(context).primaryColor,
                       label: courseDetailModel.price == 0
                           ? Text(S.current.Enroll,style: Theme.of(context).textTheme.subtitle1,)
                           : Text(S.current.Pay,style: Theme.of(context).textTheme.subtitle1,)),
@@ -586,6 +591,7 @@ class _CourseDetailState extends State<CourseDetail>
                               listCourse: courseDetailModel.coursesLikeCategory,
                             )));
                   },
+                  color: Theme.of(context).primaryColor,
                   icon: Icon(Icons.view_carousel,color: Theme.of(context).primaryIconTheme.color,),
                   label: Text(S.current.RelatedCourse,style: TextStyle(color: Theme.of(context).primaryIconTheme.color),))),
         ],
@@ -643,15 +649,19 @@ class _CourseDetailState extends State<CourseDetail>
                       .map((lesson) =>
                           Builder(builder: (BuildContext newContext) {
                             String urlLesson;
+                            ResGetVideoLesson resVideoLesson;
                             return ListTile(
                                 onTap: () async {
                                   if (Provider.of<AccountInf>(context,
                                               listen: false)
                                           .isAuthorization() &&
                                       this.ownerCourse) {
-                                    if(urlLesson==null)
-                                      urlLesson =
-                                        await getUrlLesson(lesson);
+
+                                    if(urlLesson==null) {
+                                      resVideoLesson = await getUrlLesson(
+                                          lesson);
+                                      urlLesson=resVideoLesson.videoLesson.videoUrl;
+                                    }
                                     if (urlLesson != null) {
                                       this.isNextYoutube = true;
                                       this.isNextVideo = true;
@@ -659,7 +669,7 @@ class _CourseDetailState extends State<CourseDetail>
                                       Provider.of<LoadURL>(context,
                                               listen: false)
                                           .setUrl(urlLesson,lessonID: lesson.id,courseId: lesson.courseId,userId: Provider.of<AccountInf>(context,
-                                          listen: false).userInfo.id);
+                                          listen: false).userInfo.id,seek: resVideoLesson.videoLesson.currentTime);
                                     }
                                   }
                                 },
@@ -687,9 +697,12 @@ class _CourseDetailState extends State<CourseDetail>
                                         new DioDownload(
                                             flutterLocalNotificationsPlugin);
                                         //thực hiện down load
-                                        if(urlLesson==null)
-                                          urlLesson =
-                                          await getUrlLesson(lesson);
+                                        if(urlLesson==null) {
+                                          ResGetVideoLesson res = await getUrlLesson(
+                                              lesson);
+                                          urlLesson=res.videoLesson.videoUrl;
+                                        }
+
                                         if(urlLesson!=null) {
                                          this.downLoad(userID: Provider.of<AccountInf>(context,
                                              listen: false).userInfo.id,courseId: courseDetailModel.id,lessonID: lesson.id,url:urlLesson );
@@ -788,15 +801,14 @@ class _CourseDetailState extends State<CourseDetail>
         .toList();
   }
 
-  Future<String> getUrlLesson(Lesson lesson) async {
+  Future<ResGetVideoLesson> getUrlLesson(Lesson lesson) async {
     var res = await LessonService.getURLLesson(
         token: Provider.of<AccountInf>(context, listen: false).token,
         courseID: lesson.courseId,
         lessonId: lesson.id);
     print(res.body);
     if (res.statusCode == 200) {
-      ResGetVideoLesson resGetVideoLesson = resGetVideoLessonFromJson(res.body);
-      return resGetVideoLesson.videoLesson.videoUrl;
+      return resGetVideoLessonFromJson(res.body);
     }
     return null;
   }

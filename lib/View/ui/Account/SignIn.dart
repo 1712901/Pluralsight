@@ -93,7 +93,6 @@ class _SignInState extends State<SignIn> {
                           if (email.isEmpty | password.isEmpty) {
                             return;
                           }
-
                           var res = await UserService.login(
                               email: email, password: password);
                           if (res == null) {
