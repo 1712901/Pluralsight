@@ -83,5 +83,6 @@
   "ResetPassword": "Đặt lại mật khẩu",
   "LogOut": "Đăng xuất",
   "NEW_RELEASES": "Mới phát hành",
-  "RECOMMENDED_FOR_YOU": "Đề xuất cho bạn"
+  "RECOMMENDED_FOR_YOU": "Đề xuất cho bạn",
+  "Error": "Thất bại"
 }

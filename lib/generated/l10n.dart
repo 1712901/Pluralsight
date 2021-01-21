@@ -884,6 +884,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Failed`
+  String get Error {
+    return Intl.message(
+      'Failed',
+      name: 'Error',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

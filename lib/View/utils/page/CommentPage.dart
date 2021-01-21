@@ -158,7 +158,7 @@ class _CommentPageState extends State<CommentPage> {
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("${widget.rating[index].content}"),
+                        Text("${widget.rating[index].content}",style: Theme.of(context).textTheme.subtitle2,),
                         RatingBarIndicator(
                           rating: widget.rating[index].averagePoint * 1.0,
                           itemBuilder: (context, index) => Icon(

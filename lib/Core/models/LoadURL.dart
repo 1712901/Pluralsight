@@ -6,9 +6,11 @@ class LoadURL extends ChangeNotifier {
   String url;
   bool loadLocal;
   double seek;
+  String lessonId;
   LoadURL({this.url});
   Future<void> setUrl(String url,{String lessonID="intro",String courseId,String userId,double seek=0}) async {
     this.seek=seek;
+    this.lessonId=lessonID;
     String pathLocal;
     if (userId == null) {
       loadLocal = false;

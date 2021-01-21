@@ -23,4 +23,22 @@ class Format {
     String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
     return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
   }
+  static bool emailInvalid(String email) {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern);
+    return (regex.hasMatch(email));
+  }
+
+  static bool passwordInvalid(String password) {
+    Pattern pattern = r'^[A-Za-z0-9]{8,}$';
+    RegExp regex = new RegExp(pattern);
+    return (regex.hasMatch(password)) ;
+  }
+
+  static bool phoneInvalid(String phone) {
+    Pattern pattern = r'[0-9]{10}$';
+    RegExp regex = new RegExp(pattern);
+    return (regex.hasMatch(phone));
+  }
 }

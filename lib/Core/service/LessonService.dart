@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 
 class LessonService{
@@ -6,6 +8,7 @@ class LessonService{
 
   static String _urlGetURLLesson = _API_HOST + "/lesson/video";
   static String _urlUpdateCurrentTime=_API_HOST + "/lesson/update-current-time-learn-video";
+  static String _urlUpdateStatus=_API_HOST + "/lesson/update-status";
 
   static Future<http.Response> getURLLesson(
       {String token, String courseID,String lessonId}) async {
@@ -16,7 +19,18 @@ class LessonService{
       {String token, String lessonId,double currentTime}) async {
     return await http.put("$_urlUpdateCurrentTime",
         headers: {'Authorization': 'Bearer ' + token,},
-        body: {"lessonId":lessonId,"currentTime":currentTime}
+        body: {"lessonId":lessonId,"currentTime":currentTime.toString()}
     );
+  }
+  static Future<http.Response> updateStatus(
+      {String token, String lessonId}) async {
+    return await http.post(_urlUpdateStatus,
+        headers: {
+          'Content-type': 'application/json',
+          'Authorization': 'Bearer ' + token,
+        },
+        body: jsonEncode({
+          'lessonId': lessonId,
+        }));
   }
 }

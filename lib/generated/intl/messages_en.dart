@@ -40,6 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "EmailAlreadyExists" : MessageLookupByLibrary.simpleMessage("Email already exists"),
     "EmptyContent" : MessageLookupByLibrary.simpleMessage("Empty Content"),
     "Enroll" : MessageLookupByLibrary.simpleMessage("Enroll"),
+    "Error" : MessageLookupByLibrary.simpleMessage("Failed"),
     "FORGET_PASSWORD" : MessageLookupByLibrary.simpleMessage("FORGET PASSWORD"),
     "FormalityPoint" : MessageLookupByLibrary.simpleMessage("Formality Point"),
     "Free" : MessageLookupByLibrary.simpleMessage("Free"),

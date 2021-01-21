@@ -1,8 +1,11 @@
 import 'dart:io';
 
+import 'package:Pluralsight/Core/models/AccountInf.dart';
 import 'package:Pluralsight/Core/models/Format.dart';
+import 'package:Pluralsight/Core/service/LessonService.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
 class CustomVideoPlayer extends StatefulWidget {
@@ -10,12 +13,14 @@ class CustomVideoPlayer extends StatefulWidget {
   final next;
   final double seek;
   final isLocal;
+  final String lessonId;
 
   const CustomVideoPlayer(
       {Key key,
       @required this.url,
       @required this.next,
       @required this.isLocal,
+      @required this.lessonId,
       this.seek = 0})
       : super(key: key);
 
@@ -36,9 +41,10 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
 
   @override
   void dispose() {
-    _videoPlayerController?.pause(); // mute instantly
-    _videoPlayerController?.dispose();
-    _videoPlayerController = null;
+   _videoPlayerController?.removeListener(videoListener);
+   _videoPlayerController?.pause(); // mute instantly
+   _videoPlayerController?.dispose();
+   _videoPlayerController = null;
     super.dispose();
   }
 
@@ -69,7 +75,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
   }
 
   Future<void> initializePlayer({@required String url}) async {
-    if (widget.next) {
+    if (widget.next||_videoPlayerController!=null) {
       print("dispose");
       await _videoPlayerController.dispose();
     }
@@ -86,6 +92,8 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
     }
     print(widget.url);
     await _videoPlayerController.initialize();
+
+    _videoPlayerController.addListener(videoListener);
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController,
       //autoInitialize: true,
@@ -109,7 +117,7 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
         );
       },
     );
-    if (widget.seek > 0) {
+    if (widget.seek >= 1) {
       _showDiolog(context);
     }
   }
@@ -187,5 +195,32 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
             ],
           );
         });
+  }
+  videoListener(){
+    try {
+      AccountInf accountInf = Provider.of<AccountInf>(context, listen: false);
+      bool equal = widget.lessonId.toLowerCase() == ("Intro".toLowerCase());
+      if (accountInf.isAuthorization()) {
+        if (_videoPlayerController.value.position ==
+            _videoPlayerController.value.duration) {
+          if (!equal) {
+            LessonService.updateStatus(
+                token: accountInf.token, lessonId: widget.lessonId);
+          }
+        }
+        if (!_videoPlayerController.value.isPlaying && !equal) {
+          double currentTime = _videoPlayerController.value.position.inSeconds
+              .toDouble();
+          print(currentTime);
+          if (currentTime > widget.seek)
+            LessonService.updateCurrentTime(token: accountInf.token,
+                lessonId: widget.lessonId,
+                currentTime: currentTime);
+        }
+      }
+    }catch(e){
+      print("fgfdgdfg");
+      print(e.toString());
+    }
   }
 }

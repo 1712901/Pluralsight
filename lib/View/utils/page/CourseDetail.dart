@@ -14,7 +14,6 @@ import 'package:Pluralsight/Core/service/CourseService.dart';
 import 'package:Pluralsight/Core/service/LessonService.dart';
 import 'package:Pluralsight/Core/service/Payment.dart';
 import 'package:Pluralsight/Core/service/UserService.dart';
-import 'package:Pluralsight/View/utils/Widget/CustomVideoPlayer2.dart';
 import 'package:Pluralsight/View/utils/Widget/CustomVideoPlayser.dart';
 import 'package:Pluralsight/View/utils/Widget/CustomYoutubePlayer.dart';
 import 'package:Pluralsight/View/utils/page/CommentPage.dart';
@@ -137,6 +136,7 @@ class _CourseDetailState extends State<CourseDetail>
                                               next: isNextYoutube,
                                               url: provider.url,
                                             seek: provider.seek,
+                                            lessonId: provider.lessonId,
                                           );
                                         } else if(provider.isMp4()){
                                           return CustomVideoPlayer(
@@ -144,6 +144,7 @@ class _CourseDetailState extends State<CourseDetail>
                                             next: isNextVideo,
                                             isLocal: provider.loadLocal,
                                             seek: provider.seek,
+                                            lessonId: provider.lessonId,
                                           );
                                           //return CustomVideoPlayer2(url:provider.url,next: isNextVideo);
                                         }else{
@@ -152,6 +153,7 @@ class _CourseDetailState extends State<CourseDetail>
                                             next: isNextVideo,
                                             isLocal: provider.loadLocal,
                                             seek: provider.seek,
+                                            lessonId: provider.lessonId,
                                           );
                                         }
                                       })),
@@ -550,7 +552,9 @@ class _CourseDetailState extends State<CourseDetail>
                                   print(res.body);
                                   if (res.statusCode == 200) {
                                     setState(() {});
-                                  } else {}
+                                  } else {
+                                    Toast.show(context: context,content: "Thất bại");
+                                  }
                                 } else {
                                   //Đã đăng ký
                                   print(S.current.Learning);

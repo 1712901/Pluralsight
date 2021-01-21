@@ -40,6 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "EmailAlreadyExists" : MessageLookupByLibrary.simpleMessage("Email đã được đăng ký"),
     "EmptyContent" : MessageLookupByLibrary.simpleMessage("Nội dung rỗng"),
     "Enroll" : MessageLookupByLibrary.simpleMessage("Tham gia"),
+    "Error" : MessageLookupByLibrary.simpleMessage("Thất bại"),
     "FORGET_PASSWORD" : MessageLookupByLibrary.simpleMessage("Quên Mật Khẩu"),
     "FormalityPoint" : MessageLookupByLibrary.simpleMessage("Điểm hình thức"),
     "Free" : MessageLookupByLibrary.simpleMessage("Miễn Phí"),

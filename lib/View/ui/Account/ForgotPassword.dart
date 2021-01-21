@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:Pluralsight/Core/models/Format.dart';
 import 'package:Pluralsight/Core/models/Toast.dart';
 import 'package:Pluralsight/Core/service/UserService.dart';
 import 'package:Pluralsight/generated/l10n.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 
 class ForgotPassword extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
+  bool invalid=false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,8 +55,14 @@ class ForgotPassword extends StatelessWidget {
               SizedBox(
                 height: 30,
               ),
-              TextField(
+              TextFormField(
                 controller: emailController,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator:(value){
+                  invalid=Format.emailInvalid(value);
+                  if(invalid) return null;
+                  else return S.current.InvalidEmail;
+                },
                 style: Theme.of(context).textTheme.subtitle1,
                 decoration: InputDecoration(
                     isDense: true,
@@ -81,6 +89,10 @@ class ForgotPassword extends StatelessWidget {
                           //     context,
                           //     MaterialPageRoute(
                           //         builder: (context) => OTP()));
+                          if(!this.invalid){
+                            Toast.show(context: newContext,content: S.current.WrongFormat);
+                            return;
+                          }
                           if (emailController.text.isNotEmpty) {
                             var res = await UserService.forgetPassword(
                                 email: emailController.text);

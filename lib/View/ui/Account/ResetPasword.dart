@@ -1,4 +1,5 @@
 import 'package:Pluralsight/Core/models/AccountInf.dart';
+import 'package:Pluralsight/Core/models/Format.dart';
 import 'package:Pluralsight/Core/models/Toast.dart';
 import 'package:Pluralsight/Core/service/UserService.dart';
 import 'package:Pluralsight/generated/l10n.dart';
@@ -17,6 +18,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   TextEditingController confController;
   bool showPassword = false;
   bool showConfPassword = false;
+  bool invalid=false;
 
   @override
   void initState() {
@@ -79,8 +81,14 @@ class _ResetPasswordState extends State<ResetPassword> {
               SizedBox(
                 height: 20,
               ),
-              TextField(
+              TextFormField(
                 controller: newPasswordController,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator:(value){
+                  invalid=Format.passwordInvalid(value);
+                  if(invalid) return null;
+                  else return S.current.PasswordLength;
+                },
                 cursorColor: Theme.of(context).cursorColor,
                 obscureText: !showPassword,
                 style: TextStyle(
@@ -103,8 +111,14 @@ class _ResetPasswordState extends State<ResetPassword> {
                       },
                     )),
               ),
-              TextField(
+              TextFormField(
                 controller: confController,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator:(value){
+                  invalid=Format.passwordInvalid(value);
+                  if(invalid) return null;
+                  else return S.current.PasswordLength;
+                },
                 cursorColor: Theme.of(context).cursorColor,
                 obscureText: !showPassword,
                 style: TextStyle(

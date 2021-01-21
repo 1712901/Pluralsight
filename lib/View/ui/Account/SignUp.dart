@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:Pluralsight/Core/models/Format.dart';
+import 'package:Pluralsight/Core/models/Toast.dart';
 import 'package:Pluralsight/Core/service/UserService.dart';
 import 'package:Pluralsight/generated/l10n.dart';
 import 'package:flutter/material.dart';
@@ -93,8 +95,11 @@ class _SignUpState extends State<SignUp> {
                 TextFormField(
                   controller: emailController,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) =>
-                      emailInvalid(value) ? null : S.current.InvalidEmail,
+                  validator: (value) {
+                    invalid=Format.emailInvalid(value);
+                    if(invalid) return null;
+                    else return S.current.InvalidEmail;
+                  },
                   style: Theme.of(context).textTheme.subtitle1,
                   decoration: InputDecoration(
                       isDense: true,
@@ -104,8 +109,11 @@ class _SignUpState extends State<SignUp> {
                 TextFormField(
                   controller: phoneController,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) =>
-                      phoneInvalid(value) ? null : S.current.InvalidPhoneNumber,
+                  validator:(value){
+                    invalid=Format.phoneInvalid(value);
+                    if(invalid) return null;
+                    else return S.current.InvalidPhoneNumber;
+                  },
                   style: Theme.of(context).textTheme.subtitle1,
                   decoration: InputDecoration(
                       isDense: true,
@@ -115,9 +123,11 @@ class _SignUpState extends State<SignUp> {
                 TextFormField(
                   controller: passwordController,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) => passwordInvalid(value)
-                      ? null
-                      : S.current.SpecialCharacters,
+                  validator:(value){
+                    invalid=Format.passwordInvalid(value);
+                    if(invalid) return null;
+                    else return S.current.SpecialCharacters;
+                  },
                   obscureText: true,
                   style: Theme.of(context).textTheme.subtitle1,
                   decoration: InputDecoration(
@@ -163,7 +173,11 @@ class _SignUpState extends State<SignUp> {
                               showToast(ctx, S.current.AccountAlreadyRegistered);
                             } else if (status == 500) {
                               showToast(ctx, '!');
-                            } else {
+                            }else if(status==200){
+                              await sendMail(emailController.text, ctx);
+                              //Toast.show(context: ctx,content: "Tài khoản đã được đăng ký vui lòng kiểm tra email");
+                            }
+                            else {
                               //await sendMail(emailController.text, ctx);
                               showToast(ctx, S.current.CurrentlyUnableToRegister);
                             }
@@ -239,22 +253,5 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  bool emailInvalid(String email) {
-    Pattern pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = new RegExp(pattern);
-    return (!regex.hasMatch(email)) ? invalid = false : invalid = true;
-  }
 
-  bool passwordInvalid(String password) {
-    Pattern pattern = r'^[A-Za-z0-9]{8,}$';
-    RegExp regex = new RegExp(pattern);
-    return (!regex.hasMatch(password)) ? invalid = false : invalid = true;
-  }
-
-  bool phoneInvalid(String phone) {
-    Pattern pattern = r'[0-9]{10}$';
-    RegExp regex = new RegExp(pattern);
-    return (!regex.hasMatch(phone)) ? invalid = false : invalid = true;
-  }
 }

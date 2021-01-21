@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:Pluralsight/Core/models/AccountInf.dart';
+import 'package:Pluralsight/Core/models/Format.dart';
 import 'package:Pluralsight/Core/models/Toast.dart';
 import 'package:Pluralsight/Core/service/UserService.dart';
 import 'package:Pluralsight/View/ui/Account/ForgotPassword.dart';
@@ -18,6 +19,7 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   bool showPassword = false;
+  bool invalid = false;
   TextEditingController userNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   @override
@@ -46,8 +48,14 @@ class _SignInState extends State<SignIn> {
               SizedBox(
                 height: 20,
               ),
-              TextField(
+              TextFormField(
                 controller: userNameController,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator:(value){
+                  invalid=Format.emailInvalid(value);
+                  if(invalid) return null;
+                  else return S.current.InvalidEmail;
+                },
                 style: Theme.of(context).textTheme.subtitle1,
                 decoration: InputDecoration(
                     isDense: true,
@@ -57,8 +65,14 @@ class _SignInState extends State<SignIn> {
               SizedBox(
                 height: 10,
               ),
-              TextField(
+              TextFormField(
                 controller: passwordController,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator:(value){
+                  invalid=Format.passwordInvalid(value);
+                  if(invalid) return null;
+                  else return S.current.PasswordLength;
+                },
                 cursorColor: Theme.of(context).cursorColor,
                 obscureText: !showPassword,
                 style: Theme.of(context).textTheme.subtitle1,
@@ -91,7 +105,12 @@ class _SignInState extends State<SignIn> {
                           String email = userNameController.text;
                           String password = passwordController.text;
                           if (email.isEmpty | password.isEmpty) {
+                            Toast.show(context: newContext,content: S.current.EmptyContent);
                             return;
+                          }
+                          if(!this.invalid){
+                            Toast.show(context: newContext,content: S.current.WrongFormat);
+                            return ;
                           }
                           var res = await UserService.login(
                               email: email, password: password);

@@ -1,4 +1,5 @@
 import 'package:Pluralsight/Core/models/AccountInf.dart';
+import 'package:Pluralsight/Core/models/Format.dart';
 import 'package:Pluralsight/Core/models/HandleAdd2Channel.dart';
 import 'package:Pluralsight/Core/models/Toast.dart';
 import 'package:Pluralsight/Core/service/UserService.dart';
@@ -21,6 +22,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
   TextEditingController oldPasswordController;
   TextEditingController newPasswordController;
   TextEditingController confController;
+  bool invalid=false;
 
   @override
   void initState() {
@@ -79,8 +81,14 @@ class _UpdatePasswordState extends State<UpdatePassword> {
               SizedBox(
                 height: 20,
               ),
-              TextField(
+              TextFormField(
                 controller: oldPasswordController,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator:(value){
+                  invalid=Format.passwordInvalid(value);
+                  if(invalid) return null;
+                  else return S.current.PasswordLength;
+                },
                 cursorColor: Theme.of(context).cursorColor,
                 obscureText: !showOldPassword,
                 style: Theme.of(context).textTheme.subtitle1,
@@ -101,8 +109,14 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                       },
                     )),
               ),
-              TextField(
+              TextFormField(
                 controller: newPasswordController,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator:(value){
+                  invalid=Format.passwordInvalid(value);
+                  if(invalid) return null;
+                  else return S.current.PasswordLength;
+                },
                 cursorColor: Theme.of(context).cursorColor,
                 obscureText: !showPassword,
                 style: Theme.of(context).textTheme.subtitle1,
@@ -121,8 +135,14 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                       },
                     )),
               ),
-              TextField(
+              TextFormField(
                 controller: confController,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator:(value){
+                  invalid=Format.passwordInvalid(value);
+                  if(invalid) return null;
+                  else return S.current.PasswordLength;
+                },
                 cursorColor: Theme.of(context).cursorColor,
                 obscureText: !showPassword,
                 style:Theme.of(context).textTheme.subtitle1,

@@ -874,7 +874,7 @@ packages:
     source: hosted
     version: "2.2.1"
   youtube_player_flutter:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: youtube_player_flutter
       url: "https://pub.dartlang.org"

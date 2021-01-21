@@ -83,5 +83,6 @@
   "ResetPassword": "Reset Password",
   "LogOut": "Log out",
   "NEW_RELEASES": "NEW RELEASES",
-  "RECOMMENDED_FOR_YOU": "RECOMMENDED FOR YOU"
+  "RECOMMENDED_FOR_YOU": "RECOMMENDED FOR YOU",
+  "Error": "Failed"
 }
