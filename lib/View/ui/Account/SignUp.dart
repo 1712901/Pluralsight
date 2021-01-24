@@ -174,8 +174,8 @@ class _SignUpState extends State<SignUp> {
                             } else if (status == 500) {
                               showToast(ctx, '!');
                             }else if(status==200){
-                              await sendMail(emailController.text, ctx);
-                              //Toast.show(context: ctx,content: "Tài khoản đã được đăng ký vui lòng kiểm tra email");
+                              //await sendMail(emailController.text, ctx);
+                              Toast.show(context: ctx,content: "Tài khoản đã được đăng ký vui lòng kiểm tra email");
                             }
                             else {
                               //await sendMail(emailController.text, ctx);

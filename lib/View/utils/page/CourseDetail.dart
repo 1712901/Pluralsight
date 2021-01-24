@@ -17,6 +17,7 @@ import 'package:Pluralsight/Core/service/UserService.dart';
 import 'package:Pluralsight/View/utils/Widget/CustomVideoPlayser.dart';
 import 'package:Pluralsight/View/utils/Widget/CustomYoutubePlayer.dart';
 import 'package:Pluralsight/View/utils/page/CommentPage.dart';
+import 'package:Pluralsight/View/utils/page/ListExercisePage.dart';
 import 'package:Pluralsight/View/utils/page/RelatedCoures.dart';
 import 'package:Pluralsight/generated/l10n.dart';
 import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
@@ -44,7 +45,7 @@ class _CourseDetailState extends State<CourseDetail>
     with TickerProviderStateMixin {
   TabController primaryTC;
   bool maxLine = true;
-  bool ownerCourse = false;
+  bool ownerCourse;
   final CourseInfor course;
   bool isLogin;
   bool isLike;
@@ -57,7 +58,7 @@ class _CourseDetailState extends State<CourseDetail>
   bool isNextYoutube = false;
   bool isNextVideo = false;
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-  double percent=0;
+  double percent = 0;
 
   @override
   void initState() {
@@ -131,32 +132,32 @@ class _CourseDetailState extends State<CourseDetail>
                                   aspectRatio: 16 / 9,
                                   child: Consumer<LoadURL>(
                                       builder: (context, provider, _) {
-                                        if (provider.isYotuber()) {
-                                          return CustomYoutuberPlayer(
-                                              next: isNextYoutube,
-                                              url: provider.url,
-                                            seek: provider.seek,
-                                            lessonId: provider.lessonId,
-                                          );
-                                        } else if(provider.isMp4()){
-                                          return CustomVideoPlayer(
-                                            url: provider.url,
-                                            next: isNextVideo,
-                                            isLocal: provider.loadLocal,
-                                            seek: provider.seek,
-                                            lessonId: provider.lessonId,
-                                          );
-                                          //return CustomVideoPlayer2(url:provider.url,next: isNextVideo);
-                                        }else{
-                                          return CustomVideoPlayer(
-                                            url: provider.url,
-                                            next: isNextVideo,
-                                            isLocal: provider.loadLocal,
-                                            seek: provider.seek,
-                                            lessonId: provider.lessonId,
-                                          );
-                                        }
-                                      })),
+                                    if (provider.isYotuber()) {
+                                      return CustomYoutuberPlayer(
+                                        next: isNextYoutube,
+                                        url: provider.url,
+                                        seek: provider.seek,
+                                        lessonId: provider.lessonId,
+                                      );
+                                    } else if (provider.isMp4()) {
+                                      return CustomVideoPlayer(
+                                        url: provider.url,
+                                        next: isNextVideo,
+                                        isLocal: provider.loadLocal,
+                                        seek: provider.seek,
+                                        lessonId: provider.lessonId,
+                                      );
+                                      //return CustomVideoPlayer2(url:provider.url,next: isNextVideo);
+                                    } else {
+                                      return CustomVideoPlayer(
+                                        url: provider.url,
+                                        next: isNextVideo,
+                                        isLocal: provider.loadLocal,
+                                        seek: provider.seek,
+                                        lessonId: provider.lessonId,
+                                      );
+                                    }
+                                  })),
                               Align(
                                 alignment: Alignment.topCenter,
                                 child: Row(
@@ -180,7 +181,8 @@ class _CourseDetailState extends State<CourseDetail>
                                           color: Colors.white,
                                         ),
                                         onPressed: () async {
-                                          Share.share("http://dev.letstudy.org/course-detail/${courseDetailModel.id}");
+                                          Share.share(
+                                              "http://dev.letstudy.org/course-detail/${courseDetailModel.id}");
                                         })
                                   ],
                                 ),
@@ -202,11 +204,13 @@ class _CourseDetailState extends State<CourseDetail>
                                   automaticallyImplyLeading: false,
                                   pinned: true,
                                   toolbarHeight: 0,
-                                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                                  backgroundColor:
+                                      Theme.of(context).scaffoldBackgroundColor,
                                   bottom: TabBar(
                                     controller: primaryTC,
                                     labelColor: Theme.of(context).primaryColor,
-                                    unselectedLabelColor: Theme.of(context).disabledColor,
+                                    unselectedLabelColor:
+                                        Theme.of(context).disabledColor,
                                     tabs: [
                                       Tab(text: "CONTENTS"),
                                       Tab(text: "COMMENTS"),
@@ -254,12 +258,12 @@ class _CourseDetailState extends State<CourseDetail>
             children: [
               ClipOval(
                   child: Container(
-                    height: 35,
-                    width: 35,
-                    color: Theme.of(context).primaryIconTheme.color,
-                    child: AspectRatio(
-                      aspectRatio: 1 / 1,
-                        child: icon,
+                height: 35,
+                width: 35,
+                color: Theme.of(context).primaryIconTheme.color,
+                child: AspectRatio(
+                  aspectRatio: 1 / 1,
+                  child: icon,
                 ),
               )),
               Text(
@@ -333,10 +337,12 @@ class _CourseDetailState extends State<CourseDetail>
                               Icons.star_outline,
                               color: Colors.grey,
                             ),
-                      title: isLike && isLogin ? S.current.Unlike : S.current.Like,
+                      title:
+                          isLike && isLogin ? S.current.Unlike : S.current.Like,
                       opTap: () async {
                         if (!isLogin) {
-                          Toast.show(content: S.current.NotLogin,context: context);
+                          Toast.show(
+                              content: S.current.NotLogin, context: context);
                         } else {
                           String token =
                               Provider.of<AccountInf>(context, listen: false)
@@ -359,15 +365,15 @@ class _CourseDetailState extends State<CourseDetail>
               makeItemButton(
                   //icon: Icon(Icons.arrow_circle_down),
                   icon: Consumer<DownLoadProgress>(
-                    builder:(context,provider,_)=> CircularPercentIndicator(
-                        radius: 30,
-                        percent: provider.percent,
-                        progressColor: Theme.of(context).primaryColor,
-                        center: new Icon(
-                          Icons.file_download,
-                          size: 15,
-                          color: Theme.of(context).primaryColor,
-                        ),
+                    builder: (context, provider, _) => CircularPercentIndicator(
+                      radius: 30,
+                      percent: provider.percent,
+                      progressColor: Theme.of(context).primaryColor,
+                      center: new Icon(
+                        Icons.file_download,
+                        size: 15,
+                        color: Theme.of(context).primaryColor,
+                      ),
                     ),
                   ),
                   title: S.current.Download,
@@ -375,9 +381,13 @@ class _CourseDetailState extends State<CourseDetail>
                     AccountInf account =
                         Provider.of<AccountInf>(context, listen: false);
                     if (account.isAuthorization()) {
-                      this.downLoad(lessonID: "intro",userID: account.userInfo.id,courseId: courseDetailModel.id,url: courseDetailModel.promoVidUrl);
+                      this.downLoad(
+                          lessonID: "intro",
+                          userID: account.userInfo.id,
+                          courseId: courseDetailModel.id,
+                          url: courseDetailModel.promoVidUrl);
                     } else {
-                      Toast.show(content: S.current.NotLogin,context: context);
+                      Toast.show(content: S.current.NotLogin, context: context);
                     }
                   }),
             ],
@@ -432,7 +442,10 @@ class _CourseDetailState extends State<CourseDetail>
                               S.current.Progress,
                               style: Theme.of(context).textTheme.subtitle1,
                             ),
-                            Text(' ( $process% )',style: Theme.of(context).textTheme.subtitle1,),
+                            Text(
+                              ' ( $process% )',
+                              style: Theme.of(context).textTheme.subtitle1,
+                            ),
                             SizedBox(
                               width: 50,
                             ),
@@ -464,7 +477,10 @@ class _CourseDetailState extends State<CourseDetail>
                   padding: const EdgeInsets.only(left: 20.0),
                   child: Wrap(
                     children: courseDetailModel.requirement
-                        .map((requir) => Text("- $requir",style: Theme.of(context).textTheme.subtitle2,))
+                        .map((requir) => Text(
+                              "- $requir",
+                              style: Theme.of(context).textTheme.subtitle2,
+                            ))
                         .toList(),
                   ),
                 )
@@ -478,7 +494,10 @@ class _CourseDetailState extends State<CourseDetail>
                   padding: const EdgeInsets.only(left: 20.0),
                   child: Wrap(
                     children: courseDetailModel.learnWhat
-                        .map((lw) => Text("- $lw",style: Theme.of(context).textTheme.subtitle2,))
+                        .map((lw) => Text(
+                              "- $lw",
+                              style: Theme.of(context).textTheme.subtitle2,
+                            ))
                         .toList(),
                   ),
                 )
@@ -553,7 +572,8 @@ class _CourseDetailState extends State<CourseDetail>
                                   if (res.statusCode == 200) {
                                     setState(() {});
                                   } else {
-                                    Toast.show(context: context,content: "Thất bại");
+                                    Toast.show(
+                                        context: context, content: "Thất bại");
                                   }
                                 } else {
                                   //Đã đăng ký
@@ -579,12 +599,22 @@ class _CourseDetailState extends State<CourseDetail>
                   width: double.infinity,
                   child: RaisedButton.icon(
                       onPressed: () {
-                        Toast.show(context: context, content: S.current.NotLogin);
+                        Toast.show(
+                            context: context, content: S.current.NotLogin);
                       },
-                      icon: Icon(Icons.done_all,color: Theme.of(context).iconTheme.color,),
+                      icon: Icon(
+                        Icons.done_all,
+                        color: Theme.of(context).iconTheme.color,
+                      ),
                       label: courseDetailModel.price == 0
-                          ? Text(S.current.Enroll,style: Theme.of(context).textTheme.subtitle1,)
-                          : Text(S.current.Pay,style: Theme.of(context).textTheme.subtitle1,)),
+                          ? Text(
+                              S.current.Enroll,
+                              style: Theme.of(context).textTheme.subtitle1,
+                            )
+                          : Text(
+                              S.current.Pay,
+                              style: Theme.of(context).textTheme.subtitle1,
+                            )),
                 ),
           SizedBox(
               width: double.infinity,
@@ -596,8 +626,15 @@ class _CourseDetailState extends State<CourseDetail>
                             )));
                   },
                   color: Theme.of(context).primaryColor,
-                  icon: Icon(Icons.view_carousel,color: Theme.of(context).primaryIconTheme.color,),
-                  label: Text(S.current.RelatedCourse,style: TextStyle(color: Theme.of(context).primaryIconTheme.color),))),
+                  icon: Icon(
+                    Icons.view_carousel,
+                    color: Theme.of(context).primaryIconTheme.color,
+                  ),
+                  label: Text(
+                    S.current.RelatedCourse,
+                    style: TextStyle(
+                        color: Theme.of(context).primaryIconTheme.color),
+                  ))),
         ],
       ),
     );
@@ -621,32 +658,6 @@ class _CourseDetailState extends State<CourseDetail>
                     width: 50,
                     color: Colors.orange,
                   ),
-                  trailing: PopupMenuButton(
-                      offset: Offset(0, 35),
-                      icon: Icon(
-                        Icons.more_vert,
-                        color: Theme.of(context).iconTheme.color,
-                      ),
-                      color: Theme.of(context).popupMenuTheme.color,
-                      itemBuilder: (BuildContext context) {
-                        return <PopupMenuEntry<int>>[
-                          PopupMenuItem(
-                              child: Text(
-                            'Bookmark',
-                            style: Theme.of(context).textTheme.subtitle1,
-                          )),
-                          PopupMenuItem(
-                              child: Text(
-                            'Add to channel',
-                            style: Theme.of(context).textTheme.subtitle1,
-                          )),
-                          PopupMenuItem(
-                              child: Text(
-                            S.current.Remove,
-                            style: Theme.of(context).textTheme.subtitle1,
-                          )),
-                        ];
-                      }),
                 ),
                 Column(
                   children: section.lesson
@@ -654,70 +665,118 @@ class _CourseDetailState extends State<CourseDetail>
                           Builder(builder: (BuildContext newContext) {
                             String urlLesson;
                             ResGetVideoLesson resVideoLesson;
-                            return ListTile(
-                                onTap: () async {
-                                  if (Provider.of<AccountInf>(context,
-                                              listen: false)
-                                          .isAuthorization() &&
-                                      this.ownerCourse) {
-
-                                    if(urlLesson==null) {
-                                      resVideoLesson = await getUrlLesson(
-                                          lesson);
-                                      urlLesson=resVideoLesson.videoLesson.videoUrl;
-                                    }
-                                    if (urlLesson != null) {
-                                      this.isNextYoutube = true;
-                                      this.isNextVideo = true;
-
-                                      Provider.of<LoadURL>(context,
-                                              listen: false)
-                                          .setUrl(urlLesson,lessonID: lesson.id,courseId: lesson.courseId,userId: Provider.of<AccountInf>(context,
-                                          listen: false).userInfo.id,seek: resVideoLesson.videoLesson.currentTime);
-                                    }
-                                  }
-                                },
-                                leading: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 20.0, top: 8.0),
-                                  child: Icon(
-                                    Icons.check_circle,
-                                    color: Theme.of(context).iconTheme.color,
-                                    size: 10,
-                                  ),
-                                ),
-                                title: Text(
-                                  "Lesson${lesson.numberOrder} : ${lesson.name}",
-                                  maxLines: 2,
-                                  style: Theme.of(context).textTheme.subtitle1,
-                                ),
-                                trailing: FlatButton.icon(
-                                    onPressed: () async {
-                                      if (Provider.of<AccountInf>(context,
+                            return FutureBuilder(
+                                future: getUrlLesson(lesson),
+                                builder: (newContext, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.done) {
+                                    resVideoLesson = snapshot.data;
+                                    print("Load: $resVideoLesson");
+                                    return ListTile(
+                                      onTap: () async {
+                                        if (resVideoLesson == null) return;
+                                        if (resVideoLesson
+                                                .videoLesson.videoUrl !=
+                                            null) {
+                                          this.isNextYoutube = true;
+                                          this.isNextVideo = true;
+                                          Provider.of<LoadURL>(context,
                                                   listen: false)
-                                              .isAuthorization() &&
-                                          this.ownerCourse) {
-                                        DioDownload dioDownload =
-                                        new DioDownload(
-                                            flutterLocalNotificationsPlugin);
-                                        //thực hiện down load
-                                        if(urlLesson==null) {
-                                          ResGetVideoLesson res = await getUrlLesson(
-                                              lesson);
-                                          urlLesson=res.videoLesson.videoUrl;
+                                              .setUrl(resVideoLesson.videoLesson.videoUrl,
+                                                  lessonID: lesson.id,
+                                                  courseId: lesson.courseId,
+                                                  userId:
+                                                      Provider.of<AccountInf>(
+                                                              context,
+                                                              listen: false)
+                                                          .userInfo
+                                                          .id,
+                                                  seek: resVideoLesson
+                                                      .videoLesson.currentTime);
                                         }
-
-                                        if(urlLesson!=null) {
-                                         this.downLoad(userID: Provider.of<AccountInf>(context,
-                                             listen: false).userInfo.id,courseId: courseDetailModel.id,lessonID: lesson.id,url:urlLesson );
-                                        }
-                                      }
-                                    },
-                                    icon: Text(
-                                      Format.printDuration(lesson.hours),
-                                      style: Theme.of(context).textTheme.subtitle1,
-                                    ),
-                                    label: Icon(Icons.arrow_circle_down,color: Theme.of(context).iconTheme.color,)));
+                                      },
+                                      leading: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 20.0, top: 8.0),
+                                        child: Icon(
+                                          Icons.check_circle,
+                                          color:
+                                              Theme.of(context).iconTheme.color,
+                                          size: 10,
+                                        ),
+                                      ),
+                                      title: Text(
+                                        "Lesson${lesson.numberOrder} : ${lesson.name}",
+                                        maxLines: 2,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle1,
+                                      ),
+                                      trailing: snapshot.data == null
+                                          ? null
+                                          : PopupMenuButton(
+                                              offset: Offset(0, 35),
+                                              icon: Icon(
+                                                Icons.more_vert,
+                                                color: Theme.of(context)
+                                                    .iconTheme
+                                                    .color,
+                                              ),
+                                              color: Theme.of(context)
+                                                  .popupMenuTheme
+                                                  .color,
+                                              itemBuilder:
+                                                  (BuildContext context) {
+                                                return <PopupMenuEntry<int>>[
+                                                  PopupMenuItem(
+                                                      value: 0,
+                                                      child: Text(
+                                                        S.current.Download,
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .subtitle1,
+                                                      )),
+                                                  PopupMenuItem(
+                                                      value: 1,
+                                                      child: Text(
+                                                        S.current.Exercise,
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .subtitle1,
+                                                      )),
+                                                ];
+                                              },
+                                              onSelected: (value) {
+                                                switch (value) {
+                                                  case 0:
+                                                    String url = resVideoLesson
+                                                        .videoLesson.videoUrl;
+                                                    this.downLoad(
+                                                        userID: Provider.of<
+                                                                    AccountInf>(
+                                                                context,
+                                                                listen: false)
+                                                            .userInfo
+                                                            .id,
+                                                        courseId:
+                                                            courseDetailModel
+                                                                .id,
+                                                        lessonID: lesson.id,
+                                                        url: url);
+                                                    break;
+                                                  case 1:
+                                                    Navigator.push(newContext, MaterialPageRoute(builder: (newContext)=>ListExercisePage(lessonId: lesson.id)));
+                                                    break;
+                                                }
+                                              },
+                                            ),
+                                    );
+                                  } else {
+                                    return ListTile(
+                                      title: Text("Loading"),
+                                    );
+                                  }
+                                });
                           }))
                       .toList(),
                 )
@@ -741,10 +800,13 @@ class _CourseDetailState extends State<CourseDetail>
       ResGetDetailCourseNonUser resGetDetailCourseNonUser =
           ResGetDetailCourseNonUser.fromJson(jsonDecode(res.body));
       courseDetailModel = resGetDetailCourseNonUser.courseDetail;
-      if(accountInf.isAuthorization())
-      Provider.of<LoadURL>(context, listen: false)
-          .setUrl(courseDetailModel.promoVidUrl,courseId: courseDetailModel.id,lessonID: "intro",userId:accountInf.userInfo.id);
-      else{
+      if (accountInf.isAuthorization())
+        Provider.of<LoadURL>(context, listen: false).setUrl(
+            courseDetailModel.promoVidUrl,
+            courseId: courseDetailModel.id,
+            lessonID: "intro",
+            userId: accountInf.userInfo.id);
+      else {
         Provider.of<LoadURL>(context, listen: false)
             .setUrl(courseDetailModel.promoVidUrl);
       }
@@ -806,62 +868,80 @@ class _CourseDetailState extends State<CourseDetail>
   }
 
   Future<ResGetVideoLesson> getUrlLesson(Lesson lesson) async {
+    AccountInf accountInf = Provider.of<AccountInf>(context, listen: false);
+    if (!accountInf.isAuthorization()) return null;
+    if (this.ownerCourse == null) {
+      var res = await UserService.checkOwnCourse(
+          token: Provider.of<AccountInf>(context, listen: false).token,
+          courseId: courseDetailModel.id);
+      if (res.statusCode == 200) {
+        ownerCourse = jsonDecode(res.body)["payload"]["isUserOwnCourse"];
+      } else {
+        ownerCourse = null;
+      }
+    }
+    if (!this.ownerCourse) return null;
     var res = await LessonService.getURLLesson(
-        token: Provider.of<AccountInf>(context, listen: false).token,
+        token: accountInf.token,
         courseID: lesson.courseId,
         lessonId: lesson.id);
-    print(res.body);
+    //print(res.body);
     if (res.statusCode == 200) {
       return resGetVideoLessonFromJson(res.body);
     }
     return null;
   }
-  Future<void> downLoad({String userID,String lessonID,String courseId,String url}) async {
+
+  Future<void> downLoad(
+      {String userID, String lessonID, String courseId, String url}) async {
     print("Link Download $url");
-    if(await isDownloaded(courseID: courseId,userID: userID,lessonID: lessonID)){
-      Toast.show(context: context,content: S.current.Downloaded);
+    if (await isDownloaded(
+        courseID: courseId, userID: userID, lessonID: lessonID)) {
+      Toast.show(context: context, content: S.current.Downloaded);
       return;
     }
-    if(checkUrl(url)) {
+    if (checkUrl(url)) {
       final manager = ManagerData();
-      DioDownload dioDownload = new DioDownload(
-          flutterLocalNotificationsPlugin);
-      String path = await dioDownload.createPath(url: url,nameVideo: lessonID,courseID: courseId);
+      DioDownload dioDownload =
+          new DioDownload(flutterLocalNotificationsPlugin);
+      String path = await dioDownload.createPath(
+          url: url, nameVideo: lessonID, courseID: courseId);
       print(path);
-      if(path==null) {
-        Toast.show(content: S.current.CanNotDownload,context:context );
+      if (path == null) {
+        Toast.show(content: S.current.CanNotDownload, context: context);
         return;
       }
-      Provider.of<DownLoadProgress>(context,listen: false).startDownload(lessonId: lessonID,courseID: courseId,userID: userID);
-      dioDownload.download(
-          path, url, (received, total) {
-          Provider.of<DownLoadProgress>(context,listen: false).inProgress(percent: received/total);
+      Provider.of<DownLoadProgress>(context, listen: false).startDownload(
+          lessonId: lessonID, courseID: courseId, userID: userID);
+      dioDownload.download(path, url, (received, total) {
+        Provider.of<DownLoadProgress>(context, listen: false)
+            .inProgress(percent: received / total);
       }).whenComplete(() async {
         // Thực hiện lưu thông tin vào CSDL khi tải thành công
-        Provider.of<DownLoadProgress>(context,listen: false).complete();
+        Provider.of<DownLoadProgress>(context, listen: false).complete();
         final database = await manager.openDatabase();
         manager.insertLessonCourse(
-            courseID: courseId,
-            lessonID: lessonID,
-            userID: userID,
-            path: path);
+            courseID: courseId, lessonID: lessonID, userID: userID, path: path);
       }).catchError((err) {
         print(err.toString());
       });
-    }else{
-      Toast.show(content: S.current.NullUrl,context:context );
+    } else {
+      Toast.show(content: S.current.NullUrl, context: context);
     }
   }
-  bool checkUrl(String url){
-    if(url==null){
+
+  bool checkUrl(String url) {
+    if (url == null) {
       return false;
     }
     return true;
   }
-  Future<bool> isDownloaded({String courseID,String userID,String lessonID}) async {
+
+  Future<bool> isDownloaded(
+      {String courseID, String userID, String lessonID}) async {
     final manager = ManagerData();
     await manager.openDatabase();
-    return manager.isLoadedLession(courseID: courseID,userID: userID,lessonID: lessonID);
+    return manager.isLoadedLession(
+        courseID: courseID, userID: userID, lessonID: lessonID);
   }
 }
-

@@ -894,6 +894,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Exercise`
+  String get Exercise {
+    return Intl.message(
+      'Exercise',
+      name: 'Exercise',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Submit`
+  String get Submit {
+    return Intl.message(
+      'Submit',
+      name: 'Submit',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
